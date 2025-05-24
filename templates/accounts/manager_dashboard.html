@@ -103,30 +103,24 @@
               <i class="fas fa-envelope"></i> Send Email
             </a>
           </li>
-          <li class="list-group-item dropdown">
-            <a class="nav-link dropdown-toggle {% if request.resolver_match.url_name in 'written_attendance_pdf viva_attendance_pdf' %}active{% endif %}" 
-               href="#" 
-               id="attendanceDropdown" 
-               role="button" 
-               data-bs-toggle="dropdown" 
-               aria-expanded="false">
-              <i class="fas fa-calendar-check"></i> Attendance
+
+          <li class="list-group-item">
+            <a href="{% url 'written_attendance_pdf' %}" class="nav-link {% if request.resolver_match.url_name == 'written_attendance_pdf' %}active{% endif %}">
+              <i class="fas fa-pen-alt"></i> Written Attendance
+
             </a>
-            <ul class="dropdown-menu" aria-labelledby="attendanceDropdown">
-              <li>
-                <a class="dropdown-item {% if request.resolver_match.url_name == 'written_attendance_pdf' %}active{% endif %}" 
-                   href="{% url 'written_attendance_pdf' %}">
-                  <i class="fas fa-file-alt me-1"></i> Written Attendance
-                </a>
-              </li>
-              <li>
-                <a class="dropdown-item {% if request.resolver_match.url_name == 'viva_attendance_pdf' %}active{% endif %}" 
-                   href="{% url 'viva_attendance_pdf' %}">
-                  <i class="fas fa-file-alt me-1"></i> Viva Attendance
-                </a>
-              </li>
-            </ul>
           </li>
+
+
+
+          <li class="list-group-item">
+            <a href="{% url 'viva_attendance_pdf' %}" class="nav-link {% if request.resolver_match.url_name == 'viva_attendance_pdf' %}active{% endif %}">
+              <i class="fas fa-microphone"></i> Viva Attendance
+
+            </a>
+          </li>
+
+     
           <li class="list-group-item">
             <a href="{% url 'result_prepare' %}" class="nav-link {% if request.resolver_match.url_name == 'result_prepare' %}active{% endif %}">
               <i class="fas fa-chart-line"></i> Result Prepare
