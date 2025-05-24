@@ -1,0 +1,59 @@
+
+{% extends 'accounts/manager_dashboard.html' %}
+
+{% block manager_dashboard %}
+
+
+
+  <div class="container my-5">
+    <div class="row mx-3 p-5 rounded-4"  style="background: linear-gradient(135deg, #f5f7fa, #c3cfe2);">
+      
+      <div class="col-md-6">
+        <h4 class="fw-bold text-dark mt-4">
+          Attendance of Written Part
+        </h4>
+        <form method="get" class="row g-3">
+          <div class="col-12">
+            <label class="form-label">Intake</label>
+            <select name="intake_id" class="form-select border-secondary">
+              {% for intake in intakes %}
+                <option value="{{ intake.id }}" {% if intake == selected_intake %}selected{% endif %}>
+                  {{ intake.batch_name }} - {{ intake.intake_name }}
+                </option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Start Roll</label>
+            <input type="number" name="start_roll" class="form-control" required>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">End Roll</label>
+            <input type="number" name="end_roll" class="form-control" required>
+          </div>
+          <div class="col-12 d-grid">
+     
+            <button type="submit" name="generate_pdf" class="btn btn-success w-100">Download PDF</button>
+          </div>
+        </form>
+      </div>
+  
+      <div class="col-md-6 text-center d-none d-md-block">
+        <img src="https://cdn-icons-png.flaticon.com/512/337/337946.png" class="img-fluid"  style="max-height: 300px; animation: floatUpDown 3s ease-in-out infinite;">
+      </div>
+    </div>
+  </div>
+      
+
+
+    <!-- Optional: Floating Animation -->
+    <style>
+        @keyframes floatUpDown {
+          0%   { transform: translateY(0); }
+          50%  { transform: translateY(-10px); }
+          100% { transform: translateY(0); }
+        }
+      </style>
+
+  
+{% endblock %}

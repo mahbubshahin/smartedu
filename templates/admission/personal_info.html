@@ -1,0 +1,194 @@
+{% extends 'authorized_base.html' %}
+ {% load static %}
+ {% block title %}WMES | Personal Info{% endblock title %}
+ 
+ <!-- block content -->
+ {% block content %}
+ 
+
+ <section class="Personal_Information " >
+
+
+
+    <div class="container  mt- ">
+        <div class="row">
+            
+
+            <div class="col-11  mx-auto mt-3 rounded  pt-2 ">
+
+                {% include 'admission/admission_Process.html' %}
+            </div>
+
+            
+
+
+
+           
+
+            <div class="col-10 mx-auto mb-4 mt-2 rounded  shadow bg-white px-4 py-4">
+                <form action="{% url 'personal_info' %}" method="post" enctype="multipart/form-data" onsubmit="return">
+    
+                    {% csrf_token %}
+                <div class="card p-3  border border-primary rounded-3">
+                    
+                    <!-- Outer Title -->
+                    <div class="position-absolute top-0 start-50 translate-middle px-5 py-1 bg-primary text-white fw-bold rounded-5">
+                        Applay for <span class="">{{ applied_intake.intake_name }}</span>
+                    </div>
+    
+                    <div class="p-3 border border-success rounded-3 mt-4 position-relative">
+                        
+                        <!-- Inner Title -->
+                        <div class="position-absolute  top-0 start-50 translate-middle px-4 py-1  bg-success text-white fw-bold rounded-3">
+                            Personal Information
+                        </div>
+    
+                         
+                            
+                            <div class="row my-1 g-2">
+                                <div class="col-md-12" >
+                                    <div class="form-floating mb-2">
+                                        <input type="text" class="form-control" name="ap_name" disabled id="ap_name" placeholder="Applicant's Name" value="{{ applicant.full_name }}" readonly>
+                                        <label for="ap_name">Applicant's Name <span class="text-danger">*</span></label>
+                                    </div>
+                                </div>
+        
+                                <div class="col-md-6">
+                                    <div class="form-floating mb-2">
+                                        <input type="text" class="form-control text-uppercase" name="ap_f_name" id="ap_f_name" value="{{personal_info.father_name}}" placeholder="Father's Name" required>
+                                        <label for="ap_f_name">Father's Name <span class="text-danger">*</span></label>
+                                    </div>
+                                </div>
+        
+                                <div class="col-md-6">
+                                    <div class="form-floating mb-2">
+                                        <input type="text" class="form-control text-uppercase" name="ap_m_name" id="ap_m_name" value="{{personal_info.mother_name}}" placeholder="Mother's Name" required>
+                                        <label for="ap_m_name">Mother's Name <span class="text-danger">*</span></label>
+                                    </div>
+                                </div>
+        
+                           
+
+                                <div class="col-md-6">
+    <div class="form-floating mb-2">
+        <input type="date" class="form-control" 
+               value="{{ personal_info.date_of_birth|date:'Y-m-d' }}" 
+               name="ap_dob" id="ap_dob" 
+               placeholder="Date of Birth" required>
+        <label for="ap_dob">Date of Birth <span class="text-danger">*</span></label>
+    </div>
+</div>
+
+
+                                <div class="col-md-6">
+                                    <div class="form-floating mb-2">
+                                        <input type="number" class="form-control" name="ap_mobile" id="ap_mobile" placeholder="Mobile number" value="{{ applicant.mobile_number }}" readonly>
+                                        <label for="ap_mobile">Mobile number <span class="text-danger">*</span></label>
+                                    </div>
+                                </div>
+        
+                           
+<!-- Sex -->
+<div class="col-md-6">
+    <div class="form-floating mb-2">
+        <select name="ap_sex" id="ap_sex" class="form-select form-control" required>
+            <option value="" disabled {% if not personal_info.sex %}selected{% endif %}>Choose Sex</option>
+            {% for val, label in personal_choices.sex_choice %}
+                <option value="{{ val }}" {% if personal_info.sex == val %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+        </select>
+        <label for="ap_sex">Sex <span class="text-danger">*</span></label>
+    </div>
+</div>
+
+<!-- Religion -->
+<div class="col-md-6">
+    <div class="form-floating mb-2">
+        <select name="ap_religion" id="ap_religion" class="form-select form-control" required>
+            <option value="" disabled {% if not personal_info.religion %}selected{% endif %}>Choose Religion</option>
+            {% for val, label in personal_choices.religion_choice %}
+                <option value="{{ val }}" {% if personal_info.religion == val %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+        </select>
+        <label for="ap_religion">Religion <span class="text-danger">*</span></label>
+    </div>
+</div>
+
+<!-- Blood Group -->
+<div class="col-md-6">
+    <div class="form-floating mb-2">
+        <select name="ap_bg" id="ap_bg" class="form-select form-control" required>
+            <option value="" disabled {% if not personal_info.blood_group %}selected{% endif %}>Choose Blood Group</option>
+            {% for val, label in personal_choices.blood_group_choice %}
+                <option value="{{ val }}" {% if personal_info.blood_group == val %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+        </select>
+        <label for="ap_bg">Blood Group <span class="text-danger">*</span></label>
+    </div>
+</div>
+
+<!-- Nationality -->
+<div class="col-md-6">
+    <div class="form-floating mb-2">
+        <select name="ap_cntry" id="ap_cntry" class="form-select form-control" required>
+            {% for val, label in personal_choices.nationality_choice %}
+                <option value="{{ val }}" {% if personal_info.nationality == val %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+        </select>
+        <label for="ap_cntry">Nationality <span class="text-danger">*</span></label>
+    </div>
+</div>
+
+                                <div class="col-md-6">
+                                    <div class="form-floating mb-2">
+                                        <input type="text" class="form-control" name="ap_nid" id="ap_nid" placeholder="National ID" value="{{personal_info.national_id}}" required>
+                                        <label for="ap_nid">National ID [If any] <span class="text-danger">*</span></label>
+                                    </div>
+                                </div>
+        
+                                <div class="col-md-6">
+                                    <div class="form-floating mb-2">
+                                        <input type="email" class="form-control" name="ap_email" id="ap_email" placeholder="Email" value="{{ applicant.email }}" readonly>
+                                        <label for="ap_email">Email <span class="text-danger">*</span></label>
+                                    </div>
+                                </div>
+        
+                                <div class="col-md-6">
+                                    <div class="form-floating mb-2">
+                                        <textarea class="form-control" name="ap_prsnt_add"  id="ap_prsnt_add" placeholder="Present Address" cols="30" rows="10">{{personal_info.present_address}}</textarea>
+                                        <label for="ap_prsnt_add">Present Address <span class="text-danger">*</span></label>
+                                    </div>
+                                </div>
+        
+                                <div class="col-md-6">
+                                    <div class="form-floating mb-2">
+                                        <textarea class="form-control" name="ap_prmnt_add" id="ap_prmnt_add" placeholder="Permanent Address" cols="30" rows="10">{{personal_info.permanent_address}}</textarea>
+                                        <label for="ap_prmnt_add">Permanent Address <span class="text-danger">*</span></label>
+                                    </div>
+                                </div>
+                            </div>
+        
+                       
+    
+                    </div> <!-- End Inner Section -->
+    
+                </div>
+    
+    
+                <div class="text-md-end mt-3 mb-4">
+                    <button class="btn btn-light text-primary hover-btn" type="submit">Save & Next <i class="fa fa-arrow-circle-right"></i></button>
+                </div>
+    
+                
+            </form>
+           
+                <!-- End Outer Section -->
+            </div>
+        </div>
+    </div>
+    
+    
+    </section>
+    
+    
+ {% endblock content %}

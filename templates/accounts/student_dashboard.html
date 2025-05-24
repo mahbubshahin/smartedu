@@ -1,0 +1,140 @@
+
+
+{% extends 'authorized_base.html' %}
+
+{% load static %}
+{% block title %}Manager Dashboard{% endblock title %}
+
+{% block content %}
+
+
+
+
+
+<section >
+    <div class="student_dashboard">
+        <div class="container-fluid " >
+            <div class="container-fluid">
+                <div class="row mx-md-1">
+                  <!-- Sidebar -->
+                  <div class="col-12 col-md-3 mt-3">
+                    
+
+
+
+                    <!-- templates/manager/manager_sidebar.html -->
+
+<div class="d-flex flex-column pb-5 bg-light shadow position-sticky" style="top: 90px; ">
+    
+    <ul class="nav nav-pills flex-column mb-auto">
+   
+  
+
+      <li class="nav-item">
+        <a href="" class="nav-link {% if request.resolver_match.url_name == 'Admission_Notice' %}active{% endif %}">
+          <i class="fas fa-file-alt"></i> নোটিশ
+        </a>
+      </li>
+
+      
+
+      <li class="nav-item">
+        <a href="{% url 'change_password' %}" class="nav-link {% if request.resolver_match.url_name == 'change_password' %}active{% endif %}">
+          <i class="fas fa-file-alt"></i> Change Password
+        </a>
+      </li>
+  
+
+      <li class="nav-item">
+        <a class="nav-link" href="" onclick="confirmLogout(event)" >
+            <i class="fas fa-door-open"></i> Logout
+          </a>
+      </li>
+  
+   
+  
+        </ul>
+      </li>
+      
+    
+  
+
+       
+  
+ 
+  
+      
+      </li>
+    </ul>
+  </div>
+  
+  
+                  </div>
+              
+                  <!-- Main Content -->
+                  <div class="col-12 col-md-9 bg-white" style="min-height: 100vh;">
+                    {% block student_dashboard %}
+
+
+                    
+
+                    <h1>student</h1>
+                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Pariatur dolor numquam hic impedit consequuntur facere nisi, neque doloribus excepturi tempora blanditiis unde cupiditate maxime ea consectetur laudantium ullam sint facilis?
+                    {% endblock %}
+                  </div>
+                </div>
+              </div>
+              
+    </div>
+</section>
+
+
+
+
+
+
+<!-- js css section -->
+<section class="css_js">
+
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const triggerTabList = document.querySelectorAll('.nav-link[data-bs-toggle="tab"]');
+
+        // Restore last active tab from localStorage
+        const activeTabId = localStorage.getItem('activeTab');
+        if (activeTabId) {
+            const someTabTriggerEl = document.querySelector(`.nav-link[href="${activeTabId}"]`);
+            if (someTabTriggerEl) {
+                new bootstrap.Tab(someTabTriggerEl).show();
+            }
+        }
+
+        // Save selected tab to localStorage
+        triggerTabList.forEach(function (triggerEl) {
+            triggerEl.addEventListener('shown.bs.tab', function (event) {
+                localStorage.setItem('activeTab', event.target.getAttribute('href'));
+            });
+        });
+    });
+
+    // Optional: Confirm logout
+    function confirmLogout(event) {
+        event.preventDefault();
+        if (confirm("Are you sure you want to logout?")) {
+            window.location.href = "{% url 'applicant_logout' %}";  
+        }
+    }
+</script>
+
+
+
+
+</section>
+
+
+{% endblock content %}
+
+
+
+

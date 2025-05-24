@@ -1,0 +1,186 @@
+{% extends 'accounts/manager_dashboard.html' %}
+
+{% block manager_dashboard %}
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-10">
+      <div class="card shadow border-0 rounded-2 p-4">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center p-3 bg-light border rounded">
+  <div>
+    🔋 <strong>Balance:</strong> {{ balance }} BDT
+  </div>
+  <div>
+    📩 <strong>Limit:</strong> {{ sms_limit }} SMS
+  </div>
+</div>
+
+
+          <h5 class="text-center text-primary mb-4 mt-2">
+            Send SMS to Applicants (Batch: {{ selected_batch }})
+          </h5>
+
+          {% if messages %}
+            {% for message in messages %}
+              <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+            {% endfor %}
+          {% endif %}
+
+         
+
+          <!-- ✅ Batch filter -->
+          <form method="get" class="row g-3 mb-0">
+            <div class="col-md-3">
+              <label for="batchSelect" class="form-label fw-semibold">🎓 Select Batch:</label>
+              <select name="batch_name" id="batchSelect" class="form-select" onchange="this.form.submit()">
+                {% for batch in batches %}
+                  <option value="{{ batch }}" {% if batch == selected_batch %}selected{% endif %}>{{ batch }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="col-md-9 d-flex align-items-end">
+              <div class="d-flex gap-1 w-100">
+                <a href="?batch_name={{ selected_batch }}&filter=paid" class="btn btn-outline-success">✅ Paid</a>
+                <a href="?batch_name={{ selected_batch }}&filter=pending" class="btn btn-outline-warning">🕒 Pending</a>
+                <a href="?batch_name={{ selected_batch }}&filter=incomplete" class="btn btn-outline-danger">❌ Incomplete</a>
+                <a href="{% url 'send_message_to_applicants' %}?batch_name={{ selected_batch }}" class="btn btn-outline-secondary">❎ Clear</a>
+              </div>
+            </div>
+          </form>
+
+          <form method="POST" novalidate id="smsForm">
+            {% csrf_token %}
+            <div class="mb-4">
+              <div class="row">
+                <div class="col-9 mx-auto">
+                  <label for="message" class="form-label fw-semibold">📩 Your Message:</label>
+                  <textarea name="message" id="message" class="form-control border-primary-subtle" rows="4"
+                    placeholder="Write your SMS here (max 160 characters)..." maxlength="160" required></textarea>
+                  <div class="form-text text-end" id="charCount">0 / 160</div>
+                </div>
+              </div>
+            </div>
+
+            {% if filter_type %}
+              <div class="text-end mb-2">
+                <button type="button" class="btn btn-dark btn-sm" id="toggleCheckboxes">🔁 Select/Unselect All</button>
+              </div>
+            {% endif %}
+
+            {% if filter_type == 'paid' %}
+              <h5 class="text-success fw-bold mb-2">✅ Paid Applicants <span id="selectedCount" class="ms-3 text-danger">Selected: 0</span></h5>
+              <div class="row row-cols-1 row-cols-md-2 g-3">
+                {% for applicant in paid_applicants %}
+                  <div class="col">
+                    <div class="p-2 border rounded-2 bg-light d-flex align-items-center shadow-sm">
+                      <input class="form-check-input me-3 applicant-checkbox" type="checkbox" name="selected_applicants" value="{{ applicant.id }}" id="paid{{ applicant.id }}" checked>
+                      <label class="form-check-label" for="paid{{ applicant.id }}">
+                        <strong>{{ applicant.full_name }}</strong><br>
+                        <small class="text-muted">{{ applicant.mobile_number }}</small>
+                      </label>
+                    </div>
+                  </div>
+                {% empty %}
+                  <p class="text-muted">No paid applicants found.</p>
+                {% endfor %}
+              </div>
+
+            {% elif filter_type == 'pending' %}
+              <h5 class="text-warning fw-bold mb-2">🕒 Pending Applicants <span id="selectedCount" class="ms-3 text-danger">Selected: 0</span></h5>
+              <div class="row row-cols-1 row-cols-md-2 g-3">
+                {% for applicant in pending_applicants %}
+                  <div class="col">
+                    <div class="p-2 border rounded-2 bg-light d-flex align-items-center shadow-sm">
+                      <input class="form-check-input me-3 applicant-checkbox" type="checkbox" name="selected_applicants" value="{{ applicant.id }}" id="pending{{ applicant.id }}" checked>
+                      <label class="form-check-label" for="pending{{ applicant.id }}">
+                        <strong>{{ applicant.full_name }}</strong><br>
+                        <small class="text-muted">{{ applicant.mobile_number }}</small>
+                      </label>
+                    </div>
+                  </div>
+                {% empty %}
+                  <p class="text-muted">No pending applicants found.</p>
+                {% endfor %}
+              </div>
+
+            {% elif filter_type == 'incomplete' %}
+              <h5 class="text-danger fw-bold mb-2">❌ Incomplete Applicants <span id="selectedCount" class="ms-3 text-danger">Selected: 0</span></h5>
+              <div class="row row-cols-1 row-cols-md-2 g-3">
+                {% for applicant in incomplete_applicants %}
+                  <div class="col">
+                    <div class="p-2 border rounded-2 bg-light d-flex align-items-center shadow-sm">
+                      <input class="form-check-input me-3 applicant-checkbox" type="checkbox" name="selected_applicants" value="{{ applicant.id }}" id="incomplete{{ applicant.id }}" checked>
+                      <label class="form-check-label" for="incomplete{{ applicant.id }}">
+                        <strong>{{ applicant.full_name }}</strong><br>
+                        <small class="text-muted">{{ applicant.mobile_number }}</small>
+                      </label>
+                    </div>
+                  </div>
+                {% empty %}
+                  <p class="text-muted">No incomplete applicants found.</p>
+                {% endfor %}
+              </div>
+
+            {% else %}
+              <p class="text-center text-muted mt-3">🧭 Please filter to view applicants.</p>
+            {% endif %}
+
+            {% if filter_type %}
+              <div class="text-center mt-4">
+                <button type="submit" class="btn btn-primary px-4 py-2 rounded-pill shadow-sm">📨 Send Message</button>
+              </div>
+            {% endif %}
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ✅ JavaScript: checkbox + validation + char count -->
+<script>
+  const updateSelectedCount = () => {
+    const count = document.querySelectorAll('input[name="selected_applicants"]:checked').length;
+    const label = document.getElementById('selectedCount');
+    if (label) label.textContent = `Selected: ${count}`;
+  };
+
+  document.querySelectorAll('input[name="selected_applicants"]').forEach(cb => {
+    cb.checked = true;
+    cb.addEventListener('change', updateSelectedCount);
+  });
+
+  document.getElementById('toggleCheckboxes')?.addEventListener('click', () => {
+    const checkboxes = document.querySelectorAll('input[name="selected_applicants"]');
+    const allChecked = Array.from(checkboxes).every(cb => cb.checked);
+    checkboxes.forEach(cb => cb.checked = !allChecked);
+    updateSelectedCount();
+  });
+
+  // ✅ Character counter
+  const messageBox = document.getElementById("message");
+  const charCount = document.getElementById("charCount");
+  messageBox.addEventListener("input", () => {
+    charCount.textContent = `${messageBox.value.length} / 160`;
+  });
+
+  // ✅ Prevent empty message or no checkbox selected
+  document.getElementById("smsForm")?.addEventListener("submit", (e) => {
+    const messageText = messageBox.value.trim();
+    const anyChecked = document.querySelector('input[name="selected_applicants"]:checked');
+
+    if (!messageText) {
+      alert("⚠️ Please write a message before sending.");
+      e.preventDefault();
+    } else if (!anyChecked) {
+      alert("⚠️ Please select at least one applicant to send the message.");
+      e.preventDefault();
+    }
+  });
+
+  updateSelectedCount();
+</script>
+{% endblock %}

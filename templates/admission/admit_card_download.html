@@ -1,0 +1,121 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">  
+    <title>WMES Admit Card</title>
+
+    <style>
+        body {
+            background: #ffffff !important;
+        }   
+    </style>
+</head>
+<body>
+    <div style="max-width: 900px; margin: auto; padding: 20px; background-color: #ffffff;">
+        <!-- Header -->
+        <header>
+            <div class="custom-header" style="display: flex; justify-content: center; align-items: center; padding: 20px 0;">
+                <!-- Left Side: Logo -->
+                <div style="margin-right: 20px;">
+                    <img src="{{ ju_logo_uri }}" alt="JU Logo" style="height: 80px;">
+                </div>
+
+                <!-- Right Side: Centered Text -->
+                <div style="text-align: center; margin-right: 80px;">
+                    <div style="font-size: 18px; font-weight: bold; color: #0d6efd; margin-bottom: 4px;">
+                        Masters in Environmental Sciences and Management
+                    </div>
+                    <div style="font-weight: bold; color: #000;">
+                        (Under the Weekend Program)
+                    </div>
+                    <div style="color: #000">
+                        Department of Environmental Sciences
+                    </div>
+                    <div style="color: #000">
+                        Jahangirnagar University, Savar, Dhaka - 1342
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Title -->
+        <div class="title_div" style="text-align: center; margin-bottom: 20px;">
+            <h2>Admit Card</h2>
+            <h5><b>WMES {{ intake.intake_name }} Intake</b></h5>
+        </div>
+
+        <!-- Applicant Info Table -->
+        <table border="1" cellspacing="0" style="width: 100%; border-collapse: collapse; font-size: 14px;">
+            <tr style="line-height: 1.4;">
+                <th style="width: 30%; padding: 4px 4px 4px 8px; font-weight: bold; text-align: left;">Exam Roll No.</th>
+                <td style="padding: 4px; font-weight: bold;">{{ applicant.exam_roll_no }}</td>
+                <td rowspan="7" style="text-align: center; padding: 4px;">
+                    <img src="{{ photo_uri }}" alt="Applicant Photo" style="height: 120px;">
+                </td>
+            </tr>
+            <tr style="line-height: 1.4;">
+                <th style="padding: 4px 4px 4px 8px; font-weight: bold; text-align: left;">Applicant's Name</th>
+                <td style="padding: 4px; font-weight: bold;">{{ applicant.full_name }}</td>
+            </tr>
+            <tr style="line-height: 1.4;">
+                <th style="padding: 4px 4px 4px 8px; font-weight: bold; text-align: left;">Father's Name</th>
+                <td style="padding: 4px; font-weight: bold;">{{ personal_info.father_name }}</td>
+            </tr>
+            <tr style="line-height: 1.4;">
+                <th style="padding: 4px 4px 4px 8px; font-weight: bold; text-align: left;">Mother's Name</th>
+                <td style="padding: 4px; font-weight: bold;">{{ personal_info.mother_name }}</td>
+            </tr>
+            <tr style="line-height: 1.4;">
+                <th style="padding: 4px 4px 4px 8px; font-weight: bold; text-align: left;">Date of Birth</th>
+                <td style="padding: 4px; font-weight: bold;">{{ personal_info.date_of_birth }}</td>
+            </tr>
+            <tr style="line-height: 1.4;">
+                <th style="padding: 4px 4px 4px 8px; font-weight: bold; text-align: left;">Mobile No.</th>
+                <td style="padding: 4px; font-weight: bold;">{{ applicant.mobile_number }}</td>
+            </tr>
+            <tr style="line-height: 1.4;">
+                <th style="padding: 4px 4px 4px 8px; font-weight: bold; text-align: left;">Exam Venue</th>
+                <td style="padding: 4px; font-weight: bold;">{{ intake.admission_test }}</td>
+            </tr>
+            <tr>
+                <td colspan="2" style="padding: 6px;">
+                    <img height="45" width="150" src="{{ sig_uri }}" alt="Signature"><br>
+                    <div style="margin-top: 4px; font-weight: bold;">Applicant's Signature</div>
+                </td>
+            </tr>
+        </table>
+
+        <!-- Date Section -->
+        <section>
+            <p>Date: {{ now|date:"F d, Y, h:i A" }}</p>
+        </section>
+
+        <!-- Instructions -->
+        <section style="background-color: rgb(226, 231, 231); padding: 1px;">
+            <h4 style="text-align: center;">General Instruction for Applicants</h4>
+            <ol style="font-size: 17px;">
+                <li style="font-style: italic;">Please print and bring this admit card during the admission test and preserve it for further admission formalities.</li>
+                <li style="font-style: italic;">Carrying mobile phone or any type of digital communication device is strictly prohibited in the examination hall.</li>
+                <li style="font-style: italic;">Candidate shall report to the respective hall of examination 15 minutes prior to start of written examination.</li>
+            </ol>
+        </section>
+
+        <!-- Coordinator Signature -->
+        <div style="border: 1px solid #000; padding: 15px; text-align: center; margin-top: 30px; width: 100%;">
+            <img src="{{ coordinator_signature_uri }}" alt="Dean Signature" height="45" width="150" style="margin-top: 5px;">
+            <div style="font-weight: bold; margin-top: 8px; line-height: 1.1;">Professor</div>
+            <div style="margin: 0; padding: 0; line-height: 1;">Coordinator, WMES Program</div>
+            <div style="margin: 0; padding: 0; line-height: 1;">Dept. of Environmental Sciences</div>
+            <div style="margin: 0; padding: 0; line-height: 1;">Jahangirnagar University, Savar, Dhaka -1342</div>
+        </div>
+
+        <!-- Footer -->
+        <footer style="margin-top: 40px; text-align: center; font-size: 14px;">
+            &copy; Department of Environmental Sciences, Jahangirnagar University. All rights reserved.
+        </footer>
+    </div>
+</body>
+</html>
+

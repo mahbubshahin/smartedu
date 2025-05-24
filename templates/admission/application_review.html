@@ -1,0 +1,414 @@
+{% extends 'authorized_base.html' %}
+ {% load static %}
+ {% block title %}WMES | Personal Info{% endblock title %}
+ 
+ <!-- block content -->
+ {% block content %}
+ 
+
+
+
+<div class="container mb-4 ">
+    <div class="row">
+
+
+        <div class="col-11 px-4 mx-auto mt-3 rounded  pt-2 ">
+
+            {% include 'admission/admission_Process.html' %}
+        </div>
+
+        
+
+        <div class="col-10 mx-auto">
+            
+       
+            {% if messages %}
+            <div class="position-fixed top-50 start-50 translate-middle z-3 col-5">
+              {% for message in messages %}
+                <div class="alert alert-primary text-center rounded-pill shadow fs-5 message" style="opacity: 0; transition: opacity 3s;">
+                  {{ message }}
+                </div>
+              {% endfor %}
+            </div>
+          
+            <script>
+              document.addEventListener("DOMContentLoaded", () => {
+                document.querySelectorAll('.message').forEach((msg, i) => {
+                  setTimeout(() => {
+                    msg.style.opacity = 1;
+                    setTimeout(() => msg.style.opacity = 0, 4000);
+                  }, i * 5000);
+                });
+              });
+            </script>
+          {% endif %}
+          
+
+          
+            <div class="p-4 shadow bg-white mt-3" >
+                <!-- Personal Information Section -->
+                <div class=" ">
+                    <h5 class=" text-center fw-bold ">Personal Information</h5>
+                </div>
+         
+
+                <div class="info">
+                </div>
+                <table class="table table-hover">
+                    <tr>
+                        <td>Applicant's Name</td>
+                        <td>:</td>
+                        <td colspan="4" class="fw-bold">{{ applicant.applicant_name }}</td>
+                    </tr>
+                    <tr>
+                        <td>Father's Name</td>
+                        <td>:</td>
+                        <td>{{ personal_info.father_name }}</td>
+                        <td>Mother's Name</td>
+                        <td>:</td>
+                        <td>{{ personal_info.mother_name }}</td>
+                    </tr>
+                    <tr>
+                        <td>Date of Birth</td>
+                        <td>:</td>
+                        <td>{{ personal_info.date_of_birth }}</td>
+                        <td>Mobile Number</td>
+                        <td>:</td>
+                        <td>{{ applicant.mobile_number }}</td>
+                    </tr>
+                    <tr>
+                        <td>Gender</td>
+                        <td>:</td>
+                        <td>{{ personal_info.sex }}</td>
+                        <td>Religion</td>
+                        <td>:</td>
+                        <td>{{ personal_info.religion }}</td>
+                    </tr>
+                    <tr>
+                        <td>Blood Group</td>
+                        <td>:</td>
+                        <td>{{ personal_info.blood_group }}</td>
+                        <td>Nationality</td>
+                        <td>:</td>
+                        <td>{{ personal_info.nationality }}</td>
+                    </tr>
+                    <tr>
+                        <td>National ID</td>
+                        <td>:</td>
+                        <td>{{ personal_info.national_id }}</td>
+                        <td>Email</td>
+                        <td>:</td>
+                        <td>{{ applicant.applicant_email }}</td>
+                    </tr>
+                    <tr>
+                        <td>Present Address</td>
+                        <td>:</td>
+                        <td>{{ personal_info.present_address }}</td>
+                        <td>Permanent Address</td>
+                        <td>:</td>
+                        <td>{{ personal_info.permanent_address }}</td>
+                    </tr>
+                </table>
+
+
+
+                <!-- Academic Information Section -->
+                <div class="alert alert-outline-primary">
+                    <h5 class="mb-0 text-center">Academic Information</h5>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="alert alert-success">
+                            <h5 class="mb-0">SSC or Equivalent Level</h5>
+                        </div>
+                        <table class="table table-hover">
+                            <tr>
+                                <td>Examination</td>
+                                <td>:</td>
+                                <td colspan="4">{{ academic_info.ssc_exam }}</td>
+                            </tr>
+                            <tr>
+                                <td>Board</td>
+                                <td>:</td>
+                                <td colspan="4">{{ academic_info.ssc_board }}</td>
+                            </tr>
+                            <tr>
+                                <td>Roll No</td>
+                                <td>:</td>
+                                <td colspan="4">{{ academic_info.ssc_roll }}</td>
+                            </tr>
+                            <tr>
+                                <td>Result</td>
+                                <td>:</td>
+                                <td colspan="4"><span class="fw-bold">{{ academic_info.ssc_result|default_if_none:"" }}</span> {{ academic_info.ssc_result_type|default_if_none:"" }}</td>
+                            </tr>
+                            <tr>
+                                <td>Group</td>
+                                <td>:</td>
+                                <td colspan="4">{{ academic_info.ssc_group }}</td>
+                            </tr>
+                            <tr>
+                                <td>Passing Year</td>
+                                <td>:</td>
+                                <td colspan="4">{{ academic_info.ssc_passing_year }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="alert alert-info">
+                            <h5 class="mb-0">HSC or Equivalent Level</h5>
+                        </div>
+                        <table class="table table-hover">
+                            <tr>
+                                <td>Examination</td>
+                                <td>:</td>
+                                <td colspan="4">{{ academic_info.hsc_exam }}</td>
+                            </tr>
+                            <tr>
+                                <td>Board</td>
+                                <td>:</td>
+                                <td colspan="4">{{ academic_info.hsc_board }}</td>
+                            </tr>
+                            <tr>
+                                <td>Roll No</td>
+                                <td>:</td>
+                                <td colspan="4">{{ academic_info.hsc_roll }}</td>
+                            </tr>
+                            <tr>
+                                <td>Result</td>
+                                <td>:</td>
+                                <td colspan="4"><span class="fw-bold">{{ academic_info.hsc_result|default_if_none:"" }}</span> {{academic_info.hsc_result_type|default_if_none:"" }}</td>
+                            </tr>
+                            <tr>
+                                <td>Group</td>
+                                <td>:</td>
+                                <td colspan="4">{{ academic_info.hsc_group }}</td>
+                            </tr>
+                            <tr>
+                                <td>Passing Year</td>
+                                <td>:</td>
+                                <td colspan="4">{{ academic_info.hsc_passing_year }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+
+               
+
+                <div class="row">
+                    <!-- Graduation Level -->
+                    <div class="col-md-6">
+                        <div class="alert alert-primary">
+                            <h5 class="mb-0">Graduation Level</h5>
+                        </div>
+                        <table class="table table-hover">
+                            <tr>
+                                <td>Examination</td>
+                                <td>:</td>
+                                <td colspan="4">{{ academic_info.graduation_exam|default_if_none:"" }}</td>
+                            </tr>
+                            <tr>
+                                <td>Subject</td>
+                                <td>:</td>
+                                <td >{{ academic_info.graduation_subject|default_if_none:"" }}</td>
+                            </tr>
+                            <tr>
+                                <td>University/Institute</td>
+                                <td>:</td>
+                                <td>{{ academic_info.graduation_university|default_if_none:"" }}</td>
+                            </tr>
+                            <tr>
+                                <td>Result</td>
+                                <td>:</td>
+                                <td>
+                                 <span class="fw-bold">{{ academic_info.graduation_result|default_if_none:"" }}</span>
+                                    {{ academic_info.graduation_result_type|default_if_none:"" }}
+                                    
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Passing Year</td>
+                                <td>:</td>
+                                <td>{{ academic_info.graduation_passing_year|default_if_none:"" }}</td>
+                            </tr>
+                            <tr>
+                                <td>Course Duration</td>
+                                <td>:</td>
+                                <td>{{ academic_info.graduation_course_duration|default_if_none:"" }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                
+                    <!-- Post Graduation Level -->
+                    <div class="col-md-6">
+                        <div class="alert alert-danger">
+                            <h5 class="mb-0">Post Graduation Level</h5>
+                        </div>
+                        <table class="table table-hover">
+                            <tr>
+                                <td>Examination</td>
+                                <td>:</td>
+                                <td colspan="4">{{ academic_info.post_graduation_exam|default_if_none:"" }}</td>
+                            </tr>
+                            <tr>
+                                <td>Subject</td>
+                                <td>:</td>
+                                <td colspan="4">{{ academic_info.post_graduation_subject|default_if_none:"" }}</td>
+                            </tr>
+                            <tr>
+                                <td>University/Institute</td>
+                                <td>:</td>
+                                <td colspan="4">{{ academic_info.post_graduation_university|default_if_none:"" }}</td>
+                            </tr>
+                            <tr>
+                                <td>Result</td>
+                                <td>:</td>
+                                <td colspan="4">
+                                    <span class="fw-bold">{{ academic_info.post_graduation_result|default_if_none:"" }}</span>
+                                    {{ academic_info.post_graduation_result_type|default_if_none:"" }}
+                                    
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Passing Year</td>
+                                <td>:</td>
+                                <td colspan="4">{{ academic_info.post_graduation_passing_year|default_if_none:"" }}</td>
+                            </tr>
+                            <tr>
+                                <td >Course Duration</td>
+                                <td>:</td>
+                                <td colspan="4">{{ academic_info.post_graduation_course_duration|default_if_none:"" }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                
+
+<!-- Upload Section -->
+<div class="container my-3">
+  <div class="card border-1 shadow-sm rounded-2">
+    <div class="card-body">
+      <h4 class="text-center text-primary fw-bold">Upload Your Photo & Signature</h4>
+      <p class="text-center text-muted mb-1">
+        Please upload a recent passport-sized photo (300x300 px) and your signature (300x80 px).
+        <br>
+        If needed, resize them <a href="{% url 'image_resize' %}" target="_blank" class="text-decoration-none text-danger fw-semibold">(Click here)</a>.
+      </p>
+
+      <form action="{% url 'application_review' %}" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="row g-4 mt-1 mb-3 justify-content-center">
+
+          <!-- Photo Upload -->
+          <div class="col-md-6 col-lg-5">
+            <div class="border rounded-4 p-3 text-center shadow-sm h-100 bg-light-subtle">
+              <img id="applicant_image"
+                   src="{% if application.applicant_image %}{{ application.applicant_image.url }}{% endif %}"
+                   alt="Photo Preview"
+                   class="mb-3 img-thumbnail {% if not application.applicant_image %}d-none{% endif %}"
+                   style="width: 300px; height: 250px; object-fit: cover;" />
+
+              <input type="file" class="form-control" name="applicant_image" id="psnl_photo"
+                     accept="image/*"
+                     onchange="previewImage(this, 'applicant_image', 300, 300)"
+                     {% if not application.applicant_image %}required{% endif %}>
+
+              <h6 class="text-secondary mt-2">Applicant Photo</h6>
+            </div>
+          </div>
+
+          <!-- Signature Upload -->
+          <div class="col-md-6 col-lg-5">
+            <div class="border rounded-4 p-3 text-center shadow-sm h-100 bg-light-subtle">
+              <img id="applicant_sig"
+                   src="{% if application.applicant_sig %}{{ application.applicant_sig.url }}{% endif %}"
+                   alt="Signature Preview"
+                   class="rounded border mt-2 mb-5 img-thumbnail {% if not application.applicant_sig %}d-none{% endif %}"
+                   style="width: 300px; height: 80px; object-fit: contain;" />
+
+              <input type="file" class="form-control mt-1" name="applicant_sig" id="psnl_sign"
+                     accept="image/*"
+                     onchange="previewImage(this, 'applicant_sig', 300, 80)"
+                     {% if not application.applicant_sig %}required{% endif %}>
+
+              <h6 class="text-secondary mt-2">Signature</h6>
+            </div>
+          </div>
+
+        </div>
+    
+    </div>
+  </div>
+</div>
+
+                
+                    <!-- Declaration -->
+                    <div class="row mt-4">
+                        <div class="col-md-12">
+                            <label class="checkbox text-danger">
+                                <input type="checkbox" id="all_correct" name="all_correct" required>
+                                <b>I hereby declare that all the above information are correct and assure that I will abide by all the rules.</b>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Navigation Buttons -->
+                <div class="row d-flex justify-content-between mt-3">
+                    <div class="col-12 col-md-6 text-start">
+                        <a href="{% url 'academic_qualification' %}" class="btn btn-light text-primary hover-btn">
+                            <i class="fa fa-arrow-circle-left"></i> Previous
+                        </a>
+                    </div>
+        
+                    <div class="col-12 col-md-6 text-end">
+                        <button type="submit" class="btn btn-light hover-btn text-primary ">Submit <i class="fa fa-arrow-circle-right"></i></button>
+                    </div>
+                </div> <!-- End of Navigation Buttons -->
+        
+                 
+                </form>
+
+
+
+            </div>
+            <!--  -->
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<!-- Compressed Image Preview Script -->
+<script>
+  function previewImage(input, previewId, width, height) {
+    const file = input.files[0];
+    if (!file) return;
+
+    const preview = document.getElementById(previewId);
+    const img = new Image();
+    const objectUrl = URL.createObjectURL(file);
+
+    img.onload = () => {
+      if (img.width !== width || img.height !== height) {
+        alert(`Invalid image dimensions! Required: ${width}x${height}px`);
+        input.value = "";
+        preview.classList.add("d-none");
+        preview.src = "";
+      } else {
+        preview.src = objectUrl;
+        preview.classList.remove("d-none");
+        input.removeAttribute("required");
+      }
+    };
+    img.src = objectUrl;
+  }
+</script>
+
+
+
+
+
+{% endblock content %}

@@ -1,0 +1,164 @@
+<style>
+  /* Custom hover effect for non-dropdown links */
+  .nav-link {
+    position: relative;
+    transition: color 0.3s ease;
+  }
+
+  /* Hover effect for non-dropdown links */
+  .nav-link:hover {
+    color: #ffeb3b !important; /* Yellow text on hover */
+  }
+
+
+
+  /* Add white underline on hover except dropdown */
+  .nav-link:not(.dropdown-toggle):hover::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: white; /* White underline on hover */
+    transition: width 0.3s ease;
+  }
+.dropdown-item:hover{
+    color: black !important;
+    background-color: white;
+  }
+</style>
+
+<!-- Header with logo and university/program details -->
+  
+<div class=" noPrint">
+  <div class="header d-flex align-items-center justify-content-center bg-white py-2" style="gap: 0px !important;">
+    <!-- Image with stronger contrast and brightness -->
+    <img src="/static/img/ju_logo.png" alt="logo" class="me-2 " style="width: 80px; height: auto;">
+    
+    <div class="header-text">
+      <!-- Bolder and darker font styles -->
+      <h5 class="fw-bold  mb-1" style="font-size: 1.4rem; line-height: 1.1; font-family: 'Georgia', serif; color: #003c78;">Weekend Masters in Environmental Sciences and Management</h5>
+      <p class="m-0 fw-bold" style="font-size: 1rem; line-height: 1.10; font-family: 'Courier New', monospace; color: #011213;">Department of Environmental Science, Jahangirnagar University</p>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-md navbar-dark sticky-top " style="background-color: #006064;">
+  <div class="container"> 
+    <span class="navbar-brand text-white fw-bold">WMES Program</span>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+      <ul class="navbar-nav ms-auto">
+
+     
+      
+
+        <li class="nav-item">
+          <a class="nav-link fw-bold text-white" href="{% url 'home' %}">Home</a>
+        </li>
+          
+       
+        
+       
+
+        <li class="nav-item">
+          <a class="nav-link fw-bold text-white" href="{%url 'Admission_Notice' %}">Notice</a>
+        </li>
+
+
+        <li class="nav-item">
+          <a class="nav-link fw-bold text-white" href="{%url 'applicant_register' %}">Apply</a>
+        </li>
+
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle text-white fw-bold" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Admission
+          </a>
+          <ul class="dropdown-menu border-0" style="background-color: #006064;">
+            
+            
+            <li><a class="dropdown-item fw-bold text-white " href="{% url 'admission_procedure' %}">Admission Procedure</a></li>
+            
+            <li><a class="dropdown-item fw-bold text-white " href="{% url 'syllabus_info' %}">Syllabus</a></li>
+            
+            <li><a class="dropdown-item fw-bold text-white " target="_blank"  href="https://juniv.edu/teachers?department_id=45">Faculty</a></li>
+            
+          
+    
+
+          </ul>
+
+
+
+
+
+          
+
+
+        </li>
+
+
+
+        <li class="nav-item dropdown">
+          {% if request.user.is_authenticated %}
+            <a class="nav-link dropdown-toggle text-white fw-bold" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              {{ request.user.username }}
+            </a>
+            <ul class="dropdown-menu p-0 border-0 overflow-hidden" style="background-color: #006064; min-width: 150px;">
+              
+              {% if request.user.role == 'applicant' %}
+                <li><a class="dropdown-item text-white fw-semibold px-3 py-2" href="{% url 'applicant_dashboard' %}">Profile</a></li>
+              {% elif request.user.role == 'teacher' %}
+                <li><a class="dropdown-item text-white fw-semibold px-3 py-2" href="{% url 'teacher_dashboard' %}">Profile</a></li>
+              {% elif request.user.role == 'student' %}
+                <li><a class="dropdown-item text-white fw-semibold px-3 py-2" href="{% url 'student_dashboard' %}">Profile</a></li>
+              {% elif request.user.role == 'manager' %}
+                <li><a class="dropdown-item text-white fw-semibold px-3 py-2" href="{% url 'manager_dashboard' %}">Profile</a></li>
+              {% else %}
+                <li><a class="dropdown-item text-white fw-semibold px-3 py-2" href="{% url 'home' %}">🏠 Home</a></li>
+              {% endif %}
+        
+              <li>
+                <hr class="dropdown-divider m-0">
+              </li>
+              <li><a class="dropdown-item text-white fw-semibold px-3 py-2" href="#" onclick="confirmLogout(event)">Logout</a></li>
+            </ul>
+          {% else %}
+            <a class="nav-link text-white fw-bold" href="{% url 'login' %}">Login</a>
+          {% endif %}
+        </li>
+
+        
+
+
+        
+        
+  
+      
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
+  <!-- ✅ JavaScript Logout Confirmation -->
+  <script>
+    function confirmLogout(event) {
+      event.preventDefault(); // লিংক এ সরাসরি যাওয়া বন্ধ করে
+      if (confirm("Are you sure you want to log out?")) {
+        window.location.href = "{% url 'applicant_logout' %}";
+      }
+    }
+  </script>
+
+
+
+
+  

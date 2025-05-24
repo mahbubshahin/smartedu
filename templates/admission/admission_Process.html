@@ -1,0 +1,88 @@
+{% block Admission_Process %}
+
+
+
+<section class="Admission_Process bg-light py-">
+    <div class="container">
+        <!-- Section Title -->
+        <div class="row justify-content-center mb-3">
+            <div class="col-lg-10 text-center">
+                <h5 class="fw-bold mb-1">Admission Process</h5>
+                <p class="text-muted small mb-0">
+                    To complete your registration please follow these four simple steps.
+                </p>
+            </div>
+        </div>
+
+        <!-- Process Steps -->
+        <div class="row g-2 mx-4 " >
+
+            <!-- Step 1: Personal -->
+            <div class="col-lg-3 col-md-6">
+                <div class="card border-0 shadow-sm text-center py-2 {% if active_step == 'personal' %}bg-primary text-white{% endif %}">
+                    <div class="mt-2">
+                        <div class="rounded-circle {% if active_step == 'personal' %}bg-white text-primary{% else %}bg-primary text-white{% endif %} fw-bold mx-auto mb-1"
+                             style="width: 32px; height: 32px; font-size: 14px; line-height: 32px;">
+                            1
+                        </div>
+                        <div class="{% if active_step == 'personal' %}text-white{% else %}text-primary{% endif %} fs-5">
+                            <i class="uil uil-chat-bubble-user"></i>
+                        </div>
+                        <small class="fw-semibold d-block mb-2">Personal</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 2: Academic -->
+            <div class="col-lg-3 col-md-6">
+                <div class="card border-0 shadow-sm text-center py-2 {% if active_step == 'academic' %}bg-success text-white{% endif %}">
+                    <div class="mt-2">
+                        <div class="rounded-circle {% if active_step == 'academic' %}bg-white text-success{% else %}bg-success text-white{% endif %} fw-bold mx-auto mb-1"
+                             style="width: 32px; height: 32px; font-size: 14px; line-height: 32px;">
+                            2
+                        </div>
+                        <div class="{% if active_step == 'academic' %}text-white{% else %}text-success{% endif %} fs-5">
+                            <i class="uil uil-notes"></i>
+                        </div>
+                        <small class="fw-semibold d-block mb-2">Academic</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 3: Review & Submit -->
+            <div class="col-lg-3 col-md-6">
+                <div class="card border-0 shadow-sm text-center py-2 {% if active_step == 'review' %}bg-warning text-white{% endif %}">
+                    <div class="mt-2">
+                        <div class="rounded-circle {% if active_step == 'review' %}bg-white text-warning{% else %}bg-warning text-white{% endif %} fw-bold mx-auto mb-1"
+                             style="width: 32px; height: 32px; font-size: 14px; line-height: 32px;">
+                            3
+                        </div>
+                        <div class="{% if active_step == 'review' %}text-white{% else %}text-warning{% endif %} fs-5">
+                            <i class="uil uil-eye"></i>
+                        </div>
+                        <small class="fw-semibold d-block mb-2">Review & Submit</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 4: Payment -->
+            <div class="col-lg-3 col-md-6">
+                <div class="card border-0 shadow-sm text-center py-2 {% if active_step == 'payment' %}bg-danger text-white{% endif %}">
+                    <div class="mt-2">
+                        <div class="rounded-circle {% if active_step == 'payment' %}bg-white text-danger{% else %}bg-danger text-white{% endif %} fw-bold mx-auto mb-1"
+                             style="width: 32px; height: 32px; font-size: 14px; line-height: 32px;">
+                            4
+                        </div>
+                        <div class="{% if active_step == 'payment' %}text-white{% else %}text-danger{% endif %} fs-5">
+                            <i class="uil uil-transaction"></i>
+                        </div>
+                        <small class="fw-semibold d-block mb-2">Payment</small>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+{% endblock %}

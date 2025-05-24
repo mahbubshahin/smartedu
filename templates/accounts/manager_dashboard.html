@@ -1,0 +1,259 @@
+
+
+
+{% extends 'authorized_base.html' %}
+
+{% load static %}
+{% block title %}Manager Dashboard{% endblock title %}
+
+{% block content %}
+
+
+<section >
+    <div class="manager_dashboard">
+        <div class="container-fluid " >
+            <div class="container-fluid">
+                <div class="row mx-md-1">
+                  <!-- Sidebar -->
+                  <div class="col-12 col-md-3 mt-3">
+                    
+                    <!-- templates/manager/manager_sidebar.html -->
+
+<div class="d-flex flex-column pb-3 bg-light shadow position-sticky" style="top: 90px; ">
+    
+    <ul class="nav nav-pills flex-column mb-auto">
+
+
+
+
+
+
+<div class="accordion" id="educationAccordion">
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="educationHeadingOne">
+      <button class="accordion-button {% if request.resolver_match.url_name in 'enrolled_student_list enrollment_summary student_enroll' %}{% else %}collapsed{% endif %}" 
+              type="button" 
+              data-bs-toggle="collapse" 
+              data-bs-target="#educationCollapseOne" 
+              aria-expanded="{% if request.resolver_match.url_name in 'enrolled_student_list enrollment_summary student_enroll' %}true{% else %}false{% endif %}" 
+              aria-controls="educationCollapseOne">
+        <i class="fa fa-graduation-cap me-2"></i> Education
+      </button>
+    </h2>
+    <div id="educationCollapseOne" 
+         class="accordion-collapse collapse {% if request.resolver_match.url_name in 'enrolled_student_list enrollment_summary student_enroll' %}show{% endif %}" 
+         data-bs-parent="#educationAccordion">
+      <div class="accordion-body p-0">
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            <a href="{% url 'enrolled_student_list' %}" class="nav-link {% if request.resolver_match.url_name == 'enrolled_student_list' %}active{% endif %}">
+              <i class="fas fa-file-alt"></i> Students
+            </a>
+          </li>
+          <li class="list-group-item">
+            <a href="{% url 'enrollment_summary' %}" class="nav-link {% if request.resolver_match.url_name == 'enrollment_summary' %}active{% endif %}">
+              <i class="fas fa-file-alt"></i> Enrollment Summary</a>
+          </li>
+          <li class="list-group-item">
+            <a href="{% url 'student_enroll' %}" class="nav-link {% if request.resolver_match.url_name == 'student_enroll' %}active{% endif %}">
+              <i class="fas fa-file-alt"></i> Enrollments
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="accordion" id="admissionAccordion">
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="headingOne">
+      <button class="accordion-button {% if request.resolver_match.url_name in 'applicant_status applicant_list send_message_to_applicants send_email_to_applicants written_attendance_pdf viva_attendance_pdf result_prepare' %}{% else %}collapsed{% endif %}" 
+              type="button" 
+              data-bs-toggle="collapse" 
+              data-bs-target="#collapseTwo"
+              aria-expanded="{% if request.resolver_match.url_name in 'applicant_status applicant_list send_message_to_applicants send_email_to_applicants written_attendance_pdf viva_attendance_pdf result_prepare' %}true{% else %}false{% endif %}" 
+              aria-controls="collapseTwo">
+       
+<i class="fas fa-shield-alt me-2"></i> Admission
+
+      </button>
+    </h2>
+    <div id="collapseTwo" 
+         class="accordion-collapse collapse {% if request.resolver_match.url_name in 'applicant_status applicant_list send_message_to_applicants send_email_to_applicants written_attendance_pdf viva_attendance_pdf result_prepare' %}show{% endif %}" 
+         data-bs-parent="#admissionAccordion">
+      <div class="accordion-body p-0">
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            <a href="{% url 'applicant_status' %}" class="nav-link {% if request.resolver_match.url_name == 'applicant_status' %}active{% endif %}">
+              <i class="fas fa-file-alt"></i> Applicant Status
+            </a>
+          </li>
+          <li class="list-group-item">
+            <a href="{% url 'applicant_list' %}" class="nav-link {% if request.resolver_match.url_name == 'applicant_list' %}active{% endif %}">
+              <i class="fas fa-users"></i> Applicants
+            </a>
+          </li>
+          <li class="list-group-item">
+            <a href="{% url 'send_message_to_applicants' %}" class="nav-link {% if request.resolver_match.url_name == 'send_message_to_applicants' %}active{% endif %}">
+              <i class="fas fa-sms"></i> Send SMS
+            </a>
+          </li>
+          <li class="list-group-item">
+            <a href="{% url 'send_email_to_applicants' %}" class="nav-link {% if request.resolver_match.url_name == 'send_email_to_applicants' %}active{% endif %}">
+              <i class="fas fa-envelope"></i> Send Email
+            </a>
+          </li>
+          <li class="list-group-item dropdown">
+            <a class="nav-link dropdown-toggle {% if request.resolver_match.url_name in 'written_attendance_pdf viva_attendance_pdf' %}active{% endif %}" 
+               href="#" 
+               id="attendanceDropdown" 
+               role="button" 
+               data-bs-toggle="dropdown" 
+               aria-expanded="false">
+              <i class="fas fa-calendar-check"></i> Attendance
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="attendanceDropdown">
+              <li>
+                <a class="dropdown-item {% if request.resolver_match.url_name == 'written_attendance_pdf' %}active{% endif %}" 
+                   href="{% url 'written_attendance_pdf' %}">
+                  <i class="fas fa-file-alt me-1"></i> Written Attendance
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item {% if request.resolver_match.url_name == 'viva_attendance_pdf' %}active{% endif %}" 
+                   href="{% url 'viva_attendance_pdf' %}">
+                  <i class="fas fa-file-alt me-1"></i> Viva Attendance
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="list-group-item">
+            <a href="{% url 'result_prepare' %}" class="nav-link {% if request.resolver_match.url_name == 'result_prepare' %}active{% endif %}">
+              <i class="fas fa-chart-line"></i> Result Prepare
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+      <li class="nav-item bg-white py-1 border border-1">
+        <a href="{% url 'coustom_user_registration' %}" class="nav-link {% if request.resolver_match.url_name == 'coustom_user_registration' %}active{% endif %}">
+          <i class="fas fa-file-alt"></i> Create User
+        </a>
+      </li>
+      
+
+      
+
+      <li class="nav-item bg-white border border-1 py-1">
+        <a href="{% url 'change_password' %}" class="nav-link {% if request.resolver_match.url_name == 'change_password' %}active{% endif %}">
+          <i class="fas fa-file-alt"></i> Change Password
+        </a>
+      </li>
+
+     
+  
+
+      <li class="nav-item">
+        <a class="nav-link" href="" onclick="confirmLogout(event)" >
+            <i class="fas fa-door-open"></i> Logout
+          </a>
+      </li>
+  
+   
+  
+        </ul>
+      </li>
+      
+    
+  
+
+       
+  
+ 
+  
+      
+      </li>
+    </ul>
+  </div>
+  
+  
+                  </div>
+              
+                  <!-- Main Content -->
+                  <div class="col-12 col-md-9 bg-white" style="min-height: 100vh;">
+                    {% block manager_dashboard %}
+
+
+
+                    {% if active_password_change %}
+                      {% include 'accounts/change_password.html' %}
+                    {% else %}
+
+
+                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Pariatur dolor numquam hic impedit consequuntur facere nisi, neque doloribus excepturi tempora blanditiis unde cupiditate maxime ea consectetur laudantium ullam sint facilis?
+
+
+                    {% endif %}
+
+                    
+                    {% endblock %}
+                  </div>
+                </div>
+              </div>
+              
+    </div>
+</section>
+
+
+
+
+
+
+<!-- js css section -->
+<section class="css_js">
+
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const triggerTabList = document.querySelectorAll('.nav-link[data-bs-toggle="tab"]');
+
+        // Restore last active tab from localStorage
+        const activeTabId = localStorage.getItem('activeTab');
+        if (activeTabId) {
+            const someTabTriggerEl = document.querySelector(`.nav-link[href="${activeTabId}"]`);
+            if (someTabTriggerEl) {
+                new bootstrap.Tab(someTabTriggerEl).show();
+            }
+        }
+
+        // Save selected tab to localStorage
+        triggerTabList.forEach(function (triggerEl) {
+            triggerEl.addEventListener('shown.bs.tab', function (event) {
+                localStorage.setItem('activeTab', event.target.getAttribute('href'));
+            });
+        });
+    });
+
+    // Optional: Confirm logout
+    function confirmLogout(event) {
+        event.preventDefault();
+        if (confirm("Are you sure you want to logout?")) {
+            window.location.href = "{% url 'applicant_logout' %}";  
+        }
+    }
+</script>
+
+
+
+
+</section>
+
+
+{% endblock content %}
+
+
+

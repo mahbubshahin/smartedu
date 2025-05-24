@@ -1,0 +1,178 @@
+{% extends 'authorized_base.html' %}
+ {% load static %}
+ {% block title %}WMES | Personal Info{% endblock title %}
+ 
+ <!-- block content -->
+ {% block content %}
+ 
+
+<!-- templates/payment_page.html -->
+<div class="container pb-5">
+
+
+    <div class="col-11 px-4 mx-auto mt-3 rounded  pt-2 ">
+
+        {% include 'admission/admission_Process.html' %}
+    </div>
+
+
+       
+    {% if messages %}
+    <div class="position-fixed top-50 start-50 translate-middle z-3 col-5">
+      {% for message in messages %}
+        <div class="alert alert-primary text-center rounded-pill shadow fs-5 message" style="opacity: 0; transition: opacity 3s;">
+          {{ message }}
+        </div>
+      {% endfor %}
+    </div>
+  
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        document.querySelectorAll('.message').forEach((msg, i) => {
+          setTimeout(() => {
+            msg.style.opacity = 1;
+            setTimeout(() => msg.style.opacity = 0, 4000);
+          }, i * 5000);
+        });
+      });
+    </script>
+  {% endif %}
+  
+  
+
+  <div class="row px-2 mt-3">
+    <div class="col-10 mx-auto ">
+
+        <div class="bg-white  shadow-sm  p-4">
+
+            <!-- Section Title -->
+            <div class="text-center mb-5">
+                <h4 class="fw-bold text-primary">Payment Instructions</h4>
+                <h5 class="text-center fw-bold text-danger mb-4">
+                    ⚠️ Fees amount less than 1,011 Taka is inappropriate and non-refundable <br>
+                    Please pay exact amount: <span class="text-dark">1,011 BDT</span>
+                </h5>
+            </div>
+    
+            <!-- bKash Payment Section -->
+            <div class="row g-4 align-items-stretch">
+                <div class="col-md-6">
+                    <div class="card h-100 border-0 shadow-sm bg-white">
+     
+    
+                        <div class="card-header bg-gradient bg-warning fw-bold  text-dark rounded-top-2">
+                            <h6 class="mb-0 fw-bold">📱 Pay with bKash</h6>
+                        </div>
+                        
+                        <div class="card-body">
+                            <p class="mb-3 text-center fw-semibold">
+                                Please pay the exact amount: <span class="text-danger">1,011 BDT</span><br>
+                                (Including service charges)
+                            </p>
+                            <form action="https://jupmscs.org/bkash/payment/create" method="GET">
+                                <input type="hidden" name="_token" value="oYHdnV5AiJQgV7hkXz47uayMKyEk0QHqlsDcROQl">
+                                <div class="d-grid">
+                                    <button type="submit" class="btn btn-danger col-6 mx-auto btn-lg mb-3 shadow-sm">
+                                        Pay Now via bKash
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+    
+                <!-- bKash Note -->
+                <div class="col-md-6">
+                    <div class="card h-100 border-0 shadow-sm bg-light">
+                        <div class="card-body d-flex flex-column justify-content-center">
+                            <ul class="fw-medium list-unstyled">
+                                <li>✅ Pay <strong>1,011/=</strong> (including service charges)</li>
+                                <li>💸 bKash will deduct additional charges automatically</li>
+                                <li>⚡Instant transaction confirmation</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    
+            <!-- Divider -->
+            <hr class="my-5">
+    
+            <!-- Rocket / Nagad Payment Section -->
+            <div class="row g-4 align-items-stretch">
+                <div class="col-md-6">
+                    <div class="card h-100 border-0 shadow-sm bg-white">
+                        <div class="card-header bg-success bg-gradient text-white text-center fw-bold">
+                            Rocket / Nagad Payment
+                        </div>
+                        <div class="card-body">
+                            <p class="mb-3 text-center fw-semibold text-danger">
+                                Please pay exact amount: <strong>1000 BDT</strong>
+                            </p>
+                            <form action="https://jupmscs.org/store_payment" method="POST" enctype="multipart/form-data">
+                                <input type="hidden" name="_token" value="oYHdnV5AiJQgV7hkXz47uayMKyEk0QHqlsDcROQl">
+                                <div class="mb-3">
+                                    <label for="transaction_id" class="form-label fw-bold">
+                                        Transaction ID <span class="text-danger">*</span>
+                                    </label>
+                                    <input type="text" name="transaction_id" id="transaction_id" class="form-control" placeholder="Enter Transaction ID" required>
+                                </div>
+                                <div class="d-grid mt-3">
+                                    <button type="submit" class="btn btn-success fw-semibold shadow-sm">
+                                        Submit 🔒
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+    
+                <!-- Rocket / Nagad Instructions -->
+                <div class="col-md-6">
+                    <div class="card h-100 border-0 shadow-sm bg-light">
+                        <div class="card-body">
+                            <h5 class="fw-bold mb-3 text-primary">📲 Rocket / Nagad Payment Instructions</h5>
+                            <ol class="ps-3">
+                                <li>Dial <strong>*322#</strong> from your mobile</li>
+                                <li>Choose <strong>1</strong> for Bill Pay</li>
+                                <li>Choose <strong>1</strong> (own) or <strong>2</strong> (agent) then enter your number</li>
+                                <li>Select <strong>0 (Other)</strong> for WMES JU Admission</li>
+                                <li>Enter Biller ID: <strong>2311</strong></li>
+                                <li>Use your <strong>WMES PIN</strong> as Bill Number</li>
+                                <li>Amount: <strong>1000</strong> BDT</li>
+                                <li>Enter PIN and confirm</li>
+                                <li>Save your <strong>Txn ID</strong> from SMS</li>
+                            </ol>
+                            <div class="alert alert-warning mt-3" role="alert">
+                                <h6 class="fw-bold">🚫 Rocket Mobile App Notice</h6>
+                                    <p class=" mb-0">
+                                        These steps may not work via app as Biller ID <strong>2311</strong> might be unavailable.
+                                    </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    
+
+             <!-- Navigation Buttons -->
+             <div class="row d-flex justify-content-between mt-4">
+                <div class="col-12 col-md-6 text-start">
+                    <a href="{% url 'application_review' %}" class="btn btn-light text-primary hover-btn">
+                        <i class="fa fa-arrow-circle-left"></i> Previous
+                    </a>
+                </div>
+    
+                
+            </div> <!-- End of Navigation Buttons -->
+    
+        </div>
+    </div>
+  </div>
+
+    
+</div>
+
+
+
+{% endblock content %}

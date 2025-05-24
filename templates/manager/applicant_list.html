@@ -1,0 +1,155 @@
+{% extends 'accounts/manager_dashboard.html' %}
+{% block manager_dashboard %}
+
+<section class="py-4">
+  <div class="container">
+
+    <!-- Filter Form -->
+    <div class="mb-4">
+      <div class="card-body">
+        <form method="get" id="filterForm" class="g-2 align-items-center">
+          <div class="filter_area">
+
+            <div class="row justify-content-center mb-2">
+              <div class="col-md-3 text-center">
+                <label for="batchSelect" class="form-label text-primary fw-semibold">Batch</label>
+                <select name="batch_name" id="batchSelect" class="form-select form-select-sm border-primary shadow-sm" onchange="this.form.submit()">
+                  {% for batch in batches %}
+                    <option value="{{ batch }}" {% if batch == selected_batch %}selected{% endif %}>{{ batch }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+
+
+  <div class="col-md-5 mb-3 text-center">
+    <label for="applicant_list_query" class="form-label text-primary fw-semibold">Search by Name / Mobile / Roll</label>
+    <div class="input-group input-group-sm justify-content-center">
+      <input type="text" name="applicant_list_query" value="{{ applicant_list_query }}" class="form-control border-primary shadow-sm" placeholder="Enter name, mobile or roll number">
+      <button type="submit" class="btn btn-outline-primary">Search</button>
+    </div>
+  </div>
+
+
+            </div>
+
+
+<div class="row justify-content-center mb-2">
+  <div class="col-md-9 text-center">
+    <div class="d-flex gap-3 justify-content-center flex-wrap">
+      <a href="?filter=paid&batch_name={{ selected_batch }}&applicant_list_query={{ applicant_list_query }}" class="btn btn-outline-success btn-sm {% if filter_type == 'paid' %}active{% endif %}">✅ Paid ({{ total_paid }})</a>
+
+      <a href="?filter=pending&batch_name={{ selected_batch }}&applicant_list_query={{ applicant_list_query }}" class="btn btn-outline-warning btn-sm {% if filter_type == 'pending' %}active{% endif %}">⌛ Pending ({{ total_pending }})</a>
+
+      <a href="?filter=incomplete&batch_name={{ selected_batch }}&applicant_list_query={{ applicant_list_query }}" class="btn btn-outline-danger btn-sm {% if filter_type == 'incomplete' %}active{% endif %}">❌ Incomplete ({{ total_incomplete }})</a>
+
+      <a href="?filter=all&batch_name={{ selected_batch }}&applicant_list_query={{ applicant_list_query }}" class="btn btn-outline-secondary btn-sm {% if filter_type == 'all' or not filter_type %}active{% endif %}">📋 All ({{ total_all }})</a>
+
+      <a href="{% url 'export_applicants_excel' %}?batch_name={{ selected_batch }}&filter={{ filter_type }}&applicant_list_query={{ applicant_list_query }}" class="btn btn-sm btn-success">⬇️ Excel</a>
+    </div>
+  </div>
+</div>
+
+
+
+          </div>
+        </form>
+      </div>
+    </div>
+
+    
+    <!-- Filter Notice -->
+    {% if filter_type == 'paid' %}
+      <div class="alert alert-success small fw-bold">✅ Showing applicants who have completed payment.</div>
+    {% elif filter_type == 'pending' %}
+      <div class="alert alert-warning small fw-bold">⌛ Showing applicants with complete profile but no payment.</div>
+    {% elif filter_type == 'incomplete' %}
+      <div class="alert alert-danger small fw-bold">❌ Showing applicants with incomplete profile and no payment.</div>
+    {% elif filter_type == 'all' or not filter_type %}
+      <div class="alert alert-secondary small fw-bold">📋 Showing all applicants from selected batch.</div>
+    {% endif %}
+
+    <!-- Applicants Table -->
+    <div class="table-responsive bg-light p-2 rounded">
+      <table class="table table-hover align-middle table-bordered border-light-subtle bg-white text-center">
+        <thead class="bg-primary text-white">
+          <tr>
+            <th>SL.</th><th>Roll</th><th>Name</th><th>Mobile</th><th>Email</th><th>Photo</th><th>Signature</th><th>Status</th><th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for applicant in page_obj %}
+          <tr>
+            <td>{{ forloop.counter0|add:page_obj.start_index }}</td>
+            <td class="fw-semibold">{{ applicant.roll_number }}</td>
+            <td class="fw-semibold">{{ applicant.full_name }}</td>
+            <td>{{ applicant.mobile_number }}</td>
+            <td class="text-muted small">{{ applicant.email }}</td>
+            <td>
+              {% if applicant.applicant_photo and applicant.applicant_photo.applicant_image %}
+              <img src="{{ applicant.applicant_photo.applicant_image.url }}" class="rounded" style="height: 40px; width: 40px;">
+              {% else %}
+              <span class="text-muted small">No Image</span>
+              {% endif %}
+            </td>
+            <td>
+              {% if applicant.applicant_photo and applicant.applicant_photo.applicant_sig %}
+              <img src="{{ applicant.applicant_photo.applicant_sig.url }}" style="height: 25px;">
+              {% else %}
+              <span class="text-muted small">No Signature</span>
+              {% endif %}
+            </td>
+            <td>
+              {% if applicant.has_personal_info and applicant.has_academic_info and applicant.has_photo %}
+                {% if applicant.payment and applicant.payment.status == 'Paid' %}
+                  <span class="badge bg-success">Paid</span>
+                {% else %}
+                  <span class="badge bg-warning text-dark">Pending</span>
+                {% endif %}
+              {% else %}
+                <span class="badge bg-secondary">Incomplete</span>
+              {% endif %}
+            </td>
+            <td>
+              <a href="{% url 'applicant_detail' applicant.id %}" target="_blank" class="btn btn-sm btn-outline-primary">Details</a>
+            </td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="9" class="text-muted">No applicants found for selected criteria.</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ✅ Pagination Controls -->
+    <div class="d-flex justify-content-center mt-5">
+      <nav>
+        <ul class="pagination pagination-sm">
+          {% if page_obj.has_previous %}
+            <li class="page-item"><a class="page-link" href="?{% if filter_type %}filter={{ filter_type }}&{% endif %}{% if selected_batch %}batch_name={{ selected_batch }}&{% endif %}page={{ page_obj.previous_page_number }}">&laquo;</a></li>
+          {% else %}
+            <li class="page-item disabled"><span class="page-link">&laquo;</span></li>
+          {% endif %}
+
+          {% for num in page_obj.paginator.page_range %}
+            {% if page_obj.number == num %}
+              <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+            {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+              <li class="page-item"><a class="page-link" href="?{% if filter_type %}filter={{ filter_type }}&{% endif %}{% if selected_batch %}batch_name={{ selected_batch }}&{% endif %}page={{ num }}">{{ num }}</a></li>
+            {% endif %}
+          {% endfor %}
+
+          {% if page_obj.has_next %}
+            <li class="page-item"><a class="page-link" href="?{% if filter_type %}filter={{ filter_type }}&{% endif %}{% if selected_batch %}batch_name={{ selected_batch }}&{% endif %}page={{ page_obj.next_page_number }}">&raquo;</a></li>
+          {% else %}
+            <li class="page-item disabled"><span class="page-link">&raquo;</span></li>
+          {% endif %}
+        </ul>
+      </nav>
+    </div>
+
+  </div>
+</section>
+
+{% endblock %}

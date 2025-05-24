@@ -1,0 +1,18 @@
+/* google fonts */
+
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Poppins:wght@500;600;700&display=swap');
+
+/* font style */
+
+/* font-family: 'Open Sans', sans-serif;
+font-family: 'Poppins', sans-serif; */
+
+/* 
+Basic css
+ */
+
+
+/* Hover effect for shadow */
+.general_shadow_with_hover:hover {
+   box-shadow: 0 0.5rem 1rem rgba(97, 96, 96, 0.15) !important;
+}

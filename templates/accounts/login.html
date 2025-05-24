@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Applicant Login{% endblock title %}
+
+{% block content %}
+<section class="bg-home d-flex align-items-center bg-light position-relative" >
+    <div class="container">
+        <div class="row justify-content-center pb-5">
+            <div class="col-12 col-sm-8 col-md-6 col-lg-4 my-5 pb-5 p-0">
+                <!-- Display Messages -->
+                 {% for message in messages %}
+                 <div class="alert alert-success">
+                     {{ message|safe }}
+                 </div>
+                 {% endfor %}
+                <div class="card form-signin p-0  rounded shadow-sm bg-body border">
+                    
+                    <!-- Logo -->
+                    <div class="w-100 ">
+                        
+                            <img src="{% static 'img/wmes.JPG' %}" class="img-fluid w-100" alt="Logo">
+                        
+                    </div>
+
+                    <div class="p-3">
+                        <form method="post" enctype="multipart/form-data" onsubmit="return validateForm()" class="needs-validation" novalidate>
+                            {% csrf_token %}
+                            <h5 class="mb-3 text-center text-info">Login to your account</h5>
+
+                            <!-- Email / Username Input -->
+                            <div class="form-floating mb-3 position-relative z-1">
+                                <input type="text" class="form-control" name="username_or_email" id="username_or_email" placeholder="Email or Username" required>
+                                <label for="username_or_email">Email / Username</label>
+                            </div>
+
+                    
+                            
+                            <!-- Password Input with toggle -->
+<div class="row row-cols-12 g-2 mb-3 align-items-center">
+    <!-- Password Input - 9 columns -->
+    <div class="col-10">
+        <div class="form-floating">
+            <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
+            <label for="password">Password</label>
+        </div>
+    </div>
+
+    <!-- Toggle Icon - 3 columns -->
+   
+
+
+    <div class="col-2">
+        <button type="button" class="btn btn-outline-secondary w-100" onclick="togglePassword('password', 'toggle-icon-password')" style="height: 50px;">
+            <i class="fas fa-lock" id="toggle-icon-password"></i>
+        </button>
+    </div>
+
+</div>
+
+                            <!-- Links -->
+                            <div class="d-flex mt-5 justify-content-between mb-3">
+                                <p class="mb-0">
+                                    <a href="{% url 'applicant_register' %}" class="text-dark small fw-bold text-decoration-none">Don't have an account?</a>
+                                </p>
+                                <p class="mb-0">
+                                    <a href="{% url 'applicant_forgot_password' %}" class="text-dark small fw-bold text-decoration-none">Forgot password?</a>
+                                </p>
+                            </div>
+
+                            <!-- Submit Button -->
+                            <button type="submit" class="btn btn-primary w-100">
+                                <i class="fa fa-sign-in-alt"></i> Login
+                            </button>
+
+                            <p class="mb-0 text-muted mt-3 text-center">
+                                © <script>document.write(new Date().getFullYear())</script> WMES-JU.
+                            </p>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+
+
+
+
+
+<!-- Password toggle script -->
+<script>
+function togglePassword() {
+    var passwordField = document.getElementById("password");
+    var toggleIcon = document.getElementById("toggle-icon-password");
+
+    if (passwordField.type === "password") {
+        passwordField.type = "text";
+        toggleIcon.classList.remove("fa-lock");
+        toggleIcon.classList.add("fa-lock-open");
+    } else {
+        passwordField.type = "password";
+        toggleIcon.classList.remove("fa-lock-open");
+        toggleIcon.classList.add("fa-lock");
+    }
+}
+</script>
+{% endblock content %}

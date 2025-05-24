@@ -1,0 +1,638 @@
+
+{% extends 'authorized_base.html'%}
+{% load static %}
+{% block title %}WMES | academic qualification{% endblock title %}
+ <!-- block content -->
+ {% block content %}
+
+
+ 
+
+<section class="academic_qualifications " >
+
+    <div class=" container  mt- ">
+       
+        <div class="row">
+           
+           
+            <div class="col-11  mx-auto  rounded  pt-4 ">
+
+                {% include 'admission/admission_Process.html' %}
+            </div>
+
+    
+
+
+          <div class="col-10 mx-auto mb-4 mt-3 rounded shadow bg-white px-4 py-4">
+            <form action="{% url 'academic_qualification' %}"  method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+        
+                <div class="card p-3 border border-success rounded-3">
+                    <!-- Outer Title -->
+                    <div class="position-absolute top-0 start-50 translate-middle px-5 py-1 bg-success text-white fw-bold rounded-5">
+                        Academic qualifications
+                    </div>
+        
+                    <div class="p-3 border border-primary rounded-3 mt-4 position-relative">
+                        <!-- Inner Title -->
+                        <div class="position-absolute top-0 start-50 translate-middle px-4 py-1 bg-primary text-white rounded-3">
+                            Applicant Name: {{ applicant.applicant_name }}
+                        </div>
+        
+
+
+                        <div class="row g-2 mt-3">
+                     
+                        <div class="col-md-6">
+                            <div class="alert alert-primary">
+                                <h5 class="mb-0">SSC or Equivalent Level*</h5>
+                            </div>
+                        
+                            <!-- Examination Dropdown -->
+                            <div class="form-floating mb-2">
+                                <select name="ssc_exam" id="ssc_exam" class="form-select" required>
+                                    <option value="" {% if not academic_info.ssc_exam %}selected{% endif %}>Choose one</option>
+                                    {% for value, label in choices.ssc_exam_choices %}
+                                        <option value="{{ value }}" {% if academic_info.ssc_exam == value %}selected{% endif %}>{{ label }}</option>
+                                    {% endfor %}
+                                </select>
+                                <label for="ssc_exam">Examination <span class="text-danger">*</span></label>
+                            </div>
+                        
+                            <!-- Board -->
+                            <div class="form-floating mb-2">
+                                <select name="ssc_board" id="ssc_board" class="form-select" required>
+                                    <option value="" {% if not academic_info.ssc_board %}selected{% endif %}>Choose one</option>
+                                    {% for value, label in choices.ssc_board_choices %}
+                                        <option value="{{ value }}" {% if academic_info.ssc_board == value %}selected{% endif %}>{{ label }}</option>
+                                    {% endfor %}
+                                </select>
+                                <label for="ssc_board">Board <span class="text-danger">*</span></label>
+                            </div>
+                        
+                            <!-- Roll -->
+                            <div class="form-floating mb-2">
+                                <input type="text" class="form-control" name="ssc_roll" id="ssc_roll" placeholder="Roll No"
+                                       value="{{ academic_info.ssc_roll|default_if_none:'' }}" required>
+                                <label for="ssc_roll">Roll No <span class="text-danger">*</span></label>
+                            </div>
+                        
+                           
+
+                            <!-- SSC Result Dropdown and GPA Input -->
+<div class="row align-items-center">
+    <!-- Dropdown -->
+    <div id="sscResultDropdown" class="col-md-12">
+        <div class="form-floating mb-2">
+            <select id="ssc_result_type" name="ssc_result_type" class="form-select" required>
+                <option value="">Choose one</option>
+                {% for value, label in choices.result_type_choices %}
+                    <option value="{{ value }}" {% if academic_info.ssc_result_type == value %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+            </select>
+            <label for="ssc_result_type">Result <span class="text-danger">*</span></label>
+        </div>
+    </div>
+
+    <!-- GPA input -->
+    <div id="ssc_result_sh" class="col-md-3 {% if academic_info.ssc_result_type in '3,4' %}d-block{% else %}d-none{% endif %}">
+        <div class="form-floating mb-2">
+            <input class="form-control" name="ssc_result" id="ssc_result"
+                   placeholder="GPA"
+                   value="{{ academic_info.ssc_result|default_if_none:'' }}">
+            <label for="ssc_result">GPA <span class="text-danger">*</span></label>
+        </div>
+    </div>
+</div>
+
+                            <!-- Group -->
+                            <div class="form-floating mb-2">
+                                <select name="ssc_group" id="ssc_group" class="form-select" required>
+                                    <option value="" {% if not academic_info.ssc_group %}selected{% endif %}>Choose one</option>
+                                    {% for value, label in choices.ssc_group_choices %}
+                                        <option value="{{ value }}" {% if academic_info.ssc_group == value %}selected{% endif %}>{{ label }}</option>
+                                    {% endfor %}
+                                </select>
+                                <label for="ssc_group">Group <span class="text-danger">*</span></label>
+                            </div>
+                        
+                            <!-- Passing Year -->
+                            <div class="form-floating mb-2">
+                                <select name="ssc_passing_year" id="ssc_passing_year" class="form-select" required>
+                                    <option value="" {% if not academic_info.ssc_passing_year %}selected{% endif %}>Choose one</option>
+                                    {% for value, label in choices.ssc_passing_year %}
+                                        <option value="{{ value }}" {% if academic_info.ssc_passing_year == value %}selected{% endif %}>{{ label }}</option>
+                                    {% endfor %}
+                                </select>
+                                <label for="ssc_passing_year">Passing Year <span class="text-danger">*</span></label>
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-6">
+                            <div class="alert alert-success">
+                                <h5 class="mb-0">HSC or Equivalent Level*</h5>
+                            </div>
+                        
+                            <!-- HSC Exam -->
+                            <div class="form-floating mb-2">
+                                <select name="hsc_exam" id="hsc_exam" class="form-select" required>
+                                    <option value="" {% if not academic_info.hsc_exam %}selected{% endif %}>Choose one</option>
+                                    {% for value, label in choices.hsc_exam_choices %}
+                                        <option value="{{ value }}" {% if academic_info.hsc_exam == value %}selected{% endif %}>{{ label }}</option>
+                                    {% endfor %}
+                                </select>
+                                <label for="hsc_exam">Examination <span class="text-danger">*</span></label>
+                            </div>
+                        
+                            <!-- Board -->
+                            <div class="form-floating mb-2">
+                                <select name="hsc_board" id="hsc_board" class="form-select" required>
+                                    <option value="" {% if not academic_info.hsc_board %}selected{% endif %}>Choose one</option>
+                                    {% for value, label in choices.hsc_board_choices %}
+                                        <option value="{{ value }}" {% if academic_info.hsc_board == value %}selected{% endif %}>{{ label }}</option>
+                                    {% endfor %}
+                                </select>
+                                <label for="hsc_board">Board <span class="text-danger">*</span></label>
+                            </div>
+                        
+                            <!-- Roll -->
+                            <div class="form-floating mb-2">
+                                <input type="text" class="form-control" name="hsc_roll" id="hsc_roll" placeholder="Roll No" value="{{ academic_info.hsc_roll|default_if_none:'' }}" required>
+                                <label for="hsc_roll">Roll No <span class="text-danger">*</span></label>
+                            </div>
+                        
+                            <!-- HSC Result and GPA Input -->
+                            <div class="row align-items-center">
+                                <!-- HSC Result Dropdown -->
+                                <div id="hscResultCol" class="col-md-12">
+                                    <div class="form-floating mb-2">
+                                        <select id="hsc_result_type" name="hsc_result_type" class="form-select" required>
+                                            <option value="">Choose one</option>
+                                            {% for value, label in choices.hsc_result_type_choices %}
+                                                <option value="{{ value }}" {% if academic_info.hsc_result_type == value %}selected{% endif %}>{{ label }}</option>
+                                            {% endfor %}
+                                        </select>
+                                        <label for="hsc_result_type">Result <span class="text-danger">*</span></label>
+                                    </div>
+                                </div>
+                        
+                                <!-- GPA Input Box (Initially Hidden) -->
+                                <div id="hscGpaCol" class="col-md-3 {% if academic_info.hsc_result_type in '3,4' %}d-block{% else %}d-none{% endif %}">
+                                    <div class="form-floating mb-2">
+                                        <input type="text" class="form-control" name="hsc_result" id="hsc_result" placeholder="GPA" value="{{ academic_info.hsc_result|default_if_none:'' }}" >
+                                        <label for="hsc_result">GPA <span class="text-danger">*</span></label>
+                                    </div>
+                                </div>
+                            </div>
+                        
+                            <!-- Group -->
+                            <div class="form-floating mb-2">
+                                <select name="hsc_group" id="hsc_group" class="form-select" required>
+                                    <option value="" {% if not academic_info.hsc_group %}selected{% endif %}>Choose one</option>
+                                    {% for value, label in choices.hsc_group_choices %}
+                                        <option value="{{ value }}" {% if academic_info.hsc_group == value %}selected{% endif %}>{{ label }}</option>
+                                    {% endfor %}
+                                </select>
+                                <label for="hsc_group">Group <span class="text-danger">*</span></label>
+                            </div>
+                        
+                            <!-- Passing Year -->
+                            <div class="form-floating mb-2">
+                                <select name="hsc_passing_year" id="hsc_passing_year" class="form-select" required>
+                                    <option value="" {% if not academic_info.hsc_passing_year %}selected{% endif %}>Choose one</option>
+                                    {% for value, label in choices.hsc_passing_year_choices %}
+                                        <option value="{{ value }}" {% if academic_info.hsc_passing_year == value %}selected{% endif %}>{{ label }}</option>
+                                    {% endfor %}
+                                </select>
+                                <label for="hsc_passing_year">Passing Year <span class="text-danger">*</span></label>
+                            </div>
+                        </div>
+
+                      
+                    </div>
+
+
+                        <div class="row g-2 mt-2">
+
+
+                            <div class="col-md-6">
+                                <div class="alert alert-danger">
+                                    <h5 class="mb-0">Graduation Level*</h5>
+                                </div>
+                            
+                                <!-- Examination Dropdown -->
+                                <div class="form-floating mb-2">
+                                    <select name="graduation_exam" id="graduation_exam" class="form-select" required>
+                                        <option value="" {% if not academic_info.graduation_exam %}selected{% endif %}>Choose one</option>
+                                        {% for value, label in choices.graduation_exam_choice %}
+                                            <option value="{{ value }}" {% if academic_info.graduation_exam == value %}selected{% endif %}>{{ label }}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <label for="graduation_exam">Examination <span class="text-danger">*</span></label>
+                                </div>
+                            
+                                <!-- Subject -->
+                                <div class="form-floating mb-2">
+                                    <input type="text" class="form-control" name="graduation_subject" id="graduation_subject"
+                                           list="subjects" placeholder="Choose or type your subject"
+                                           value="{{ academic_info.graduation_subject|default_if_none:'' }}" required>
+                                    <label for="graduation_subject">Subject <span class="text-danger">*</span></label>
+                                    <datalist id="subjects">
+                                        <option value="Environmental Sciences">
+                                        <option value="Computer Science (CSE)">
+                                        <option value="Mathematics">
+                                        <option value="Physics">
+                                        <option value="Chemistry">
+                                    </datalist>
+                                </div>
+                            
+                                <!-- University Input -->
+                                <div class="form-floating mb-2">
+                                    <input type="text" class="form-control" name="graduation_university" id="graduation_university"
+                                           placeholder="University/Institute"
+                                           value="{{ academic_info.graduation_university|default_if_none:'' }}" required>
+                                    <label for="graduation_university">University/Institute <span class="text-danger">*</span></label>
+                                </div>
+                            
+                              <!-- Result Dropdown and GPA Input -->
+<div class="row align-items-center">
+    <!-- Dropdown -->
+    <div id="gradResultDropdown" class="col-md-12">
+        <div class="form-floating mb-2">
+            <select id="graduation_result_type" name="graduation_result_type" class="form-select" required>
+                <option value="" {% if not academic_info.graduation_result_type %}selected{% endif %}>Choose one</option>
+                {% for value, label in choices.graduation_result_type_choice %}
+                    <option value="{{ value }}" {% if academic_info.graduation_result_type == value %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+            </select>
+            <label for="graduation_result_type">Result <span class="text-danger">*</span></label>
+        </div>
+    </div>
+
+    <!-- GPA input -->
+    <div id="grad_result_sh" class="col-md-3 {% if academic_info.graduation_result_type in '3,4' %}d-block{% else %}d-none{% endif %}">
+        <div class="form-floating mb-2">
+            <input class="form-control" name="graduation_result" id="graduation_result"
+                   placeholder="GPA"
+                   value="{{ academic_info.graduation_result|default_if_none:'' }}" >
+            <label for="graduation_result">GPA <span class="text-danger">*</span></label>
+        </div>
+    </div>
+</div>
+
+
+                                <!-- Passing Year -->
+                                <div class="form-floating mb-2">
+                                    <select name="graduation_passing_year" id="graduation_passing_year" class="form-select" required>
+                                        <option value="" {% if not academic_info.graduation_passing_year %}selected{% endif %}>Choose one</option>
+                                        {% for value, label in choices.graduation_passing_year_choice %}
+                                            <option value="{{ value }}" {% if academic_info.graduation_passing_year == value %}selected{% endif %}>{{ label }}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <label for="graduation_passing_year">Passing Year <span class="text-danger">*</span></label>
+                                </div>
+                            
+                                <!-- Course Duration -->
+                                <div class="form-floating mb-2">
+                                    <select name="graduation_course_duration" id="graduation_course_duration"
+                                            onchange="courseDurationCheck()" class="form-select" required>
+                                        <option value="" {% if not academic_info.graduation_course_duration %}selected{% endif %}>Choose one</option>
+                                        {% for value, label in choices.graduation_course_duration_choice %}
+                                            <option value="{{ value }}" {% if academic_info.graduation_course_duration == value %}selected{% endif %}>{{ label }}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <label for="graduation_course_duration">Course Duration <span class="text-danger">*</span></label>
+                                </div>
+
+
+
+
+
+                                
+<div class="row">
+<!-- Left column with form fields -->
+<div class="col-md-6 mt-2">
+    <div class="mb-3">
+        <div class="form-floating">
+            <input class="form-control" type="file" id="graduation_certificate_input" name="graduation_certificate" accept="image/*" >
+            <label for="graduation_certificate_input">Graduation Certificate (300x300px)</label>
+        </div>
+    </div>
+
+    <div class="">
+        <div class="form-floating">
+            <input class="form-control" type="file" id="graduation_transcript_input" name="graduation_transcript" accept="image/*" >
+            <label for="graduation_transcript_input">Graduation Transcript (300x300px)</label>
+        </div>
+    </div>
+
+                                    <!-- Hidden default images from DB -->
+{% if academic_info.graduation_certificate %}
+<img id="default_certificate_image" src="{{ academic_info.graduation_certificate.url }}" hidden>
+{% endif %}
+{% if academic_info.graduation_transcript %}
+<img id="default_transcript_image" src="{{ academic_info.graduation_transcript.url }}" hidden>
+{% endif %}
+
+</div>
+
+<!-- Right column with canvas for images -->
+<div class="col-md-6">
+    <div class="border rounded shadow-sm p-3 bg-light">
+        <div class="d-flex justify-content-center gap-2">
+            <div class="text-center">
+                <canvas id="graduation_certificate_canvas" width="300" height="300" class="img-thumbnail"></canvas>
+                <small class="d-block">Certificate</small>
+            </div>
+            <div class="text-center">
+                <canvas id="graduation_transcript_canvas" width="300" height="300" class="img-thumbnail "></canvas>
+                <small class="d-block">Transcript</small>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+                            </div>
+                            
+
+                            <div class="col-md-6">
+                                <div class="alert alert-info">
+                                    <h5 class="mb-0">Post-Graduation Level</h5>
+                                </div>
+        
+                                <!-- Examination Dropdown -->
+                                <div class="form-floating mb-2">
+                                    <select name="post_graduation_exam" id="post_graduation_exam" class="form-select">
+                                        <option value="" {% if not academic_info.post_graduation_exam %}selected{% endif %}>Choose one</option>
+                                        {% for value, label in choices.post_graduation_exam_choice %}
+                                            <option value="{{ value }}" {% if academic_info.post_graduation_exam == value %}selected{% endif %}>{{ label }}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <label for="post_graduation_exam">Examination</label>
+                                </div>
+        
+                                <!-- Subject -->
+                                <div class="form-floating mb-2">
+                                    <input type="text" class="form-control" name="post_graduation_subject" id="post_graduation_subject"
+                                           list="subjects" placeholder="Choose or type your subject"
+                                           value="{{ academic_info.post_graduation_subject|default_if_none:'' }}">
+                                    <label for="post_graduation_subject">Subject</label>
+                                    <datalist id="subjects">
+                                        <option value="Computer Science (CS)">
+                                        <option value="Mathematics">
+                                        <option value="Physics">
+                                        <option value="Chemistry">
+                                    </datalist>
+                                </div>
+        
+                                <!-- University Input -->
+                                <div class="form-floating mb-2">
+                                    <input type="text" class="form-control" name="post_graduation_university" id="post_graduation_university"
+                                           placeholder="University/Institute"
+                                           value="{{ academic_info.post_graduation_university|default_if_none:'' }}">
+                                    <label for="post_graduation_university">University/Institute</label>
+                                </div>
+        
+                                <!-- Result Dropdown and GPA Input -->
+                                <div class="row align-items-center">
+                                    <!-- Dropdown -->
+                                    <div id="postResultDropdown" class="col-md-12">
+                                        <div class="form-floating mb-2">
+                                            <select id="post_graduation_result_type" name="post_graduation_result_type" class="form-select">
+                                                <option value="" {% if not academic_info.post_graduation_result_type %}selected{% endif %}>Choose one</option>
+                                                {% for value, label in choices.post_graduation_result_type_choice %}
+                                                    <option value="{{ value }}" {% if academic_info.post_graduation_result_type == value %}selected{% endif %}>{{ label }}</option>
+                                                {% endfor %}
+                                            </select>
+                                            <label for="post_graduation_result_type">Result</label>
+                                        </div>
+                                    </div>
+        
+                                    <!-- GPA input -->
+                                    <div id="post_result_sh" class="col-md-3 {% if academic_info.post_graduation_result_type in '3,4' %}d-block{% else %}d-none{% endif %}">
+                                        <div class="form-floating mb-2">
+                                            <input class="form-control" name="post_graduation_result" id="post_graduation_result"
+                                                   placeholder="GPA"
+                                                   value="{{ academic_info.post_graduation_result|default_if_none:'' }}">
+                                            <label for="post_graduation_result">GPA</label>
+                                        </div>
+                                    </div>
+                                </div>
+        
+                                <!-- Passing Year -->
+                                <div class="form-floating mb-2">
+                                    <select name="post_graduation_passing_year" id="post_graduation_passing_year" class="form-select">
+                                        <option value="" {% if not academic_info.post_graduation_passing_year %}selected{% endif %}>Choose one</option>
+                                        {% for value, label in choices.post_graduation_passing_year_choice %}
+                                            <option value="{{ value }}" {% if academic_info.post_graduation_passing_year == value %}selected{% endif %}>{{ label }}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <label for="post_graduation_passing_year">Passing Year</label>
+                                </div>
+        
+                                <!-- Course Duration -->
+                                <div class="form-floating mb-2">
+                                    <select name="post_graduation_course_duration" id="post_graduation_course_duration"
+                                            onchange="courseDurationCheck()" class="form-select">
+                                        <option value="" {% if not academic_info.post_graduation_course_duration %}selected{% endif %}>Choose one</option>
+                                        {% for value, label in choices.post_graduation_course_duration_choice %}
+                                            <option value="{{ value }}" {% if academic_info.post_graduation_course_duration == value %}selected{% endif %}>{{ label }}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <label for="post_graduation_course_duration">Course Duration</label>
+                                </div>
+        
+                            </div>
+
+
+                            
+                        </div> <!-- End of Row -->
+        
+                    </div> <!-- End Inner Section -->
+                </div> <!-- End Card -->
+        
+
+                
+                <!-- Navigation Buttons -->
+                <div class="row d-flex justify-content-between mt-3">
+                    <div class="col-12 col-md-6 text-start">
+                        <a href="{% url 'personal_info' %}" class="btn btn-light text-primary hover-btn">
+                            <i class="fa fa-arrow-circle-left"></i> Previous
+                        </a>
+                    </div>
+        
+                    <div class="col-12 col-md-6 text-end">
+                        <button type="submit" class="btn btn-light hover-btn text-primary ">Submit <i class="fa fa-arrow-circle-right"></i></button>
+                    </div>
+                </div> <!-- End of Navigation Buttons -->
+        
+            </form>
+        </div>
+        
+           
+                <!-- End Outer Section -->
+            </div>
+        </div>
+    </div>
+    
+    
+    </section>
+
+
+
+    
+                           
+<!-- JavaScript to handle GPA visibility -->
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var sscResult = document.getElementById("ssc_result_type");
+        var sscResultCol = document.getElementById("sscResultDropdown");
+        var sscGpaCol = document.getElementById("ssc_result_sh");
+        var sscGpaInput = document.getElementById("ssc_result");
+
+        function updateSscGpaVisibility() {
+            const resultType = sscResult.value;
+            const gpaValue = sscGpaInput.value.trim();
+
+            if (resultType === "GPA (out of 4)" || resultType === "GPA (out of 5)") {
+                sscResultCol.classList.remove("col-md-12");
+                sscResultCol.classList.add("col-md-9");
+                sscGpaCol.classList.remove("d-none");
+            } else {
+                sscResultCol.classList.remove("col-md-9");
+                sscResultCol.classList.add("col-md-12");
+                sscGpaCol.classList.add("d-none");
+                sscGpaInput.value = "";
+            }
+        }
+
+        sscResult.addEventListener("change", updateSscGpaVisibility);
+        updateSscGpaVisibility(); // Run once on page load
+    });
+</script>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var hscResult = document.getElementById("hsc_result_type");
+        var hscResultCol = document.getElementById("hscResultCol");
+        var hscGpaCol = document.getElementById("hscGpaCol");
+        var hscGpaInput = document.getElementById("hsc_result");
+
+        function updateHscGpaVisibility() {
+            const resultType = hscResult.value;
+            const gpaValue = hscGpaInput.value.trim();
+
+            if (resultType === "GPA (out of 4)" || resultType === "GPA (out of 5)") {
+                hscResultCol.classList.remove("col-md-12");
+                hscResultCol.classList.add("col-md-9");
+                hscGpaCol.classList.remove("d-none");
+            } else {
+                hscResultCol.classList.remove("col-md-9");
+                hscResultCol.classList.add("col-md-12");
+                hscGpaCol.classList.add("d-none");
+                hscGpaInput.value = "";
+            }
+        }
+
+        hscResult.addEventListener("change", updateHscGpaVisibility);
+        updateHscGpaVisibility(); 
+    });
+</script>
+
+
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var gradResult = document.getElementById("graduation_result_type");
+        var gradResultCol = document.getElementById("gradResultDropdown");
+        var gradGpaCol = document.getElementById("grad_result_sh");
+        var gradGpaInput = document.getElementById("graduation_result");
+
+        function updateGradGpaVisibility() {
+            const resultType = gradResult.value;
+            const gpaValue = gradGpaInput.value.trim();
+
+            if (resultType === "GPA (out of 4)" || resultType === "GPA (out of 5)") {
+                gradResultCol.classList.remove("col-md-12");
+                gradResultCol.classList.add("col-md-9");
+                gradGpaCol.classList.remove("d-none");
+            } else {
+                gradResultCol.classList.remove("col-md-9");
+                gradResultCol.classList.add("col-md-12");
+                gradGpaCol.classList.add("d-none");
+                gradGpaInput.value = "";
+            }
+        }
+
+        gradResult.addEventListener("change", updateGradGpaVisibility);
+        updateGradGpaVisibility(); // Run once on page load
+    });
+</script>
+
+         
+
+<script>
+["certificate", "transcript"].forEach(type => {
+  const input = document.getElementById(`graduation_${type}_input`);
+  const canvas = document.getElementById(`graduation_${type}_canvas`);
+  const ctx = canvas.getContext("2d");
+  const defImg = document.getElementById(`default_${type}_image`);
+  if (defImg?.src) { const img = new Image(); img.onload = () => ctx.drawImage(img, 0, 0, 300, 300); img.src = defImg.src; }
+
+  input.onchange = e => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = ev => {
+      const img = new Image();
+      img.onload = () => {
+        if (img.width !== 300 || img.height !== 300) {
+          alert("Only 300x300px images allowed."); input.value = ""; ctx.clearRect(0, 0, 300, 300);
+        } else ctx.drawImage(img, 0, 0, 300, 300);
+      };
+      img.src = ev.target.result;
+    };
+    reader.readAsDataURL(file);
+  };
+});
+</script>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var postGradResult = document.getElementById("post_graduation_result_type");
+        var postResultCol = document.getElementById("postResultDropdown");
+        var postGpaCol = document.getElementById("post_result_sh");
+        var postGpaInput = document.getElementById("post_graduation_result");
+
+        function updatePostGradGpaVisibility() {
+            const resultType = postGradResult.value;
+            const gpaValue = postGpaInput.value.trim();
+
+            if (resultType === "GPA (out of 4)" || resultType === "GPA (out of 5)") {
+                postResultCol.classList.remove("col-md-12");
+                postResultCol.classList.add("col-md-9");
+                postGpaCol.classList.remove("d-none");
+            } else {
+                postResultCol.classList.remove("col-md-9");
+                postResultCol.classList.add("col-md-12");
+                postGpaCol.classList.add("d-none");
+                postGpaInput.value = "";
+            }
+        }
+
+        postGradResult.addEventListener("change", updatePostGradGpaVisibility);
+        updatePostGradGpaVisibility(); // Run once on page load
+    });
+</script>
+
+
+
+
+ {% endblock content %}

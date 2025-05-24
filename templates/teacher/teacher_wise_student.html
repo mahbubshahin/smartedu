@@ -1,0 +1,173 @@
+
+{% extends 'accounts/teacher_dashboard.html' %}
+
+{% block teacher_profile %}
+
+<div class="container mt-5">
+    <h2 class="mb-4 text-center">📘 Enrolled Students by Course</h2>
+    {% if show_warning %}
+    <div class="alert alert-warning">
+        Please select Batch, Semester and Course to view students.
+    </div>
+{% endif %}
+
+<!-- 🔍 Roll Number or Mobile Number Search & Download -->
+<div class="py-4 bg-light mt-3">
+    <div class="card-body">
+        <form method="get">
+            <div class="row justify-content-center align-items-center g-2">
+
+                <!-- 🔍 Search Input -->
+                <div class="col-md-6">
+                    <div class="input-group">
+                        <input type="search" name="search_roll" class="form-control"
+                               placeholder="Enter Roll Number..." value="{{ search_roll|default:'' }}">
+                        <button type="submit" class="btn btn-success">🔍 Search</button>
+                    </div>
+                </div>
+
+                <!-- Hidden Fields to Preserve Filters -->
+                <div class="d-none">
+                    {% if selected_batch_id %}
+                        <input type="hidden" name="batch" value="{{ selected_batch_id }}">
+                    {% endif %}
+                    {% if selected_semester_id %}
+                        <input type="hidden" name="semester" value="{{ selected_semester_id }}">
+                    {% endif %}
+                    {% if selected_section_id %}
+                        <input type="hidden" name="section" value="{{ selected_section_id }}">
+                    {% endif %}
+                    {% if selected_course_id %}
+                        <input type="hidden" name="course" value="{{ selected_course_id }}">
+                    {% endif %}
+                </div>
+
+                <!-- ⬇️ Download Excel Button -->
+                <div class="col-md-4 text-center text-md-start">
+                    <button type="submit" name="download" value="1" class="btn btn-outline-primary">
+                        ⬇️ Download Excel
+                    </button>
+                </div>
+
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+ 
+
+
+    <!-- 📂 Filter Form (auto-submit on change) -->
+    <form method="get" class="row g-3 mb-4 align-items-end">
+        <div class="col-md-3">
+            <label for="batch" class="form-label">Batch</label>
+            <select class="form-select" name="batch" id="batch" onchange="this.form.submit()">
+                <option value="">Select Batch</option>
+                {% for batch in batches %}
+                    <option value="{{ batch.id }}" {% if batch.id|stringformat:"s" == selected_batch_id %}selected{% endif %}>
+                        {{ batch.batch_name }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="col-md-3">
+            <label for="semester" class="form-label">Semester</label>
+            <select class="form-select" name="semester" id="semester" onchange="this.form.submit()">
+                <option value="">Select Semester</option>
+                {% for semester in semesters %}
+                    <option value="{{ semester.id }}" {% if semester.id|stringformat:"s" == selected_semester_id %}selected{% endif %}>
+                        {{ semester.semester_name }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="col-md-3">
+            <label for="section" class="form-label">Section</label>
+            <select class="form-select" name="section" id="section" onchange="this.form.submit()">
+                <option value="">All Sections</option>
+                <option value="none" {% if selected_section_id == "none" %}selected{% endif %}>No Section</option>
+                {% for section in sections %}
+                    <option value="{{ section.id }}" {% if section.id|stringformat:"s" == selected_section_id %}selected{% endif %}>
+                        {{ section.section_name }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="col-md-3">
+            <label for="course" class="form-label">Course</label>
+            <select class="form-select" name="course" id="course" onchange="this.form.submit()">
+                <option value="">Select Course</option>
+                {% for course in courses %}
+                    <option value="{{ course.id }}" {% if course.id|stringformat:"s" == selected_course_id %}selected{% endif %}>
+                        {{ course.course_code }} - {{ course.course_name }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+    </form>
+
+    <!-- 📋 Student Table -->
+    {% if students %}
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>Roll</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for student in students %}
+                        <tr>
+                            <td>{{ student.roll_number }}</td>
+                            <td>{{ student.full_name }}</td>
+                            <td>{{ student.email }}</td>
+                            <td>{{ student.mobile_number }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!--  & Pagination -->
+     
+
+        <nav class="mt-4">
+            <ul class="pagination justify-content-center">
+                {% if page_obj.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?{% if request.GET %}{{ request.GET.urlencode|safe }}&{% endif %}page={{ page_obj.previous_page_number }}">«</a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled"><span class="page-link">«</span></li>
+                {% endif %}
+
+                {% for i in page_obj.paginator.page_range %}
+                    <li class="page-item {% if i == page_obj.number %}active{% endif %}">
+                        <a class="page-link" href="?{% if request.GET %}{{ request.GET.urlencode|safe }}&{% endif %}page={{ i }}">{{ i }}</a>
+                    </li>
+                {% endfor %}
+
+                {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?{% if request.GET %}{{ request.GET.urlencode|safe }}&{% endif %}page={{ page_obj.next_page_number }}">»</a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled"><span class="page-link">»</span></li>
+                {% endif %}
+            </ul>
+        </nav>
+    {% else %}
+        {% if selected_batch_id or selected_semester_id or selected_course_id or search_roll %}
+            <div class="alert alert-info">No students found for the selected filters.</div>
+        {% endif %}
+    {% endif %}
+</div>
+{% endblock %}

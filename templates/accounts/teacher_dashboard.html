@@ -1,0 +1,239 @@
+
+
+{% extends 'authorized_base.html' %}
+
+{% load static %}
+{% block title %}Manager Dashboard{% endblock title %}
+
+{% block content %}
+
+
+
+
+
+<section >
+    <div class="manager_profile">
+        <div class="container-fluid " >
+            <div class="container-fluid">
+                <div class="row mx-md-1">
+                  <!-- Sidebar -->
+                  <div class="col-12 col-md-3 mt-3">
+                    
+
+
+
+                    <!-- templates/manager/manager_sidebar.html -->
+
+<div class="d-flex flex-column pb-5 bg-light shadow position-sticky" style="top: 90px; ">
+    
+    <ul class="nav nav-pills flex-column mb-auto">
+      <li class="nav-item">
+        <a href="{% url 'teacher_wise_student' %}" class="nav-link {% if request.resolver_match.url_name == 'teacher_wise_student' %}active{% endif %}">
+          <i class="fas fa-file-alt"></i> Students
+        </a>
+      </li>
+  
+
+      <li class="nav-item">
+        <a href="{% url 'change_password' %}" class="nav-link {% if request.resolver_match.url_name == 'change_password' %}active{% endif %}">
+          <i class="fas fa-file-alt"></i> Change Password
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" href="" onclick="confirmLogout(event)" >
+            <i class="fas fa-door-open"></i> Logout
+          </a>
+      </li>
+  
+   
+  
+        </ul>
+      </li>
+     
+      
+      </li>
+    </ul>
+  </div>
+  
+  
+                  </div>
+              
+                  <!-- Main Content -->
+                  <div class="col-12 col-md-9 bg-white" style="min-height: 100vh;">
+                    {% block teacher_profile %}
+
+                      {% if active_password_change %}
+                      {% include 'accounts/change_password.html' %}
+                    {% else %}
+
+
+                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Pariatur dolor numquam hic impedit consequuntur facere nisi, neque doloribus excepturi tempora blanditiis unde cupiditate maxime ea consectetur laudantium ullam sint facilis?
+
+
+                    {% endif %}
+
+
+                    {% endblock %}
+                  </div>
+                </div>
+              </div>
+              
+    </div>
+</section>
+
+
+
+
+
+
+<!-- js css section -->
+<section class="css_js">
+
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const triggerTabList = document.querySelectorAll('.nav-link[data-bs-toggle="tab"]');
+
+        // Restore last active tab from localStorage
+        const activeTabId = localStorage.getItem('activeTab');
+        if (activeTabId) {
+            const someTabTriggerEl = document.querySelector(`.nav-link[href="${activeTabId}"]`);
+            if (someTabTriggerEl) {
+                new bootstrap.Tab(someTabTriggerEl).show();
+            }
+        }
+
+        // Save selected tab to localStorage
+        triggerTabList.forEach(function (triggerEl) {
+            triggerEl.addEventListener('shown.bs.tab', function (event) {
+                localStorage.setItem('activeTab', event.target.getAttribute('href'));
+            });
+        });
+    });
+
+    // Optional: Confirm logout
+    function confirmLogout(event) {
+        event.preventDefault();
+        if (confirm("Are you sure you want to logout?")) {
+            window.location.href = "{% url 'applicant_logout' %}";  
+        }
+    }
+</script>
+
+
+
+
+</section>
+
+
+{% endblock content %}
+
+
+
+
+
+
+
+
+
+<!-- templates/manager/manager_sidebar.html -->
+
+<div class="d-flex flex-column pb-5 bg-light shadow position-sticky" style="top: 90px; ">
+    <!-- 🧭 Bootstrap default navbar height is ~56px, adjust if needed -->
+    
+    <ul class="nav nav-pills flex-column mb-auto">
+      <li class="nav-item">
+        <a href="{% url 'applicant_status' %}" class="nav-link {% if request.resolver_match.url_name == 'applicant_status' %}active{% endif %}">
+          <i class="fas fa-file-alt"></i> Applicant Status
+        </a>
+      </li>
+  
+      <li class="nav-item">
+        <a href="{% url 'applicant_list' %}" class="nav-link {% if request.resolver_match.url_name == 'applicant_list' %}active{% endif %}">
+          <i class="fas fa-users"></i> Applicants
+        </a>
+      </li>
+  
+      {% if request.user.is_authenticated and request.user.role == 'manager' %}
+      <li>
+        <a href="{% url 'send_message_to_applicants' %}" class="nav-link {% if request.resolver_match.url_name == 'send_message_to_applicants' %}active{% endif %}">
+          <i class="fas fa-comment-dots me-1"></i> Send SMS
+        </a>
+      </li>
+  
+      <li>
+        <a href="{% url 'send_email_to_applicants' %}" class="nav-link {% if request.resolver_match.url_name == 'send_email_to_applicants' %}active{% endif %}">
+          <i class="fas fa-mail-bulk me-1"></i> Send Email
+        </a>
+      </li>
+  
+  
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle "
+           href="#" id="attendanceDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <i class="fas fa-user-check me-1"></i> Attendance
+        </a>
+        <ul class="dropdown-menu ms-2 border-0 shadow" aria-labelledby="attendanceDropdown">
+          <li>
+            <a class="dropdown-item {% if request.resolver_match.url_name == 'written_attendance_pdf' %}active{% endif %}"
+               href="{% url 'written_attendance_pdf' %}">
+              <i class="fas fa-pen me-2"></i> Written Attendance
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item {% if request.resolver_match.url_name == 'viva_attendance_pdf' %}active{% endif %}"
+               href="{% url 'viva_attendance_pdf' %}">
+              <i class="fas fa-microphone-alt me-2"></i> Viva Attendance
+            </a>
+          </li>
+        </ul>
+      </li>
+      
+    
+      <li>
+        <a href="{% url 'result_prepare' %}" class="nav-link {% if request.resolver_match.url_name == 'result_prepare' %}active{% endif %}">
+          <i class="fas fa-clipboard-list me-1"></i>Result Prepare
+        </a>
+      </li>
+    
+  
+      <li>
+  
+        <p class="bg-info mx-1 py-2 text-center text-white fw-bold rounded-3">Education Part</p>
+      
+      </li>
+      <li >
+        <a href="{% url 'enrolled_list' %}" class="nav-link {% if request.resolver_match.url_name == 'enrolled_list' %}active{% endif %}">
+          <i class="fas fa-clipboard-list me-1"></i>Students List
+        </a>
+      </li>
+  
+      <li>
+        <a href="{% url 'enroll_students' %}" class="nav-link {% if request.resolver_match.url_name == 'enroll_students' %}active{% endif %}">
+          <i class="fas fa-clipboard-list me-1"></i>Assign Students
+        </a>
+      </li>
+  
+                      
+      <li>
+        <a href="{% url 'common_user_register' %}" class="nav-link {% if request.resolver_match.url_name == 'common_user_register' %}active{% endif %}">
+          <i class="fas fa-user-plus"></i> User Create
+        </a>
+      </li>
+      {% endif %}
+  
+      <li>
+        <a href="{% url 'change_password' %}" class="nav-link {% if request.resolver_match.url_name == 'change_password' %}active{% endif %}">
+          <i class="fas fa-key"></i> Change Password
+        </a>
+      </li>
+  
+      <li>
+        <a class="nav-link" href="" onclick="confirmLogout(event)">
+          <i class="fas fa-door-open"></i> Logout
+        </a>
+      </li>
+    </ul>
+  </div>
+  

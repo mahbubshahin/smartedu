@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}WMES | Payment{% endblock title %}
+{% block content %}
+
+
+
+
+
+
+
+<div class="notification_area  pt-4 pb-5 bg-white">
+  <div class="container-fluid">
+
+    <div class="row">
+
+        <div class="col-9 col-sm-11 mx-auto">
+            <div class="row">
+
+
+
+                 <!-- Left Column -->
+      <div class="col-12 col-md-5">
+        <!-- Admission Dates Section -->
+        <div class="admission_date_details mt-4">
+          <div class="table-responsive rounded-3 shadow-lg p-3 bg-light">
+            <h6 class="fw-bold text-center fst-italic">Date to Remember</h6>
+            {% if admission_details %}
+            <table class="table table-bordered align-middle shadow-sm rounded-3 overflow-hidden">
+              <thead class="text-center">
+                <tr>
+                  <th class="bg-success text-white">Event</th>
+                  <th class="bg-success"></th>
+                  <th class="bg-success text-white">Dates</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td class="fw-bold">Intake</td><td class="text-center">:</td><td class="text-center fw-bold">{{ admission_details.intake_name|default_if_none:"" }}</td></tr>
+                <tr><td class="fw-bold">Start Application</td><td class="text-center">:</td><td class="text-success text-center fw-bold">{{ admission_details.start_date|default_if_none:"" }}</td></tr>
+                <tr><td class="fw-bold">Availability of Application</td><td class="text-center">:</td><td class="fw-bold text-danger text-center">{{ admission_details.end_date|default_if_none:"" }}</td></tr>
+                <tr><td class="fw-bold">Admit Download</td><td class="text-center">:</td><td class="text-center">{{ admission_details.admit_download|default_if_none:"" }}</td></tr>
+                <tr><td class="fw-bold">Admission Test</td><td class="text-center">:</td><td class="fw-bold text-success text-center">{{ admission_details.admission_test|default_if_none:"" }}</td></tr>
+                <tr><td class="fw-bold">Publication of Result</td><td class="text-center">:</td><td class="text-center">{{ admission_details.result_publish|default_if_none:"" }}</td></tr>
+                <tr><td class="fw-bold">Admission from the Merit List</td><td class="text-center">:</td><td class="text-center">{{ admission_details.merit_list_admission|default_if_none:"" }}</td></tr>
+                <tr><td class="fw-bold">Admission from the Waiting List</td><td class="text-center">:</td><td class="text-center">{{ admission_details.waiting_list_admission|default_if_none:"" }}</td></tr>
+                <tr><td class="fw-bold">Orientation</td><td class="text-center">:</td><td class="fw-bold text-success text-center">{{ admission_details.orientation|default_if_none:"" }}</td></tr>
+              </tbody>
+            </table>
+            {% else %}
+            <div class="alert alert-info text-center mt-3">
+              <h5>Online Application for WMES Program is Closed.</h5>
+            </div>
+            {% endif %}
+
+            <!-- Helpline -->
+            <div class="card border-0 shadow mt-4">
+              <div class="card-header text-white py-2" style="background: linear-gradient(135deg, #e9cd79, #db9327); border-radius: 8px 8px 0 0;">
+                <h5 class="mb-0 text-center fw-bold"><i class="fa-solid fa-circle-info"></i> Helpline</h5>
+              </div>
+              <div class="card-body">
+                <dl class="mb-0">
+                  <dt class="fw-bold d-flex align-items-center gap-2"><i class="fa-solid fa-building"></i> Admission Office (10:00 AM - 3:00 PM)</dt>
+                  <dd class="d-flex align-items-center gap-2"><i class="fa-solid fa-phone"></i> 01776-839168</dd>
+
+                  <dt class="fw-bold d-flex align-items-center gap-2"><i class="fa-solid fa-envelope"></i> E-mail</dt>
+                  <dd class="d-flex align-items-center gap-2"><i class="fa-solid fa-paper-plane"></i> ofcwmes@juniv.edu</dd>
+
+                  <dt class="fw-bold d-flex align-items-center gap-2"><i class="fa-brands fa-whatsapp"></i> WhatsApp</dt>
+                  <dd class="d-flex align-items-center gap-2">
+                    If needed, contact us 
+                    <a href="https://wa.me/8801776839168" target="_blank" class="btn btn-success btn-sm rounded-pill d-flex align-items-center gap-2 px-3">
+                      <i class="bi bi-whatsapp fs-5"></i> WhatsApp Us
+                    </a>
+                  </dd>
+                </dl>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Notices -->
+        <div class="list-group my-4 shadow-sm">
+          <h5 class="mb-3 fw-bold text-primary">Notices</h5>
+          {% for notice in notices %}
+          <a href="?notice_id={{ notice.id }}" class="list-group-item list-group-item-action {% if notice == selected_notice %}active{% endif %}">
+            {{ notice.title }}
+          </a>
+          {% empty %}
+          <p class="text-center">No notices available.</p>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Right Column -->
+      <div class="col-12 col-md-7 mt-4">
+        {% if selected_notice %}
+        <div class="embed-responsive show active shadow rounded-3 overflow-hidden">
+          <iframe src="{{ selected_notice.pdf_file.url }}" width="100%" height="800px" title="Selected PDF"></iframe>
+        </div>
+        {% endif %}
+      </div>
+            </div>
+        </div>
+
+
+
+
+     
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+{% endblock %}

@@ -1,0 +1,116 @@
+{% extends 'authorized_base.html' %}
+ {% load static %}
+ {% block title %}WMES | Personal Info{% endblock title %}
+ 
+ <!-- block content -->
+ {% block content %}
+ 
+ <div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card border-0 shadow rounded-4 overflow-hidden">
+                
+                <!-- Header -->
+                <div class="bg-gradient bg-danger text-white text-center py-4">
+                    <h4 class="mb-0 fw-semibold">
+                        <i class="bi bi-image me-2"></i> Resize Photo & Signature
+                    </h4>
+                    <small class="text-light-emphasis">Upload and auto-resize your photo and signature to the required dimensions</small>
+                </div>
+
+                <!-- Body -->
+                <div class="card-body px-4 py-5 bg-light">
+
+                    <!-- Upload Inputs -->
+                    <div class="row g-4 mb-4">
+                        <div class="col-md-6">
+                            <label for="photoInput" class="form-label fw-semibold text-muted">Upload Photo (300x300px)</label>
+                            <input type="file" class="form-control rounded-pill shadow-sm" id="photoInput" accept="image/*" >
+                        </div>
+                        <div class="col-md-6">
+                            <label for="signatureInput" class="form-label fw-semibold text-muted">Upload Signature (300x80px)</label>
+                            <input type="file" class="form-control rounded-pill shadow-sm" id="signatureInput" accept="image/*">
+                        </div>
+                    </div>
+
+                    <!-- Preview Canvases -->
+                    <div class="row g-4">
+                        <!-- Photo Preview -->
+                        <div class="col-md-6 text-center">
+                            <div class="border rounded-3 p-3 bg-white shadow-sm h-100">
+                                <h6 class="text-secondary mb-3">Resized Photo</h6>
+                                <canvas id="photoCanvas" width="300" height="300" class=" shadow-sm mb-2"></canvas>
+                                <button id="downloadPhoto" class="btn btn-outline-danger rounded-pill px-4 mt-2">
+                                    <i class="bi bi-cloud-download"></i> Download
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Signature Preview -->
+                        <div class="col-md-6 text-center">
+                            <div class="border rounded-3 p-3 bg-white shadow-sm h-100">
+                                <h6 class="text-secondary mb-3">Resized Signature</h6>
+                                <canvas id="signatureCanvas" width="300" height="80" class="img-thumbnail shadow-sm mb-1"></canvas>
+                                <button id="downloadSignature" class="btn btn-outline-danger rounded-pill px-4" style="margin-top: 220px;">
+                                    <i class="bi bi-cloud-download"></i> Download
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div> <!-- /card-body -->
+
+            </div> <!-- /card -->
+        </div>
+    </div>
+</div>  
+
+
+<!-- Bootstrap JS -->
+<script>
+    function resizeAndDrawImage(inputElement, canvasId, width, height) {
+        const file = inputElement.files[0];
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const img = new Image();
+            img.onload = function() {
+                const canvas = document.getElementById(canvasId);
+                const ctx = canvas.getContext('2d');
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.drawImage(img, 0, 0, width, height);
+            };
+            img.src = e.target.result;
+        };
+        if (file) reader.readAsDataURL(file);
+    }
+
+    document.getElementById('photoInput').addEventListener('change', function() {
+        resizeAndDrawImage(this, 'photoCanvas', 300, 300);
+    });
+
+    document.getElementById('signatureInput').addEventListener('change', function() {
+        resizeAndDrawImage(this, 'signatureCanvas', 300, 80);
+    });
+
+    function downloadCanvas(canvasId, fileName) {
+        const canvas = document.getElementById(canvasId);
+        const link = document.createElement('a');
+        link.download = fileName;
+        link.href = canvas.toDataURL("image/png");
+        link.click();
+    }
+
+    document.getElementById('downloadPhoto').addEventListener('click', function() {
+        downloadCanvas('photoCanvas', 'photo.png');
+    });
+
+    document.getElementById('downloadSignature').addEventListener('click', function() {
+        downloadCanvas('signatureCanvas', 'signature.png');
+    });
+</script>
+
+
+
+
+
+{% endblock content %}

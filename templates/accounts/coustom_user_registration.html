@@ -1,0 +1,114 @@
+
+{% extends 'accounts/manager_dashboard.html' %}
+
+
+{% block manager_dashboard %}
+
+<div class="container mb-5 mt-3">
+    <div class="row">
+        <div class="col-md-8 col-lg-7 mx-auto p-4 bg-light rounded ">
+            <h2 class="text-center mb-4">Create New User</h2>
+
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" user_type="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            <form method="post" novalidate>
+                {% csrf_token %}
+
+                <div class="form-floating mb-2">
+                    <input type="text" class="form-control" id="full_name" name="full_name" placeholder="Full Name" required>
+                    <label for="full_name">Full Name <span class="text-danger">*</span></label>
+                </div>
+
+                <div class="form-floating mb-2">
+                    <input type="text" class="form-control" id="username" name="username" placeholder="Username" required>
+                    <label for="username">Username <span class="text-danger">*</span></label>
+                </div>
+
+                <div class="form-floating mb-2">
+                    <input type="email" class="form-control" id="email" name="email" placeholder="Email" required>
+                    <label for="email">Email <span class="text-danger">*</span></label>
+                </div>
+
+                <div class="form-floating mb-2">
+                    <input type="text" class="form-control" id="mobile_number" name="mobile_number" placeholder="Mobile Number" required>
+                    <label for="mobile_number">Mobile Number <span class="text-danger">*</span></label>
+                </div>
+
+                <div class="form-floating mb-2">
+                    <select class="form-select" id="user_type" name="user_type" required>
+                        <option value="" disabled>User Type</option>
+                        {% for value, label in user_type %}
+                            <option value="{{ value }}">{{ label }}</option>
+                        {% endfor %}
+                    </select>
+                    <label for="user_type">Select Role <span class="text-danger">*</span></label>
+                </div>
+
+                <div class="mb-2">
+                    <div class="row g-2 align-items-center">
+                        <div class="col-10">
+                            <div class="form-floating">
+                                <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
+                                <label for="password">Password <span class="text-danger">*</span></label>
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <button type="button" class="btn btn-outline-secondary w-100" onclick="togglePassword('password', 'toggle-icon-password')" style="height: 58px;">
+                                <i class="fas fa-lock" id="toggle-icon-password"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-2">
+                    <div class="row g-2 align-items-center">
+                        <div class="col-10">
+                            <div class="form-floating">
+                                <input type="password" class="form-control" id="confirm_password" name="confirm_password" placeholder="Confirm Password" required>
+                                <label for="confirm_password">Confirm Password <span class="text-danger">*</span></label>
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <button type="button" class="btn btn-outline-secondary w-100" onclick="togglePassword('confirm_password', 'toggle-icon-confirm')" style="height: 58px;">
+                                <i class="fas fa-lock" id="toggle-icon-confirm"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100 mt-3">Create Account</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Password Toggle Script -->
+<script>
+    function togglePassword(fieldId, iconId) {
+        const field = document.getElementById(fieldId);
+        const icon = document.getElementById(iconId);
+        if (field.type === "password") {
+            field.type = "text";
+            icon.classList.remove("fa-lock");
+            icon.classList.add("fa-lock-open");
+        } else {
+            field.type = "password";
+            icon.classList.remove("fa-lock-open");
+            icon.classList.add("fa-lock");
+        }
+    }
+</script>
+
+
+
+{% endblock %}
+
+
+

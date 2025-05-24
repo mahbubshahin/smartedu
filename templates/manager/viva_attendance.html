@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        @page {
+            margin: 10px 35px;
+            size: A4 landscape; /* Set page size to landscape */
+        }
+
+        body {
+            font-family: 'Times New Roman', serif;
+            font-size: 10px;
+            margin: 0;
+            background-color: white !important;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 0.1px solid #0f0f0f;
+            padding: 1px;
+            padding-top: 4px;
+            text-align: center;
+            vertical-align: middle;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .col-sl { width: 3%; }
+            .col-roll { width: 7%; }
+            .col-name { width: 15%; }
+            .col-ssc { width: 9%; }
+            .col-hsc { width: 9%; }
+            .col-gra_exam { width: 15%; }
+            .col-gra_result { width: 9%; }
+            .col-gra_univ { width: 15%; }
+            .col-photo { width: 7%; }
+            .col-job { width: 5%; }
+            .col-prefarence { width: 6%; }
+
+        .col-photo img {
+            object-fit: cover;
+        }
+
+        .roll-range {
+            text-align: center;
+            font-size: 12px;
+            margin-top: 5px;
+            margin-bottom: 10px;
+        }
+
+        .page-header-wrapper {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            margin-top: 15px;
+            margin-bottom: 10px;
+        }
+
+        .page-header-table {
+            width: 70%;
+            border: none;
+            margin-left: 120px !important;
+        }
+
+        .page-header-table td {
+            vertical-align: middle;
+            border: none;
+        }
+
+        .page-header-table img {
+            height: 70px;
+            width: 60px;
+            margin-left: 70px !important;
+        }
+
+        .header-text {
+            text-align: left;
+            line-height: 1.4;
+            padding-left: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div style="position: relative; min-height: 95%;">
+    <div class="page-header-wrapper">
+        <table class="page-header-table">
+            <tr>
+                <td style="width: 60px;">
+                    <img src="{{ ju_logo_uri }}" alt="JU Logo">
+                </td>
+                <td class="header-text">
+                    <span style="font-size: 16px;">Masters in Environmental Sciences and Management</span><br>
+                    <span style="font-size: 14px; font-weight: bold;">(Under the Weekend Program)</span><br>
+                    <span style="font-size: 14px;">Department of Environmental Sciences</span><br>
+                    <span style="font-size: 14px;">Jahangirnagar University, Savar, Dhaka - 1342</span>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="roll-range">
+        <strong>Applicant from {{ start_roll }} to {{ end_roll }}</strong>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th class="col-sl">SL</th>
+                <th class="col-roll">Roll Number</th>
+                <th class="col-name">Name</th>
+                <th class="col-ssc">SSC/Equivalent</th>
+                <th class="col-hsc">HSC/Equivalent</th>
+                <th class="col-gra_exam">Graduation Exam</th>
+                <th class="col-gra_result">Graduation Result</th>
+                <th class="col-gra_univ">University</th>
+                <th class="col-photo">Photo</th>
+                <th class="col-job">Job</th>
+                <th class="col-prefarence">Prefarence</th>
+            </tr>
+
+            
+        </thead>
+        <tbody>
+            {% for app in applicants %}
+            <tr>
+                <td class="col-sl">{{ app.sl }}</td>
+                <td class="col-roll"><strong style="font-size: 16px;">{{ app.roll_number }}</strong> </td>
+                <td class="col-name">
+                    <strong>{{ app.applicant.full_name }}</strong><br>
+                </td>
+                <td class="col-ssc">
+                    {{ app.academic.ssc_result|default_if_none:"" }} {{app.academic.ssc_result_type}}
+                </td>
+                <td class="col-hsc">
+                    {{ app.academic.hsc_result|default_if_none:"" }} {{ app.academic.hsc_result_type }}
+                </td>
+
+                <td class="col-gra_exam">
+                    {{ app.academic.graduation_exam }}
+                </td>
+
+                <td class="col-gra_result">
+                    <strong>{{ app.academic.graduation_result }} </strong> {{ app.academic.graduation_result_type }}
+                </td>
+
+
+                <td class="col-gra_univ">
+                    {{ app.academic.graduation_university }}
+                </td>
+
+                <td class="col-photo">
+                    {% if app.image_data_uri %}
+                        <img src="{{ app.image_data_uri }}" width="50" height="50">
+                    {% else %}
+                        
+                    {% endif %}
+                </td>
+
+                <td class="col-job"></td>
+                <td class="col-prefarence"></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div style="margin-top: 10px;">
+    Page <pdf:pageNumber /> of <pdf:pageCount />
+</div>
+
+</body>
+</html>

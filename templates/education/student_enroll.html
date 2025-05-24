@@ -1,0 +1,273 @@
+{% extends 'accounts/manager_dashboard.html' %}
+{% block manager_dashboard %}
+
+
+<div class="container mt-4">
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+
+
+
+<!-- Filter Buttons -->
+<div class="row shadow bg-light">
+    <div class="col-10 px-1 py-3 rounded  mx-auto">
+        <!-- First Row: New Assign & Batch Filter -->
+        <div class="d-flex justify-content-center align-items-center mb-3 flex-wrap gap-2">
+            <!-- New Assign Button -->
+            <a href="?select_type=new_assign" class="btn btn-outline-dark {% if not batch_filter %}active{% endif %}">New Assign</a>
+
+            <!-- Batch Filter Dropdown -->
+            <form method="get" class="d-flex align-items-center">
+                <select name="batch_filter" onchange="this.form.submit()" class="form-select w-auto">
+                    <option value="">🔍 Filter by Batch</option>
+                    {% for batch in enrolled_batches %}
+                        <option value="{{ batch.id }}" {% if batch_filter == batch.id|stringformat:"s" %}selected{% endif %}>{{ batch.batch_name }}</option>
+                    {% endfor %}
+                </select>
+                <input type="hidden" name="select_type" value="{{ selection_type|default:'all' }}">
+                <input type="hidden" name="roll_search" value="{{ search_roll }}">
+            </form>
+        </div>
+
+        <!-- Second Row: Other Filters -->
+        <div class="text-center mb-2">
+            <a href="?select_type=all{% if batch_filter %}&batch_filter={{ batch_filter }}{% endif %}" class="btn btn-outline-primary px-4 {% if selection_type == 'all' %}active{% endif %}">All</a>
+            <a href="?select_type=even{% if batch_filter %}&batch_filter={{ batch_filter }}{% endif %}" class="btn btn-outline-secondary mx-2 {% if selection_type == 'even' %}active{% endif %}">Even</a>
+            <a href="?select_type=odd{% if batch_filter %}&batch_filter={{ batch_filter }}{% endif %}" class="btn btn-outline-secondary px-3 mx-2 {% if selection_type == 'odd' %}active{% endif %}">Odd</a>
+            <a href="?select_type=part1{% if batch_filter %}&batch_filter={{ batch_filter }}{% endif %}" class="btn btn-outline-success mx-2 {% if selection_type == 'part1' %}active{% endif %}">Part-1</a>
+            <a href="?select_type=part2{% if batch_filter %}&batch_filter={{ batch_filter }}{% endif %}" class="btn btn-outline-success mx-2 {% if selection_type == 'part2' %}active{% endif %}">Part-2</a>
+            <a href="?select_type=part3{% if batch_filter %}&batch_filter={{ batch_filter }}{% endif %}" class="btn btn-outline-success mx-2 {% if selection_type == 'part3' %}active{% endif %}">Part-3</a>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Search Form -->
+    <form method="get" class="d-flex mt-3 justify-content-center">
+        <div class="row w-75 justify-content-center">
+            <div class="col-md-7"> 
+                <input type="text" name="roll_search" value="{{ search_roll }}" placeholder="Search by Roll Number..." class="form-control py-2">
+            </div>
+            <div class="col-md-3">
+                <button type="submit" class="btn btn-success py-2 w-100">Search</button>
+            </div>
+        </div>
+        <input type="hidden" name="select_type" value="{{ selection_type }}">
+        <input type="hidden" name="batch_filter" value="{{ batch_filter }}">
+    </form>
+
+
+      <!-- Enroll Form -->
+    <div class="row   mt-3">
+       
+
+
+        <form method="POST" class="p-4  needs-validation" novalidate id="enroll-form">
+            {% csrf_token %}
+    
+            <!-- Selection Form -->
+            <div class="row mb-3 mx-5">
+                <div class="col-md-3">
+                    <label for="batch" class="form-label text-primary">Batch</label>
+                    <select name="batch" id="batch" class="form-select bg-light border-primary" required>
+                        <option value="">Select Batch</option>
+                        {% for batch in batches %}
+                            <option value="{{ batch.id }}" {% if batch.id|stringformat:"s" == request.POST.batch %} selected {% endif %}>{{ batch }}</option>
+                        {% endfor %}
+                    </select>
+                    <div class="invalid-feedback">select a batch.</div>
+                </div>
+                <div class="col-md-3">
+                    <label for="semester" class="form-label text-primary">Semester</label>
+                    <select name="semester" id="semester" class="form-select bg-light border-primary" required>
+                        <option value="">Select Semester</option>
+                        {% for semester in semesters %}
+                            <option value="{{ semester.id }}" {% if semester.id|stringformat:"s" == request.POST.semester %} selected {% endif %}>{{ semester }}</option>
+                        {% endfor %}
+                    </select>
+                    <div class="invalid-feedback">select a semester.</div>
+                </div>
+                <div class="col-md-3">
+                    <label for="section" class="form-label text-primary">Section (Optional)</label>
+                    <select name="section" id="section" class="form-select bg-light border-primary">
+                        <option value="">Select Section</option>
+                        {% for section in sections %}
+                            <option value="{{ section.id }}" {% if section.id|stringformat:"s" == request.POST.section %} selected {% endif %}>{{ section }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="course" class="form-label text-primary">Course</label>
+                    <select name="course" id="course" class="form-select bg-light border-primary" required>
+                        <option value="">Select Course</option>
+                        {% for course in courses %}
+                            <option value="{{ course.id }}" {% if course.id|stringformat:"s" == request.POST.course %} selected {% endif %}>{{ course }}</option>
+                        {% endfor %}
+                    </select>
+                    <div class="invalid-feedback">select a course.</div>
+                </div>
+
+
+
+
+
+                <div class="col-md-12 mt-3">
+                    <label for="teachers" class="form-label text-primary">Assign Teacher(s)</label>
+                    <select name="teachers" id="teachers" class="form-select bg-light border-primary" multiple required>
+                        {% for teacher in all_teachers %}
+                            <option value="{{ teacher.id }}" {% if teacher.id|stringformat:"s" in selected_teacher_ids %}selected{% endif %}>
+                                {{ teacher.full_name }} ({{ teacher.username }})
+                            </option>
+                        {% endfor %}
+                    </select>
+                    <div class="form-text">Hold Ctrl (Windows) or Command (Mac) to select multiple teachers.</div>
+                    <div class="invalid-feedback">Please select at least one teacher.</div>
+                </div>
+                 
+
+                
+            </div>
+    
+            <!-- Select Buttons -->
+            <div class="mb-3 text-center">
+                <button type="button" class="btn btn-info btn-sm" onclick="toggleAll(true)">Select All</button>
+                <button type="button" class="btn btn-warning btn-sm ms-2" onclick="toggleAll(false)">Unselect All</button>
+                <button type="submit" name="save_selection" class="btn btn-sm btn-success">Selected</button>
+            </div>
+    
+            <!-- Student Table -->
+            <div class="row py-3">
+                <div class="col-10 mx-auto">
+                    <div class="table-responsive">
+                        <table class="table table-bordered border-primary">
+                            <thead>
+                                <tr class="text-center">
+                                    <th style="width: 8%;">SL.</th>
+                                    <th style="width: 15%;">S.ID</th>
+                                    <th style="width: 67%;">Name</th>
+                                    <th style="width: 10%;">Select</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% if students %}
+                                    {% for student in students %}
+                                        <tr>
+                                            <td class="text-center">{{ forloop.counter }}</td>
+                                            <td class="fw-bold text-center">{{ student.roll_number }}</td>
+                                            <td>{{ student.full_name }}</td>
+                                            <td>
+                                                <div class="form-check form-switch">
+                                                    <input class="form-check-input" type="checkbox" role="switch" id="switchCheck_{{ student.id }}" name="students" value="{{ student.id }}" {% if student.id in selected_ids %} checked {% endif %}>
+                                                    <label class="form-check-label" for="switchCheck_{{ student.id }}">Select</label>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                {% else %}
+                                    <tr>
+                                        <td colspan="4" class="text-center text-muted">No students found for this selection.</td>
+                                    </tr>
+                                {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+    
+            <!-- Hidden Selected IDs -->
+            <div id="selected-ids-wrapper">
+                {% for sid in selected_ids %}
+                    <input type="hidden" name="selected_ids" value="{{ sid }}">
+                {% endfor %}
+            </div>
+    
+            <!-- Selected Student List -->
+            <div class="row mt-3">
+                <div class="col-10 mx-auto">
+                    <div class="p-4 border border-warning rounded-lg text-center">
+                        <h5 class="text-warning">🔒 Saved for Enrollment:</h5>
+                        <ul id="selected-student-list" class="list-group list-group-flush">
+                            {% for stu in selected_students %}
+                                <li class="list-group-item d-flex justify-content-between align-items-center" data-id="{{ stu.id }}">
+                                    <span class="fw-semibold text-dark">{{ forloop.counter }} . {{ stu.full_name }} ({{ stu.roll_number }})</span>
+                                    <button type="button" class="btn btn-outline-danger btn-sm ms-2 remove-student" data-id="{{ stu.id }}">❌</button>
+                                </li>
+                            {% empty %}
+                                <li class="list-group-item text-muted"><em>No students selected yet.</em></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+    
+            <!-- Hidden Removed IDs -->
+            <div id="removed-ids-wrapper"></div>
+    
+            <!-- Final Enroll Button -->
+            <button type="submit" name="final_submit" class="btn btn-lg btn-success w-100 mt-3">Enroll Selected Students</button>
+        </form>
+    </div>
+  
+ 
+
+
+
+</div>
+
+<!-- Scripts -->
+<script>
+    function toggleAll(selectAll) {
+        const checkboxes = document.querySelectorAll('input[name="students"]');
+        checkboxes.forEach(cb => cb.checked = selectAll);
+    }
+
+    window.onload = () => {
+        const selectedIds = [];
+        document.querySelectorAll('input[name="selected_ids"]').forEach(input => {
+            selectedIds.push(input.value);
+        });
+        selectedIds.forEach(id => {
+            const checkbox = document.querySelector(`input[name="students"][value="${id}"]`);
+            if (checkbox) checkbox.checked = true;
+        });
+    };
+
+    document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('.remove-student').forEach(btn => {
+            btn.addEventListener('click', function () {
+                const id = this.dataset.id;
+                const checkbox = document.querySelector(`input[name="students"][value="${id}"]`);
+                if (checkbox) checkbox.checked = false;
+                document.querySelectorAll(`input[name="selected_ids"][value="${id}"]`).forEach(el => el.remove());
+                const removedInput = document.createElement('input');
+                removedInput.type = 'hidden';
+                removedInput.name = 'removed_ids';
+                removedInput.value = id;
+                document.getElementById('removed-ids-wrapper').appendChild(removedInput);
+                this.closest('li').remove();
+            });
+        });
+    });
+
+    (() => {
+        'use strict';
+        const form = document.getElementById('enroll-form');
+        form.addEventListener('submit', event => {
+            const isFinalSubmit = event.submitter && event.submitter.name === 'final_submit';
+            if (isFinalSubmit && !form.checkValidity()) {
+                event.preventDefault();
+                event.stopPropagation();
+                form.classList.add('was-validated');
+            }
+        }, false);
+    })();
+</script>
+{% endblock %}

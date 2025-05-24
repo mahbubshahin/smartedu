@@ -1,0 +1,248 @@
+{% extends 'accounts/manager_dashboard.html' %}
+
+{% block manager_dashboard %}
+
+
+<div class="container py-4 min-vh-100">
+
+  <!-- 🔍 Batch Filter -->
+  <form action="{% url 'applicant_status' %}" method="GET" class="mb-4 text-center">
+    <label for="batch_name" class="form-label fw-semibold fs-5">🎯 Select Batch:</label>
+    <select name="batch_name" id="batch_name" class="form-select d-inline-block w-auto ms-2" onchange="this.form.submit()">
+      <option value="">-- Select Batch --</option>
+      {% for batch in batches %}
+        <option value="{{ batch }}" {% if batch == selected_batch %}selected{% endif %}>{{ batch }}</option>
+      {% endfor %}
+    </select>
+  </form>
+
+  {% if selected_batch %}
+  <!-- 📊 Stats Cards -->
+  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-3 text-center">
+
+    <!-- Registration Summary -->
+    <div class="col">
+      <div class="card border-0 shadow-sm">
+        <div class="card-header bg-secondary text-white py-2 fw-bold">📝 Registration</div>
+        <div class="card-body bg-light p-2">
+          <div class="row align-items-center text-center g-0 justify-content-center">
+            <div class="col py-1">
+              <div class="d-flex flex-column align-items-center gap-1">
+                <div class="bg-white text-dark border rounded-circle d-flex align-items-center justify-content-center shadow-sm" style="width: 40px; height: 40px;">
+                  <span class="fw-bold">{{ total_registered }}</span>
+                </div>
+                <div class="fw-semibold text-muted small">Registered</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Profile -->
+    <div class="col">
+      <div class="card border-0 shadow-sm">
+        <div class="card-header bg-success text-white py-2 fw-bold">👤 Profile</div>
+        <div class="card-body bg-light p-2">
+          <div class="row align-items-center text-center g-0">
+            <!-- Completed -->
+            <div class="col py-1">
+              <div class="d-flex flex-column align-items-center gap-1">
+                <div class="bg-success-subtle text-success rounded-circle d-flex align-items-center justify-content-center shadow-sm" style="width: 40px; height: 40px;">
+                  <span class="fw-bold">{{ profile_completed }}</span>
+                </div>
+                <div class="fw-semibold text-success small">Completed</div>
+              </div>
+            </div>
+
+            <!-- Divider -->
+            <div class="col-auto px-0">
+              <div class="vr" style="height: 50px; width: 2px; background-color: rgba(0, 0, 0, 0.2);"></div>
+            </div>
+
+            <!-- Pending -->
+            <div class="col py-1">
+              <div class="d-flex flex-column align-items-center gap-1">
+                <div class="bg-danger-subtle text-danger rounded-circle d-flex align-items-center justify-content-center shadow-sm" style="width: 40px; height: 40px;">
+                  <span class="fw-bold">{{ profile_incomplete }}</span>
+                </div>
+                <div class="fw-semibold text-danger small">Pending</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Payment Summary -->
+    <div class="col">
+      <div class="card border-0 shadow-sm">
+        <div class="card-header bg-primary text-white py-2 fw-bold">💳 Payment</div>
+        <div class="card-body bg-light p-2">
+          <div class="row align-items-center text-center g-0">
+            <!-- Paid -->
+            <div class="col py-1">
+              <div class="d-flex flex-column align-items-center gap-1">
+                <div class="bg-success-subtle text-success rounded-circle d-flex align-items-center justify-content-center shadow-sm" style="width:40px; height:40px;">
+                  <span class="fw-bold">{{ payment_done }}</span>
+                </div>
+                <div class="fw-semibold text-success small">Paid</div>
+              </div>
+            </div>
+
+            <!-- Divider -->
+            <div class="col-auto px-0">
+              <div class="vr" style="height:50px; width:2px; background-color:rgba(0,0,0,0.2);"></div>
+            </div>
+
+            <!-- Pending -->
+            <div class="col py-1">
+              <div class="d-flex flex-column align-items-center gap-1">
+                <div class="bg-danger-subtle text-danger rounded-circle d-flex align-items-center justify-content-center shadow-sm" style="width:40px; height:40px;">
+                  <span class="fw-bold">{{ payment_pending }}</span>
+                </div>
+                <div class="fw-semibold text-danger small">Pending</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Payment Method -->
+    <div class="col">
+      <div class="card border-0 shadow-sm">
+        <div class="card-header bg-warning text-white py-2 fw-bold">📂 Payment History</div>
+        <div class="card-body bg-light p-2">
+          <div class="row align-items-center text-center g-0">
+            <!-- Bkash -->
+            <div class="col py-1">
+              <div class="d-flex flex-column align-items-center gap-1">
+                <div class="bg-success-subtle text-info rounded-circle d-flex align-items-center justify-content-center shadow-sm" style="width:40px; height:40px;">
+                  <span class="fw-bold">{{ bkash_count }}</span>
+                </div>
+                <div class="fw-semibold text-info small">Bkash</div>
+              </div>
+            </div>
+
+            <!-- Divider -->
+            <div class="col-auto px-0">
+              <div class="vr" style="height:50px; width:2px; background-color:rgba(0,0,0,0.2);"></div>
+            </div>
+
+            <!-- Nagad -->
+            <div class="col py-1">
+              <div class="d-flex flex-column align-items-center gap-1">
+                <div class="bg-success-subtle text-success rounded-circle d-flex align-items-center justify-content-center shadow-sm" style="width:40px; height:40px;">
+                  <span class="fw-bold">{{ nagad_count }}</span>
+                </div>
+                <div class="fw-semibold text-success small">Nagad</div>
+              </div>
+            </div>
+
+            <!-- Divider -->
+            <div class="col-auto px-0">
+              <div class="vr" style="height:50px; width:2px; background-color:rgba(0,0,0,0.2);"></div>
+            </div>
+
+            <!-- Show/Hide Button -->
+            <div class="col py-1">
+              <div class="d-flex flex-column align-items-center gap-1">
+                <a href="?batch_name={{ selected_batch }}{% if not show_details %}&details=1{% endif %}" class="btn btn-outline-danger shadow-sm btn-sm rounded-pill px-3 py-1">
+                  {% if not show_details %}Show Details{% else %}Hide Details{% endif %}
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 📋 Payment Details -->
+  {% if show_details %}
+  <div id="payment-details" class="row mt-4 g-4">
+    <!-- Bkash Payments -->
+    <div class="col-md-6">
+      <div class="card border-0 shadow-sm h-100">
+        <div class="card-header bg-info text-white fw-bold d-flex justify-content-between align-items-center">
+          <span>📲 Bkash Payments</span>
+          <span class="badge bg-light text-info">{{ bkash_paid|length }}</span>
+        </div>
+        <div class="card-body bg-light">
+          {% if bkash_paid %}
+            <ul class="list-group list-group-flush">
+              {% for user in bkash_paid %}
+              <li class="list-group-item d-flex justify-content-between align-items-center rounded-1 shadow-sm mb-2">
+                <div>
+                  <i class="bi bi-person-circle me-1"></i><strong>{{ user.full_name }}</strong>
+                </div>
+                <div class="text-end small">
+                  <div>ID: {{ user.payment.transaction_id }}</div>
+                  <div class="text-success fw-semibold">{{ user.payment.amount }} ৳</div>
+                </div>
+              </li>
+              {% endfor %}
+            </ul>
+          {% else %}
+            <div class="alert alert-warning text-center">No Bkash payments.</div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <!-- Nagad Payments -->
+    <div class="col-md-6">
+      <div class="card border-0 shadow-sm h-100">
+        <div class="card-header bg-danger text-white fw-bold d-flex justify-content-between align-items-center">
+          <span>📲 Nagad Payments</span>
+          <span class="badge bg-light text-danger">{{ nagad_paid|length }}</span>
+        </div>
+        <div class="card-body bg-light">
+          {% if nagad_paid %}
+            <ul class="list-group list-group-flush">
+              {% for user in nagad_paid %}
+              <li class="list-group-item d-flex justify-content-between align-items-center rounded-1 shadow-sm mb-2">
+                <div>
+                  <i class="bi bi-person-circle me-1"></i><strong>{{ user.full_name }}</strong>
+                </div>
+                <div class="text-end small">
+                  <div>ID: {{ user.payment.transaction_id }}</div>
+                  <div class="text-success fw-semibold">{{ user.payment.amount }} ৳</div>
+                </div>
+              </li>
+              {% endfor %}
+            </ul>
+          {% else %}
+            <div class="alert alert-warning text-center">No Nagad payments.</div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+  {% endif %}
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get("details") === "1") {
+      const detailSection = document.getElementById("payment-details");
+      if (detailSection) {
+        detailSection.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }
+  });
+</script>
+
+
+
+
+
+
+
+{% endblock %}
