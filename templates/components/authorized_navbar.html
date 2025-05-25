@@ -1,36 +1,25 @@
-
-
-
-
 <section class="applicant_navbar sticky-top shadow-sm bg-white py-2">
   <nav class="navbar navbar-expand-lg">
     <div class="container-fluid d-flex justify-content-between align-items-center">
 
       <!-- Left: Branding -->
       <div class="d-flex align-items-center ms-3 gap-3">
-        <span class="fw-bold text-dark">WMES Program</span>
-                  <a class="nav-link fw-bold text-dark" href="{% url 'home' %}">Home</a>
-
+        <!-- Hide on small screens -->
+        <span class="fw-bold text-dark d-none d-sm-inline">WMES Program</span>
+        <a class="nav-link fw-bold text-dark" href="{% url 'home' %}">Home</a>
       </div>
 
       <!-- Right: Navigation -->
       <ul class="navbar-nav d-flex flex-row align-items-center gap-3 me-3 mb-0">
-        <li class="nav-item">
-
-
-
-
-        <li class="nav-item d-flex align-items-center gap-2">
-  {% if request.user.is_authenticated %}
-    <!-- Username -->
-    <span class="fw-bold text-primary">{{ request.user.username }}</span>
-     <!-- Vertical line -->
-    <span style="border-right: 2px solid #0d6efd; height: 24px;"></span>
-  {% endif %}
-</li>
-
 
         {% if request.user.is_authenticated %}
+          <!-- Username with separator -->
+          <li class="nav-item d-flex align-items-center gap-2">
+            <span class="fw-bold text-primary">{{ request.user.username }}</span>
+            <span style="border-right: 2px solid #0d6efd; height: 24px;"></span>
+          </li>
+
+          <!-- Profile link based on role -->
           <li class="nav-item">
             {% if request.user.role == 'applicant' %}
               <a class="nav-link fw-bold text-dark" href="{% url 'applicant_dashboard' %}">Profile</a>
@@ -45,12 +34,13 @@
             {% endif %}
           </li>
         {% else %}
+          <!-- Not logged in -->
           <li class="nav-item">
             <a class="nav-link fw-bold text-dark" href="{% url 'login' %}">Login</a>
           </li>
         {% endif %}
-      </ul>
 
+      </ul>
     </div>
   </nav>
 </section>

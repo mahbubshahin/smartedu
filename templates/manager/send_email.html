@@ -2,14 +2,15 @@
 
 {% block manager_dashboard %}
 
-<div class="container py-5">
+<div class="py-5">
   <div class="row justify-content-center">
-    <div class="col-lg-10">
-      <div class="card shadow border-0 rounded-2 p-4">
+    <div class="col-12 col-lg-10">
+      <div class="card shadow border-0 rounded-2 py-4">
         <div class="card-body">
-          <h5 class="text-center text-primary mb-4">
-            Send Email to Applicants {{ latest_intake.intake_name }} ({{ latest_intake.batch_name }}) Batch.
-          </h5>
+          <h5 class="text-center text-primary mb-4 fs-5 fs-md-5">
+  Send Email to Applicants {{ latest_intake.intake_name }} ({{ latest_intake.batch_name }}) Batch.
+</h5>
+
 
           {% if messages %}
             {% for message in messages %}
@@ -22,41 +23,47 @@
 
 
 
+          <!-- ✅ Batch filter form for email page (Fully Centered & Responsive Layout) -->
+<form method="get" class="mb-3">
+  <div class="d-flex flex-wrap justify-content-center align-items-center gap-2">
+    
+    <!-- Batch Select -->
+    <div class="d-flex align-items-center gap-2">
+      <label for="batchSelect" class="form-label fw-semibold mb-0 text-nowrap">🎓 Batch:</label>
+      <select name="batch_name" id="batchSelect" class="form-select" onchange="this.form.submit()">
+        {% for batch in batches %}
+          <option value="{{ batch }}" {% if batch == selected_batch %}selected{% endif %}>{{ batch }}</option>
+        {% endfor %}
+      </select>
+    </div>
 
-          <!-- ✅ Batch filter form for email page -->
-<form method="get" class="row g-2 mb-3">
-  <div class="col-md-3">
-    <label for="batchSelect" class="form-label fw-semibold">🎓 Select Batch:</label>
-    <select name="batch_name" id="batchSelect" class="form-select" onchange="this.form.submit()">
-      {% for batch in batches %}
-        <option value="{{ batch }}" {% if batch == selected_batch %}selected{% endif %}>{{ batch }}</option>
-      {% endfor %}
-    </select>
-  </div>
-
-  <div class="col-md-9 d-flex align-items-end">
-    <div class="btn-group w-100 gap-1">
+    <!-- Filter Buttons -->
+    <div class="d-flex flex-wrap gap-2">
       <a href="?batch_name={{ selected_batch }}&filter=paid" class="btn btn-outline-success">✅ Paid</a>
       <a href="?batch_name={{ selected_batch }}&filter=pending" class="btn btn-outline-warning">🕒 Pending</a>
       <a href="?batch_name={{ selected_batch }}&filter=incomplete" class="btn btn-outline-danger">❌ Incomplete</a>
       <a href="{% url 'send_email_to_applicants' %}?batch_name={{ selected_batch }}" class="btn btn-outline-secondary">❎ Clear</a>
     </div>
+    
   </div>
 </form>
 
+
+
+
           <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
-            <div class="mb-3 col-9 mx-auto">
+            <div class="col-12 mb-3 col-md-10 col-lg-9 mx-auto">
               <label for="subject" class="form-label fw-semibold">📌 Email Subject:</label>
               <input type="text" name="subject" id="subject" class="form-control border-info-subtle" required>
             </div>
 
-            <div class="mb-3 col-9 mx-auto">
+            <div class="mb-3 col-12 col-md-10 col-lg-9 mx-auto">
               <label for="message" class="form-label fw-semibold">📩 Email Message:</label>
               <textarea name="message" id="message" class="form-control border-info-subtle" rows="5" required></textarea>
             </div>
 
-            <div class="mb-4 col-9 mx-auto">
+            <div class="mb-4 col-12 col-md-10 col-lg-9 mx-auto">
               <label class="form-label fw-semibold">📎 Attach Files (Optional):</label>
               <div id="fileInputs">
                 <div class="input-group mb-2">
