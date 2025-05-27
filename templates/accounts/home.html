@@ -7,53 +7,46 @@
  
 
 
-
-
-
-<section class="main_image_area">
+ <section class="main_image_area">
     <div id="customCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
+        <!-- Carousel Indicators -->
         <div class="carousel-indicators">
             {% for slide in main_gallery %}
-                <button type="button" data-bs-target="#customCarousel" data-bs-slide-to="{{ forloop.counter0 }}" class="{% if forloop.first %}active{% endif %}" aria-label="Slide {{ forloop.counter }}"></button>
+                <button type="button" data-bs-target="#customCarousel" data-bs-slide-to="{{ forloop.counter0 }}" 
+                        class="{% if forloop.first %}active{% endif %}" 
+                        aria-label="Slide {{ forloop.counter }}"></button>
             {% endfor %}
         </div>
 
-
-        
-
-         <div class="carousel-inner">
+        <!-- Carousel Inner -->
+        <div class="carousel-inner">
             {% for slide in main_gallery %}
-                <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                    <img src="{{ slide.background_img.url }}" class="d-block w-100" alt="Slide {{ forloop.counter }}" style="object-fit: cover; height: 650px;">
-                    <div class="carousel-caption d-flex flex-column justify-content-center align-items-start text-start" style="top: 50%; transform: translateY(-50%); left: 10%; right: auto;">
-                     
-                       
-
-
-
-
- 
-    <!-- Heading: 8 columns -->
-   
-      <p class="fw-bold text-uppercase  fs-5 text-light border-bottom " 
-         style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; text-shadow: 1px 1px 6px rgba(0,0,0,0.5);">
-        {{ slide.heading }}
-      </p>
- 
-    <!-- Description: 6 columns -->
-
-<h1 class="fw-bold col-8 text-light  pb-2 mb-2"
-    style="font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, serif; text-shadow: 1px 1px 6px rgba(0,0,0,0.5);">
-  {{ slide.description }}
-</h1>
-
-                       
-
+                <div class="carousel-item {% if forloop.first %}active{% endif %}" style="position: relative; padding-top: 56.25%; overflow: hidden;">
+                    <img src="{{ slide.background_img.url }}" 
+                         alt="Slide {{ forloop.counter }}" 
+                         class="position-absolute top-0 start-0 w-100 h-100"
+                         style="object-fit: cover;">
+                    
+                    <div class="carousel-caption d-flex flex-column justify-content-center align-items-start text-start"
+                         style="top: 50%; transform: translateY(-50%); left: 10%; right: auto;">
+                         
+                        <p class="fw-bold text-uppercase fs-5 text-light border-bottom" 
+                           style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+                                  text-shadow: 1px 1px 6px rgba(0,0,0,0.5);">
+                            {{ slide.heading }}
+                        </p>
+                        
+                        <h1 class="fw-bold col-8 text-light pb-2 mb-2"
+                            style="font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, serif; 
+                                   text-shadow: 1px 1px 6px rgba(0,0,0,0.5);">
+                            {{ slide.description }}
+                        </h1>
                     </div>
                 </div>
             {% endfor %}
-        </div> 
+        </div>
 
+        <!-- Carousel Controls -->
         <button class="carousel-control-prev" type="button" data-bs-target="#customCarousel" data-bs-slide="prev">
             <span class="carousel-control-prev-icon"></span>
             <span class="visually-hidden">Previous</span>
@@ -69,102 +62,122 @@
 
 
 
+<section class="department_area container-fluid py-5">
+  <div class="row justify-content-center">
+    <div class=" col-sm-11 col-md-11 col-lg-10 col-xl-9 col-xxl-9 mx-auto">
+      <div class="row g-4 align-items-start">
 
-<section class="about_wmes fs-6 bg-white py-3">
-    <div class="container">
-        <div class="row align-items-start gx-4 gy-3">
+        <!-- 🖼 Image Section (Always first, even on small devices) -->
+      <div class="col-sm-12 col-md-12 col-lg-6 order-1 order-md-2  ">
+  <div class="text-center h- ">
+    {% if home_content.department_img %}
+      <img src="{{ home_content.department_img.url }}" class="img-fluid rounded shadow-sm" alt="Department">
+    {% else %}
+      <div class="text-muted">No Image Available</div>
+    {% endif %}
+  </div>
+</div>
+
+
+   
+
+        <!-- 📄 Text Section -->
+<div class="col-sm-12 col-md-12 col-lg-6 order-md-1">
+  <div class="p-3 rounded shadow-sm bg-white d-flex flex-column justify-content-between h-100">
+    <span class="fw-bold fs-5 text-dark d-block">About Department of Environmental Sciences</span>
+    <p class="text-dark flex-grow-1" style="text-align: justify;">
+      <span id="short-text"></span><span id="more-text" style="display: none;"></span>
+      <a id="toggle-btn" class="text-primary fw-semibold text-decoration-none d-inline-block mt-2" style="cursor: pointer;">
+        Read More <i class="fas fa-chevron-down ms-1"></i>
+      </a>
+    </p>
+  </div>
+</div>
+
+
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+
+
+
+
+<section class="chairman_message_area container-fluid py-5">
+    <div class="row">
+        <div class=" col-sm-11 col-md-11 col-lg-10 col-xl-9 col-xxl-9 mx-auto">
+      
+          <div class="row gx-sm-3 gx-md-3 gx-lg-3 gx-xl-3 gx-xxl-3 gy-2"> <!-- গ্যাপ ১ -->
+
+    <!-- Image Section -->
+    <div class="col-12 col-lg-4 col-xl-3">
+        <div class="d-flex justify-content-center">
+            <div class="card shadow pt-3 my-3 my-lg-0 text-center border-0" style="width: 100%; max-width: 300px;">
+                <img src="{{ home_content.chairman_image.url }}"
+                     class="card-img-top mx-auto d-block"
+                     alt="Chairman"
+                     style="width: 160px; height: 150px;">
+                <div class="p-2 mx-0 mb-3">
+                    <p class="fw-bold mb-1 text-center text-dark" style="font-size: 14px; text-align: justify;">
+                        {{ home_content.chairman|default_if_none:"" }}
+                    </p>
+                    <p class="text-center fw-bold m-0 p-0 text-info">Chairman</p>
+                    <span>Department of Environmental Sciences, Ju, Savar, 1342</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<!-- Message Section -->
+<div class="col-12 col-lg-8 col-xl-9">
+  <div class="card h-100 border-0 shadow">
+    <div class="message px-3">
+      <h4 class="m-0 p-0 card-title fw-semibold text-primary pt-3"
+          style="font-family: 'Great Vibes', cursive; font-size: 2rem;">
+        Message from the Chairman
+      </h4>
+
+      <p class="fs-5 text-dark" style="text-align: justify;">
+        <span id="c-short"></span>
+        <span id="c-more" class="d-none"></span>
+        <a id="c-toggle-btn"
+           class="text-primary fw-semibold text-decoration-none d-inline-block mt-2"
+           style="cursor:pointer;">
+          Read More <i class="fas fa-chevron-down ms-1"></i>
+        </a>
+      </p>
+    </div>
+  </div>
+</div>
+
+
+
+    
+</div>
+ 
+</div>
+        </div>
+
+</section>
+
+
+
+
+
+
+<section class="Co_Ordinator_area py-5 container-fluid" style="background: linear-gradient(45deg, #f9f9f9, #e3f2fd, #ffffff, #e0f7fa);">
+
+    <div class="row">
+        <div class="col-sm-11 col-md-11 col-lg-10 col-xl-9 col-xxl-9 mx-auto">
             
-            <!-- Text Section -->
-            <div class="col-md-6 pt-5">
-                <div class="text-start">
-                    <h3 class="fw-bold mb-2">About Department of Environmental Sciences</h3>
-                </div>
-
-                <p class="short-text pe-md-4 mb-0" style="white-space: pre-line; text-align: justify;"> 
-                    {{ home_content.department_description|slice:":680" }}
-                    <span class="more" style="display:none;">{{ home_content.department_description|slice:"680:"|linebreaksbr }}</span>
-                    <a class="toggle" style="cursor: pointer; color: #007bff;">Read More</a>
-                </p>
-            </div>
-
-            <!-- Image Section -->
-            <div class="col-md-6">
-                <div class="about_img text-center">
-                    {% if home_content.department_img %}
-                        <img src="{{ home_content.department_img.url }}"
-                             class="img-fluid rounded w-100 py-md-5 py-0"
-                             alt="Department">
-                    {% else %}
-                        <div class="py-md-5 py-0"></div>
-                    {% endif %}
-                </div>
-            </div>
-
-        </div>
-    </div>
-</section>
-
-
-
-
-
-
-
-
-
-
-
-<section class="chairman_message_area py-5">
-    <div class="container">
-        <div class="row g-4">
-
-            <!-- Image Section: full-width on small/medium, side on large -->
-            <div class="col-12 col-lg-3">
-                <div class="d-flex justify-content-center ">
-                    <div class="card shadow pt-3 text-center border-0" style="width: 100%; max-width: 300px;">
-                        <img src="{{ home_content.chairman_image.url }}"
-                             class="card-img-top mx-auto d-block"
-                             alt="Chairman"
-                             style="width: 160px; height: 150px;">
-                        <div class="card-body">
-                            <p class="fw-bold mb-1 text-center text-dark" style="font-size: 14px; text-align: justify;">
-                                {{ home_content.chairman|default_if_none:"" }}
-                            </p>
-                            <h5 class="card-title text-center fw-bold text-dark">Chairman</h5>
-                            <span>Department of Environmental Sciences, Ju, Savar, 1342</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Message Section -->
-            <div class="col-12 col-lg-9">
-                <div class="card h-100 border-0 shadow">
-                    <div class="card-body">
-                        <h4 class="card-title fw-bold text-primary">Message from the Chairman</h4>
-                        <p class="fs-5 mb-1 short-text" style="text-align: justify;">
-                            {{ home_content.chairman_message|slice:":550" }}
-                            <span class="more" style="display:none;">{{ home_content.chairman_message|linebreaksbr }}</span>
-                            <a class="toggle" style="cursor: pointer; color: #007bff;">Read More</a>
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </div>
-</section>
-
-
-
-
-
-<section class="Co_Ordinator_area py-5" style="background: linear-gradient(45deg, #f9f9f9, #e3f2fd, #ffffff, #e0f7fa);">
-    <div class="container">
         <div class="row g-4 align-items-start">
 
             <!-- Image: always first on all screen sizes -->
-            <div class="col-12 col-md-6 col-lg-2 text-center order-1">
+            <div class="col-12 col-md-12 col-lg-2  text-center order-1">
                 <div class="co_ordinator_img">
                     <img src="{{ home_content.co_ordinato_image.url }}" 
                          class="img-fluid rounded-3 shadow" 
@@ -173,52 +186,81 @@
             </div>
 
             <!-- Heading: visible only on small & medium, after image -->
-            <div class="col-12 d-block d-lg-none text-center order-2">
-                <h2 class="fw-bold">Message From Co-Ordinator</h2>
+            <div class="col-12 col-md-12 d-block d-lg-none text-center order-2">
+                <h2 class="fw-bold ">Message From Co-Ordinator</h2>
             </div>
 
             <!-- Message Text -->
-            <div class="col-12 col-md-6 col-lg-9 order-3">
+            <div class="col-12 col-md-12 col-lg-9 order-3">
                 <!-- Heading for Large screens only -->
                 <h2 class="fw-bold mb-3 d-none d-lg-block">Message From Co-Ordinator</h2>
-                <div class="card border-0 bg-light shadow-sm">
-                    <div class="card-body">
-                        <blockquote class="blockquote mb-0">
-                            <p class="fs-5 mb-1 short-text" style="text-align: justify;">
-                                {{ home_content.co_ordinator_message|slice:":320" }}
-                                <span class="more" style="display:none;">{{ home_content.co_ordinator_message|slice:"320:"|linebreaksbr }}</span>
-                                <a class="toggle" style="cursor: pointer; color: #007bff;">Read More</a>
-                            </p>
-                            <footer class="blockquote-footer mt-2 text-start"> 
-                                {{ home_content.co_ordinator|default_if_none:"" }}, 
-                                <cite title="Source Title">Co-Ordinator, WMES Program</cite>
-                            </footer>
-                        </blockquote>
-                    </div>
+                <div class="card border-0  shadow-sm">
+
+                  <div class="card-body p-3">
+  <blockquote class="blockquote mb-0">
+    <p class="fs-5 mb-0" style="text-align: justify;">
+      {{ home_content.co_ordinator_message|slice:":320" }}
+      <span class="more-text" style="display: none;">
+        {{ home_content.co_ordinator_message|slice:"320:"|linebreaksbr }}
+      </span>
+      <a class="read-toggle-link text-decoration-none text-primary fw-semibold"
+         style="cursor: pointer; font-size: 0.9rem; margin-left: 5px;"
+         onclick="(e => {
+           let moreText = e.parentElement.querySelector('.more-text');
+           let icon = e.querySelector('i');
+           moreText.style.display = moreText.style.display === 'none' ? 'inline' : 'none';
+           e.firstChild.textContent = moreText.style.display === 'none' ? ' Read More ' : ' Read Less ';
+           icon.className = moreText.style.display === 'none' ? 'fas fa-chevron-down ms-1' : 'fas fa-chevron-up ms-1';
+         })(this)">
+        Read More <i class="fas fa-chevron-down ms-1"></i>
+      </a>
+    </p>
+    <footer class="blockquote-footer text-start mb-0 mt-2"> 
+       ‍<span class="fw-bold">{{ home_content.co_ordinator|default_if_none:"" }}</span>, 
+      <cite title="Source Title">Co-Ordinator, WMES Program</cite>
+    </footer>
+  </blockquote>
+</div>
+
+                  
+
                 </div>
             </div>
 
         </div>
+   
+        </div>
     </div>
+
 </section>
 
 
+
+
+
+
+
+
+
 <!-- FAQ Section Start -->
-<div class="py-5" style="background-color: #f8f9fa;">
-  <div class="container">
-    <div class="row">
-      <!-- Left Content -->
+<section class="faq_section container-fluid py-5" style="background-color: #f8f9fa;">
+  <div class="row">
+    <div class="col-sm-11 col-md-11 col-lg-10 col-xl-9 col-xxl-9 mx-auto">
+
+        <div class="row">
+                 <!-- Left Content -->
       <div class="col-lg-6 mb-4">
         <div>
           <div class="mb-3">
             <span class="d-inline-flex align-items-center text-primary fw-semibold mb-2">
-              <i class="far fa-book-open-reader me-2"></i> Faq's
+              <i class="fas fa-book-open-reader me-2"></i> FAQ's
+
             </span>
             <h2 class="h4 fw-bold">
               <span class="text-primary">frequently</span> asked questions
             </h2>
           </div>
-          <p class="text-muted mb-3">
+          <p class="text-muted mb-3" >
                 Welcome to the WMES Online Admission FAQs! Here, you'll find answers to the most common questions about the online admission process, the courses we offer, and how you can join the WMES community. We aim to make your experience as smooth and informative as possible.
 
 Whether you're a prospective student, a parent, or simply exploring options, we’ve got you covered with helpful details about our admission process, payment methods, and other essential queries. If you don’t find the answer you’re looking for, feel free to contact us directly.
@@ -246,7 +288,7 @@ Whether you're a prospective student, a parent, or simply exploring options, we�
 </span> How Can do I apply?
               </button>
             </h2>
-            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
+            <div id="collapseOne" class="accordion-collapse collapse " aria-labelledby="headingOne"
               data-bs-parent="#accordionExample">
               <div class="accordion-body text-muted">
                 To apply for the WMES online admission, simply visit our admissions page and click <a class="text-decoration-none" href="{% url 'applicant_register' %}">Apply Now</a> , fill out
@@ -361,208 +403,198 @@ Whether you're a prospective student, a parent, or simply exploring options, we�
 
         </div>
       </div>
+        </div>
+ 
     </div>
   </div>
-</div>
-<!-- FAQ Section End -->
+</section>
+  
 
 
 <!-- in number -->
 
-<section class="in_number">
+<section class="in_number container-fluid py-5">
+  <div class="row">
+    <div class="col-10 mx-auto text-center">
+      <h4 class="fw-bold py-4">WMES Program in Numbers</h4>
+    </div>
 
-
-
-        <div class="col-8 mx-auto text-center ">
-            <h4 class="fw-bold py-4">WMES Program in Numbers</h4>
-        </div>
- 
-    <div class="text-center bg-dark text-white py-5" 
+    <!-- Full background image row -->
+    <div class="text-center bg-dark text-white py-5"
          style="background-image: url('/static/img/home_page/env_bg.jpg'); background-size: cover; background-position: center; background-attachment: fixed;">
-        <div class="container">
-            <div class="row gy-4">
-                <!-- Founded Section -->
-                <div class="col-md-3 col-sm-6">
-                    <div class="d-flex flex-column  align-items-center p-4 rounded shadow bg-light text-dark bg-opacity-75">
-                        <i class="fas fa-university fa-3x mb-2 text-primary"></i>
-                        <h3 class="fw-bold timer" data-to="1971" data-speed="5000">{{ home_content.founded|default_if_none:"" }}</h3>
-                        <p class="text-muted mb-0">Founded</p>
-                    </div>
-                </div>
-                
-                <!-- Faculty Members Section -->
-                <div class="col-md-3 col-sm-6">
-                    <div class="d-flex flex-column align-items-center p-4 rounded shadow bg-light text-dark bg-opacity-75">
-                        <i class="fas fa-user-shield fa-3x mb-2 text-primary"></i>
-                        <h3 class="fw-bold timer" data-to="2000" data-speed="5000">{{ home_content.faculties|default_if_none:"" }}</h3>
-                        <p class="text-muted mb-0">Faculty Members</p>
-                    </div>
-                </div>
-                
-                <!-- Regular Students Section -->
-                <div class="col-md-3 col-sm-6">
-                    <div class="d-flex flex-column align-items-center p-4 rounded shadow bg-light bg-opacity-75">
-                        <i class="fas fa-users fa-3x mb-2 text-primary"></i>
-                        <h3 class="fw-bold timer text-dark" data-to="37000" data-speed="5000">{{ home_content.students|default_if_none:"" }}</h3>
-                        <p class="text-muted mb-0">Students</p>
-                    </div>
-                </div>
-                
-                <!-- passed students -->
-                <div class="col-md-3 col-sm-6">
-                    <div class="d-flex flex-column align-items-center p-4 rounded shadow bg-light bg-opacity-75">
-                        <i class="fas fa-graduation-cap fa-3x mb-2 text-primary"></i>
-                        <h3 class="fw-bold timer text-dark" data-to="37000" data-speed="5000">{{ home_content.passed_students|default_if_none:"" }}+</h3>
-                        <p class="text-muted mb-0">Passed Students</p>
-                    </div>
-                </div>
-                
-             
+      
+      <!-- Inner content container with specific width classes -->
+      <div class="col-sm-11 col-md-11 col-lg-10 col-xl-9 col-xxl-9 mx-auto">
+        <div class="row gy-md-3 gy-5">
+          
+          <!-- Founded Section -->
+          <div class="col-md-3 col-sm-6">
+            <div class="d-flex flex-column align-items-center p-4 rounded shadow bg-light text-dark bg-opacity-75">
+              <i class="fas fa-university fa-3x mb-2 text-primary"></i>
+              <h3 class="fw-bold timer" data-to="1971" data-speed="5000">{{ home_content.founded|default_if_none:"" }}</h3>
+              <p class="text-muted mb-0">Founded</p>
             </div>
-        </div>
-    </div>
-</section>
+          </div>
 
-
-
-<!-- course_section -->
-<section class="course_section py-5 "  style="background-image: url('/static/img/home_page/course_area_img.jpg'); background-size: cover; background-position: center; background-attachment: fixed;">
-    <div class="container">
-        <h2 class="text-center fw-bold mb-4" style="color: #092540;">Our Program Courses</h2>
-
-        <div class="row g-2">
-            {% for course in courses %}
-            <div class="col-md-3 mb-3">
-                <div class="card border-0 h-100 rounded-3 shadow-sm" 
-                     style="background-color: #e8eef8; transition: transform 0.3s ease, box-shadow 0.3s ease;"
-                     onmouseover="this.style.transform='translateY(-10px)'; this.style.boxShadow='0 10px 20px rgba(0, 0, 0, 0.1)';"
-                     onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 8px rgba(0, 0, 0, 0.1)';">
-                    <div class="card-body d-flex align-items-center justify-content-center text-center" 
-                         style="min-height: 50px;"> <!-- Adjust min-height for consistent card height -->
-                        <blockquote class="blockquote mb-0">
-                            <p class="fs-6  fw-semibold">{{ course.course_name }}</p>
-                        </blockquote>
-                    </div>
-                </div>
+          <!-- Faculty Members Section -->
+          <div class="col-md-3 col-sm-6">
+            <div class="d-flex flex-column align-items-center p-4 rounded shadow bg-light text-dark bg-opacity-75">
+              <i class="fas fa-user-shield fa-3x mb-2 text-primary"></i>
+              <h3 class="fw-bold timer" data-to="2000" data-speed="5000">{{ home_content.faculties|default_if_none:"" }}</h3>
+              <p class="text-muted mb-0">Faculty Members</p>
             </div>
-            {% endfor %}
+          </div>
+
+          <!-- Regular Students Section -->
+          <div class="col-md-3 col-sm-6">
+            <div class="d-flex flex-column align-items-center p-4 rounded shadow bg-light text-dark bg-opacity-75">
+              <i class="fas fa-users fa-3x mb-2 text-primary"></i>
+              <h3 class="fw-bold timer" data-to="37000" data-speed="5000">{{ home_content.students|default_if_none:"" }}</h3>
+              <p class="text-muted mb-0">Students</p>
+            </div>
+          </div>
+
+          <!-- Passed Students -->
+          <div class="col-md-3 col-sm-6">
+            <div class="d-flex flex-column align-items-center p-4 rounded shadow bg-light text-dark bg-opacity-75">
+              <i class="fas fa-graduation-cap fa-3x mb-2 text-primary"></i>
+              <h3 class="fw-bold timer" data-to="37000" data-speed="5000">{{ home_content.passed_students|default_if_none:"" }}+</h3>
+              <p class="text-muted mb-0">Passed Students</p>
+            </div>
+          </div>
+
         </div>
+      </div>
     </div>
+  </div>
 </section>
-
-
 
 
 <!-- Footer -->
-<footer class="footer text-start py-2 " >
-    <div class="container">
-        <div class="row gy-4">
-            <!-- Contact Information -->
+<footer class="footer container-fluid bg-light text-start pt-4 py-2">
+  <div class="row">
+    <div class="col-12 col-sm-11 col-md-11 col-lg-10 col-xl-9 col-xxl-9 mx-auto">
+      <div class="row gy-4">
 
-            
-            <div class="col-md-4 pt-5">
-                <div>
-                    <h5 class="text-uppercase fw-bold" style="color: #003566;">Contact Us</h5>
-                    <ul class="list-unstyled mb-0">
-                        <li>
-                            <i class="bi bi-envelope-fill me-2" style="color: #00509d;"></i>
-                            <a href="mailto:contact@wmes.com" class="text-dark text-decoration-none">ofcwmes@juniv.edu</a>
-                        </li>
-                        <li>
-                            <i class="bi bi-telephone-fill me-2" style="color: #00509d;"></i>
-                            <a href="tel:+8801234567890" class="text-dark text-decoration-none">01776839168</a>
-                        </li>
-                        <li>
-                            <i class="bi bi-geo-alt-fill me-2" style="color: #00509d;"></i>
-                            <span>10:00 AM - 3:00 PM</span>
-                        </li>
-
-                  
-
-
-                        <li>
-    <i class="bi bi-envelope-fill me-2 ms-1"></i>
-    <span class="me-3">Contact Us on</span>
-    <a href="https://wa.me/8801776839168" target="_blank" class="text-white btn btn-success btn-sm text-decoration-none">WhatsApp Us</a>
-</li>
-
-                        
-                        <li>
-                            <i class="bi bi-geo-alt-fill me-2" style="color: #00509d;"></i>
-                            <span>Savar, Dhaka, Bangladesh</span>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-
-
-
-         
-            
-            <!-- Follow Us -->
-            <div class="col-md-4 pt-5">
-                <div class="w-100">
-                    <h5 class="text-uppercase fw-bold" style="color: #003566;">Follow Us</h5>
-                    <ul class="list-inline mb-0">
-                        <li class="list-inline-item">
-                            <a href="https://www.facebook.com/wmes.ju/" target="_blank" class="btn btn-outline-primary btn-sm">
-                                Facebook
-                            </a>
-                        </li>
-                        <li class="list-inline-item">
-                            <a href="https://twitter.com/Similarweb" target="_blank" class="btn btn-outline-info btn-sm">
-                                Twitter
-                            </a>
-                        </li>
-                        <li class="list-inline-item">
-                            <a href="https://www.linkedin.com/in/wmes-program-env-ju-846546217/" target="_blank" class="btn btn-outline-dark btn-sm">
-                                LinkedIn
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <!-- Google Map -->
-           
-
-
-            <div class="col-md-4">
-                <div class="rounded-3 shadow-sm">
-                    <iframe 
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3648.547654055089!2d90.2654879149734!3d23.812084784558845!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3755e99eb541a8df%3A0xc2e20f19e1088a55!2sDepartment%20of%20Environmental%20Sciences!5e0!3m2!1sen!2sbd!4v1690374656771!5m2!1sen!2sbd" 
-                        width="420" height="200" style="border:0;" 
-                        allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
-                    </iframe>
-                </div>
-            </div>
-            
+        <!-- Contact Us -->
+        <div class="col-12 col-sm-6 col-md-4">
+          <h5 class="text-uppercase fw-bold text-primary">
+            <i class="fas fa-address-book me-2 text-secondary"></i>Contact Us
+          </h5>
+          <ul class="list-unstyled small">
+            <li >
+              <i class="fas fa-envelope me-2 text-primary"></i>
+              <a href="mailto:ofcwmes@juniv.edu" class="text-dark text-decoration-none">ofcwmes@juniv.edu</a>
+            </li>
+            <li >
+              <i class="fas fa-phone-alt me-2 text-primary"></i>
+              <a href="tel:+8801776839168" class="text-dark text-decoration-none">01776839168 <span>10:00 AM - 3:00 PM</span></a>
+            </li>
+          
+            <li >
+              <i class="fab fa-whatsapp me-2 text-success"></i>
+              <span class="me-2">Contact on</span>
+              <a href="https://wa.me/8801776839168" target="_blank" class="btn btn-success btn-sm">WhatsApp Us</a>
+            </li>
+            <li>
+              <i class="fas fa-map-marker-alt me-2 text-primary"></i>
+              <span>Savar, Dhaka, Bangladesh</span>
+            </li>
+          </ul>
         </div>
-   
+
+        <!-- Follow Us -->
+        <div class="col-12 col-sm-6 col-md-4 my-auto">
+          <h5 class="text-uppercase fw-bold text-primary">
+            <i class="fas fa-share-alt me-2 text-secondary"></i>Follow Us
+          </h5>
+          <div class="d-flex flex-wrap gap-2">
+            <a href="https://www.facebook.com/wmes.ju/" target="_blank" class="btn btn-outline-primary btn-sm">
+              <i class="fab fa-facebook-f me-1"></i> Facebook
+            </a>
+            <a href="https://twitter.com/Similarweb" target="_blank" class="btn btn-outline-info btn-sm">
+              <i class="fab fa-twitter me-1"></i> Twitter
+            </a>
+            <a href="https://www.linkedin.com/in/wmes-program-env-ju-846546217/" target="_blank" class="btn btn-outline-dark btn-sm">
+              <i class="fab fa-linkedin-in me-1"></i> LinkedIn
+            </a>
+          </div>
+        </div>
+
+        <!-- Google Map Location (Full width below on small devices) -->
+        <div class="col-12 col-md-4">
+      
+          <div class="rounded-3 shadow-sm overflow-hidden" style="height: 130px;">
+            <iframe 
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3648.547654055089!2d90.2654879149734!3d23.812084784558845!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3755e99eb541a8df%3A0xc2e20f19e1088a55!2sDepartment%20of%20Environmental%20Sciences!5e0!3m2!1sen!2sbd!4v1690374656771!5m2!1sen!2sbd" 
+              width="100%" height="100%" style="border:0;" 
+              allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
+          </div>
+        </div>
+
+      </div>
     </div>
+  </div>
 </footer>
 
 
 
 
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const fullText = "{{ home_content.department_description|escapejs }}";
+    
+    const limit = window.innerWidth >= 1629 ? 720 :
+                  window.innerWidth >= 1400 ? 400 :
+                  window.innerWidth >= 1200 ? 240 :
+                  window.innerWidth >= 992 ? 230 :
+                  window.innerWidth >= 768 ? 500 : 250;
+
+    const shortTextEl = document.getElementById('short-text');
+    const moreTextEl = document.getElementById('more-text');
+    const toggleBtn = document.getElementById('toggle-btn');
+
+    shortTextEl.innerText = fullText.slice(0, limit);
+    moreTextEl.innerText = fullText.slice(limit);
+
+    toggleBtn.addEventListener('click', function () {
+      const isHidden = moreTextEl.style.display === 'none';
+      moreTextEl.style.display = isHidden ? 'inline' : 'none';
+      toggleBtn.innerHTML = isHidden 
+        ? 'Read Less <i class="fas fa-chevron-up ms-1"></i>'
+        : 'Read More <i class="fas fa-chevron-down ms-1"></i>';
+    });
+  });
+</script>
+
 
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const toggles = document.querySelectorAll('.toggle');
+  document.addEventListener("DOMContentLoaded", function () {
+    const fullMessage = "{{ home_content.chairman_message|escapejs }}";
+    const w = window.innerWidth;
+    const limit = w > 1629 ? 690 :
+                  w > 1400 ? 660 :
+                  w > 1200 ? 450 :
+                  w > 992 ? 400 :
+                  w > 768 ? 350 : 250;
 
-        toggles.forEach(toggle => {
-            toggle.addEventListener('click', function () {
-                const moreText = this.previousElementSibling; // Get the <span class="more"> element
-                const isHidden = moreText.style.display === 'none';
+    const shortEl = document.getElementById('c-short');
+    const moreEl = document.getElementById('c-more');
+    const toggleBtn = document.getElementById('c-toggle-btn');
 
-                moreText.style.display = isHidden ? 'inline' : 'none'; // Toggle visibility
-                this.textContent = isHidden ? 'Read Less' : 'Read More'; // Update button text
-            });
-        });
+    shortEl.innerText = fullMessage.slice(0, limit);
+    moreEl.innerText = fullMessage.slice(limit);
+
+    toggleBtn.addEventListener('click', function () {
+      const isHidden = moreEl.classList.contains('d-none');
+      moreEl.classList.toggle('d-none');
+      toggleBtn.innerHTML = isHidden
+        ? 'Read Less <i class="fas fa-chevron-up ms-1"></i>'
+        : 'Read More <i class="fas fa-chevron-down ms-1"></i>';
     });
+  });
 </script>
 
-  
 {% endblock content %}
-
-    
