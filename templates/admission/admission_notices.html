@@ -1,28 +1,19 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block title %}WMES | Payment{% endblock title %}
+{% block title %}WMES | Notice{% endblock title %}
 {% block content %}
 
 
+<section class="notice_area container-fluid">
 
+  <div class="row">
+    <div class="col-12 my-5 col-sm-12 col-md-12 col-lg-12 col-xl-10 col-xxl-10 mx-auto">
+      <div class="row">
 
-
-
-
-<div class="notification_area  pt-4 pb-5 bg-white">
-
-    <div class="row">
-
-        <div class="col-12 col-md-11 col-lg-10 mx-auto">
-            <div class="row">
-
-
-
-                 <!-- Left Column -->
-      <div class="col-11 col-md-6 mx-auto">
+  <div class="col-12 col-sm-12 col-md-10 col-lg-6 col-xl-6 mx-auto">
         <!-- Admission Dates Section -->
-        <div class="admission_date_details mt-4">
-          <div class="table-responsive rounded-3 shadow-lg  px-2 py-3 bg-light">
+        <div class="admission_date_details px-3 pt-2 pb-4 shadow rounded-2 ">
+          <div class="table-responsive rounded-3    bg-light">
             <h6 class="fw-bold text-center fst-italic">Date to Remember</h6>
             {% if admission_details %}
             <table class="table table-bordered align-middle shadow-sm rounded-3 overflow-hidden">
@@ -34,15 +25,15 @@
                 </tr>
               </thead>
               <tbody>
-                <tr><td class="fw-bold">Intake</td><td class="text-center">:</td><td class="text-center fw-bold">{{ admission_details.intake_name|default_if_none:"" }}</td></tr>
-                <tr><td class="fw-bold">Start Application</td><td class="text-center">:</td><td class="text-success text-center fw-bold">{{ admission_details.start_date|default_if_none:"" }}</td></tr>
-                <tr><td class="fw-bold">Availability of Application</td><td class="text-center">:</td><td class="fw-bold text-danger text-center">{{ admission_details.end_date|default_if_none:"" }}</td></tr>
-                <tr><td class="fw-bold">Admit Download</td><td class="text-center">:</td><td class="text-center">{{ admission_details.admit_download|default_if_none:"" }}</td></tr>
-                <tr><td class="fw-bold">Admission Test</td><td class="text-center">:</td><td class="fw-bold text-success text-center">{{ admission_details.admission_test|default_if_none:"" }}</td></tr>
-                <tr><td class="fw-bold">Publication of Result</td><td class="text-center">:</td><td class="text-center">{{ admission_details.result_publish|default_if_none:"" }}</td></tr>
-                <tr><td class="fw-bold">Admission from the Merit List</td><td class="text-center">:</td><td class="text-center">{{ admission_details.merit_list_admission|default_if_none:"" }}</td></tr>
-                <tr><td class="fw-bold">Admission from the Waiting List</td><td class="text-center">:</td><td class="text-center">{{ admission_details.waiting_list_admission|default_if_none:"" }}</td></tr>
-                <tr><td class="fw-bold">Orientation</td><td class="text-center">:</td><td class="fw-bold text-success text-center">{{ admission_details.orientation|default_if_none:"" }}</td></tr>
+                <tr><td >Intake</td><td class="text-center">:</td><td class="text-center ">{{ admission_details.intake_name|default_if_none:"" }}</td></tr>
+                <tr><td >Start Application</td><td class="text-center">:</td><td class="text-success text-center">{{ admission_details.start_date|default_if_none:"" }}</td></tr>
+                <tr><td >Availability of Application</td><td class="text-center">:</td><td class=" text-danger text-center">{{ admission_details.end_date|default_if_none:"" }}</td></tr>
+                <tr><td >Admit Download</td><td class="text-center">:</td><td class="text-center">{{ admission_details.admit_download|default_if_none:"" }}</td></tr>
+                <tr><td >Admission Test</td><td class="text-center">:</td><td class="fw-bold text-success text-center">{{ admission_details.admission_test|default_if_none:"" }}</td></tr>
+                <tr><td >Publication of Result</td><td class="text-center">:</td><td class="text-center">{{ admission_details.result_publish|default_if_none:"" }}</td></tr>
+                <tr><td >Admission from the Merit List</td><td class="text-center">:</td><td class="text-center">{{ admission_details.merit_list_admission|default_if_none:"" }}</td></tr>
+                <tr><td >Admission from the Waiting List</td><td class="text-center">:</td><td class="text-center">{{ admission_details.waiting_list_admission|default_if_none:"" }}</td></tr>
+                <tr><td >Orientation</td><td class="text-center">:</td><td class=" text-success text-center">{{ admission_details.orientation|default_if_none:"" }}</td></tr>
               </tbody>
             </table>
             {% else %}
@@ -52,7 +43,7 @@
             {% endif %}
 
             <!-- Helpline -->
-            <div class="card border-0 shadow mt-4">
+            <div class="card border-0  mt-4">
               <div class="card-header text-white py-2" style="background: linear-gradient(135deg, #e9cd79, #db9327); border-radius: 8px 8px 0 0;">
                 <h5 class="mb-0 text-center fw-bold"><i class="fa-solid fa-circle-info"></i> Helpline</h5>
               </div>
@@ -77,8 +68,9 @@
           </div>
         </div>
 
+
         <!-- Notices -->
-        <div class="list-group my-4 shadow-sm">
+        <div class="list-group my-4 ">
           <h5 class="mb-3 fw-bold text-primary">Notices</h5>
           {% for notice in notices %}
           <a href="?notice_id={{ notice.id }}" class="list-group-item list-group-item-action {% if notice == selected_notice %}active{% endif %}">
@@ -89,29 +81,25 @@
           {% endfor %}
         </div>
       </div>
-
-      <!-- Right Column -->
    
 
-      <!-- Right Column: PDF Preview -->
-<div class="col-11 col-md-6 mt-4 mx-auto">
+
+        <div class="col-12 col-sm-12 col-md-10 col-lg-6 col-xl-6 mx-auto">
   {% if selected_notice %}
-  <div class="embed-responsive show active shadow rounded-3 overflow-hidden">
-    <iframe src="{{ selected_notice.pdf_file.url }}" width="100%" height="800px" title="Selected PDF"></iframe>
+  <div class="embed-responsive show active  rounded-3 overflow-hidden" >
+    <iframe src="{{ selected_notice.pdf_file.url }}"  width="100%" height="800px" title="Selected PDF"></iframe > 
   </div>
   {% endif %}
-</div>
-
-            </div>
-        </div>
+</div>  
 
 
 
 
-     
+
+      </div>
     </div>
-
-</div>
+  </div>
+</section>
 
 
 
