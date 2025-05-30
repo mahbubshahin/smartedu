@@ -29,7 +29,7 @@ class CustomUserAdmin(admin.ModelAdmin):  # 🔁 আগে ছিল UserAdmin, 
         'is_email_verified', 'is_active', 'is_staff', 'created_at',
     )
 
-    list_filter = ('role', 'is_active', 'is_staff', 'groups')
+    list_filter = ('role', 'roll_number', 'intake', 'is_active', 'is_staff', 'groups')
     search_fields = ('full_name', 'email', 'roll_number', 'mobile_number')
     ordering = ('-created_at',)
 

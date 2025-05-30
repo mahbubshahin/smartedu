@@ -4,75 +4,86 @@
 {% block content %}
 
 
-<div class="activity-details my-4">
-    <div class="container">
-        <div class="details-wrapper">
-            <div class="d-flex justify-content-center text-center mb-4">
-                <img src="/static/img/JU_logo.png" alt="logo" class=" " style="width: 100px; height: auto;">
-                <div class="ms-2">
-                    <p class="mb-0">
-                        <span style="font-size: large; font-weight: bold">
-                            Masters in Environmental Sciences and Management<br/>
-                        </span> (Under the Weekend Program) <br>
-                        Department of Environmental Sciences<br/>
-                        Jahangirnagar University, Savar, Dhaka-1342.
-                    </p>
-                </div>
-            </div>
+<section class="container-fluid">
+  <div class="row justify-content-center">
+    <div class="col-auto d-flex align-items-center mx-auto">
 
-            <div class="row">
-                <div class="col-10 mx-auto">
+      <img src="/static/img/JU_logo.png" alt="logo" class="img-fluid" style="width: 120px; height: auto; margin-right: -6px;">
+
+      <p class="mb-0" style="font-weight: 500; font-size: 0.9rem; line-height: 1.2; margin-left: 0;">
+        <strong style="font-size: 1.1rem; display: block;">
+          Masters in Environmental Sciences and Management
+        </strong>
+        (Under the Weekend Program) <br>
+        Department of Environmental Sciences <br>
+        Jahangirnagar University, Savar, Dhaka-1342.
+      </p>
+
+    </div>
+  </div>
+</section>
+
+
+<section class="container-fluid">
+    <div class="row">
+        <div class="col-12 col-sm-11 col-md-10 col-lg-10 col-xl-9 col-xxl-9 mx-auto ">
+
+
                      <h4 class="text-center mb-3"><u><strong>Syllabus</strong></u></h4>
                 <h5><strong>Sessions: Spring 2024 - Fall 2030</strong></h5>
+                
                 <p>
-                    To obtain the Master of Science (MSc) degree in Environmental Sciences and Management under the Weekend Program, a student is required to complete a <span class="fw-bold">total of 36 credit</span> hours, structured as follows: <br>
+  To obtain the Master of Science (MSc) degree in Environmental Sciences and Management under the Weekend Program, a student is required to complete a 
+  <span class="fw-bold">total of 36 credits</span>, structured as follows: <br>
 
-<span class="fw-bold mt-4">Semester 1:</span>Five (5) prescribed courses of 3 credit hours each (total 15 credits). <br>
+  <span class="fw-bold mt-4">Semester 1:</span> Five (5) prescribed courses of 3 credits each (total 15 credits). <br>
 
-<span class="fw-bold">Semester 2:</span>Five (5) elective courses of 3 credit hours each (total 15 credits). <br>
+  <span class="fw-bold">Semester 2:</span> Five (5) elective courses of 3 credits each (total 15 credits). <br>
 
-<span class="fw-bold">Semester 3:</span> A thesis or module course worth 5 credit hours, and a viva voce worth 1 credit (total 6 credits).
-                </p>
-                </div>
-               
-            </div>
+  <span class="fw-bold">Semester 3:</span> A thesis or module course worth 5 credits, and a viva voce worth 1 credit (total 6 credits).
+</p>
 
-            <div class="row mt-2">
-                <div class="col-md-10 mx-auto">
-                    <div class="details-item">
-                        <table class="table table-responsive table-bordered">
-                            <thead>
-                                <tr>
-                                    <th colspan="4" class="text-center text-white" style="background-color: #f0ad4e">
-                                        <h4 class="mb-0 py-2">All Courses</h4>
-                                    </th>
-                                </tr>
-                                <tr>
-                                    <th>SL.</th>
-                                    <th>Course Code</th>
-                                    <th>Course Title</th>
-                                    <th>Credit Hrs.</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for course in syllabus %}
-                                <tr>
-                                    <td>{{ forloop.counter }}</td>
-                                    <td>{{ course.course_code }}</td>
-                                    <td>{{ course.course_name }}</td>
-                                    <td>{{ course.credit }}</td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
 
         </div>
     </div>
+
+
+      <div class="row mt-2">
+                <div class="col-12 col-sm-11 col-md-10 col-lg-10 col-xl-9 col-xxl-9 mx-auto">
+                
+
+
+                    <div class="details-item">
+  <table class="table table-bordered align-middle text-center">
+    <thead>
+      <tr>
+        <th colspan="4" class="text-white" style="background-color: #f0ad4e;">
+          <h4 class="mb-0 py-2">All Courses</h4>
+        </th>
+      </tr>
+      <tr style="height: 50px;">
+        <th style="width: 5%;">SL.</th>
+        <th style="width: 10%;">Course Code</th>
+        <th style="width: 80%;">Course Title</th>
+        <th style="width: 5%;">Credit</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for course in syllabus %}
+      <tr style="height: 60px;">
+        <td class="align-middle">{{ forloop.counter }}</td>
+        <td class="align-middle">{{ course.course_code }}</td>
+        <td class="align-middle text-start ps-2">{{ course.course_name }}</td>
+        <td class="align-middle">{{ course.credit }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 </div>
 
+                </div>
+            </div>
+</section>
 
  
 {% endblock content %}

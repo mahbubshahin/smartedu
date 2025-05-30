@@ -7,14 +7,14 @@
 
 {% block content %}
 
+<section class="container-fluid dashboard">
+<div class="row">
+  <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-10 col-xxl-10 mx-auto ">
 
-<section >
-    <div class="applicant_dashboard">
-        <div class="container-fluid " >
-            <div class="container-fluid">
-                <div class="row mx-md-1">
-                  <!-- Sidebar -->
-                  <div class="col-12 col-md-3 mt-3">
+    <div class="row">
+
+      <!-- Sidebar -->
+                  <div class="col-12 col-sm-12  col-md-4 mt-3">
                   
                     <!-- templates/manager/manager_sidebar.html -->
 
@@ -56,9 +56,8 @@
   
   
                   </div>
-              
-                  <!-- Main Content -->
-                  <div class="col-12 col-md-9 bg-white" style="min-height: 100vh;">
+
+                    <div class="col-12 col-sm-12 col-md-8 bg-white" style="min-height: 100vh;">
 
                     {% block applicant_dashboard %}
 
@@ -69,9 +68,9 @@
                     {% else %}
                       
 
-                    <div class="profile_statuse my-5">
+                    <div class="profile_statuse my-2">
                       <div class="card shadow-sm border-0 rounded-4">
-                        <div class="card-body p-4">
+                        <div class="card-body py-2 px-1 px-sm-2 px-md-2 px-lg-2 px-xl-3">
                           <h3 class="text-primary fw-bold mb-3">
                             <i class="fas fa-calendar-alt me-2"></i>Admission Intake: {{ intake_name }}
                           </h3>
@@ -80,7 +79,7 @@
                             You can update your profile <strong>until payment is completed.</strong>
                           </p>
                           <div class="table-responsive mt-4">
-                            <table class="table table-striped table-hover align-middle">
+                            <table class="table  table align-middle">
                               <thead class="table-primary text-white">
                                 <tr>
                                   <th>SL</th>
@@ -94,22 +93,22 @@
                                 <tr>
                                   <td>1</td>
                                   <td class="text-start">
-                                    <i class="fas fa-user-check me-2 text-success"></i> Profile Completion
+                                    <i class="fas fa-user-check text-success"></i> Profile Completion
                                   </td>
                                   <td>
                                     {% if profile_complete %}
-                                      <span class="badge bg-success rounded-pill px-3 py-2">
+                                      <span class="badge bg-success rounded-pill  py-2">
                                         <i class="fas fa-check-circle me-1"></i> Completed
                                       </span>
                                     {% else %}
                                       <span class="badge bg-danger rounded-pill px-3 py-2">
-                                        <i class="fas fa-times-circle me-1"></i> Incomplete
+                                        <i class="fas fa-times-circle "></i> Incomplete
                                       </span>
                                     {% endif %}
                                   </td>
                                   <td>
                                     <a href="{% url 'personal_info' %}" class="btn btn-outline-primary btn-sm rounded-pill {% if payment_complete %}disabled{% endif %}">
-                                      <i class="fas fa-user-edit me-1"></i> Manage
+                                      <i class="fas fa-user-edit"></i> Manage
                                     </a>
                                   </td>
                                 </tr>
@@ -205,12 +204,13 @@
                   {% endblock %}
     
 
-
                   </div>
-                </div>
-              </div>
-              
+
     </div>
+
+  </div>
+</div>
+
 </section>
 
 

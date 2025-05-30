@@ -64,8 +64,8 @@ admin.site.register(Photo, PhotoAdmin)
 
 
 class PaymentAdmin(admin.ModelAdmin):
-    list_display = ('applicant', 'transaction_id', 'amount', 'payment_method', 'status', 'created_at')
-    list_filter = ('status', 'payment_method', 'created_at')
+    list_display = ('applicant', 'transaction_id', 'amount', 'payment_method', 'status', 'applicant__intake', 'created_at')
+    list_filter = ('status', 'applicant__intake', 'payment_method', 'created_at')
     search_fields = ('applicant__full_name', 'transaction_id')
     ordering = ('-created_at',)
 

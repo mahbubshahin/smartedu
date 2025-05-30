@@ -5,9 +5,9 @@
 <section class="registration  container-fluid my-5">
     <div class="row">
 
-        <div class="col-12 col-sm-12 col-md-11 col-lg-10 col-xl-9 col-xxl-9 mx-auto">
+        <div class="col-12 col-sm-12 col-md-10 col-lg-10 col-xl-9 col-xxl-9 mx-auto">
             <div class="row">
-                <div class="col-11 col-sm-11 col-md-10 col-lg-8 col-xl-7  mx-auto bg-light rounded-3 shadow-lg px-2 py-3 px-sm-2 py-sm-3 px-md-3 px-lg-4 py-lg-3 px-xl-5">
+                <div class="col-11 col-sm-11 col-md-10 col-lg-8 col-xl-7  mx-auto bg-light rounded-3 shadow px-2 py-3 px-sm-2 py-sm-3 px-md-3 px-lg-4 py-lg-3 px-xl-5">
 
 
 <!-- Display Messages -->
@@ -88,29 +88,61 @@
                             <input type="text" class="form-control" id="username" name="username" placeholder="Enter your user name" required>
                             <label for="username">Username <span class="text-danger">*</span></label>
                         </div>
-                        <div class="form-floating mb-2">
-                            <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" required>
-                            <label for="email">Email <span class="text-danger">*</span></label>
-                        </div>
+                 
+
+
+                        
+
+                        
+                        <div class="mb-2">
+  <div class="row g-2 align-items-start">
+    <div class="col-12">
+      <div class="form-floating">
+        <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" required style="height: 58px;">
+        <label for="email">Email <span class="text-danger">*</span></label>
+      </div>
+      <!-- Input field এর ঠিক নিচে ছোট ফন্টে ইংরেজি লেখা -->
+      <small class="text-muted ms-1 d-block" style="font-size: 0.75rem; margin-top: 2px;">
+        A verification code will be sent to your email.
+      </small>
+    </div>
+  </div>
+</div>
+
                         <div class="form-floating mb-2">
                             <input type="number" class="form-control" id="mobile_number" name="mobile_number" placeholder="Enter your mobile number" required>
                             <label for="mobile_number">Mobile <span class="text-danger">*</span></label>
                         </div>
-                        <div class="mb-2">
-                            <div class="row g-2 align-items-center">
-                                <div class="col-10">
-                                    <div class="form-floating">
-                                        <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password" required>
-                                        <label for="password">Password <span class="text-danger">*</span></label>
-                                    </div>
-                                </div>
-                                <div class="col-2">
-                                    <button type="button" class="btn btn-outline-secondary w-100" onclick="togglePassword('password', 'toggle-icon-password')" style="height: 58px;">
-                                        <i class="fas fa-lock" id="toggle-icon-password"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
+                  
+
+
+<div class="mb-2">
+  <div class="row g-2 align-items-start">
+    <div class="col-10">
+      <div class="form-floating">
+        <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password" required style="height: 58px;">
+        <label for="password">Password <span class="text-danger">*</span></label>
+      </div>
+      <!-- Input field এর ঠিক নিচে ছোট ফন্টে ইংরেজি লেখা -->
+      <small class="text-muted ms-1 d-block" style="font-size: 0.75rem; margin-top: 2px;">
+        Password must be at least 8 characters long.
+      </small>
+    </div>
+
+    <div class="col-2">
+      <button type="button" class="btn btn-outline-secondary w-100" onclick="togglePassword('password', 'toggle-icon-password')" style="height: 58px;">
+        <i class="fas fa-lock" id="toggle-icon-password"></i>
+      </button>
+    </div>
+  </div>
+</div>
+
+               
+
+
+
+
+
                         <div class="mb-2">
                             <div class="row g-2 align-items-center">
                                 <div class="col-10">
@@ -134,15 +166,15 @@
 <!-- CAPTCHA (only for first submission) -->
 <div class="mb-2">
   <div class="row g-2 align-items-center">
-    <div class="col-6">
+    <div class="col-5">
       <div class="form-floating">
         <input type="text" class="form-control" id="captcha" name="captcha" placeholder="Enter CAPTCHA" required>
         <label for="captcha">Enter Captcha</label>
       </div>
     </div>
-    <div class="col-4 p-0">
+    <div class="col-5 p-0">
       <div id="captcha-text" class="form-control rounded border d-flex justify-content-center align-items-center" 
-           style="height:58px; padding:0 10px; font-size:1.5rem; text-transform:uppercase; letter-spacing:5px; 
+           style="height:58px; padding:0 10px; font-size:1.2rem; text-transform:uppercase; letter-spacing:5px; 
                   background:rgba(255,255,255,0.25); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); 
                   border:1px solid rgba(255,255,255,0.18); user-select:none; overflow:hidden; position:relative;">
         {{ captcha }}
@@ -157,6 +189,18 @@
 
                     
                         <button type="submit" class="btn btn-primary w-100 mt-4">Submit</button>
+
+
+
+                         <!-- Links -->
+                            <div class="d-flex my-2 justify-content-between mb-3">
+                                <p class="mb-0">
+                                    <a href="{% url 'login' %}" class="text-dark small fw-bold text-decoration-none">already have an account?</a>
+                                </p>
+                                <p class="mb-0">
+                                    <a href="{% url 'applicant_forgot_password' %}" class="text-dark small fw-bold text-decoration-none">Forgot password?</a>
+                                </p>
+                            </div>
 
                     {% else %}
                         <!-- OTP verification only (no CAPTCHA here) -->

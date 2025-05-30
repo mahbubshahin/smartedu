@@ -7,35 +7,25 @@
 
 
  
+<section class="academic_qualifications container-fluid" >
 
-<section class="academic_qualifications " >
+    {% include 'admission/admission_Process.html' %}
 
-    <div class=" container  mt- ">
-       
-        <div class="row">
-           
-           
-            <div class="col-11  mx-auto  rounded  pt-4 ">
+<div class="row">
+    <div class="col-12  col-sm-12 col-md-11 col-lg-10 col-xl-8 col-xxl-8 mx-auto rounded  shadow bg-white pt-4 my-2">
 
-                {% include 'admission/admission_Process.html' %}
-            </div>
-
-    
-
-
-          <div class="col-10 mx-auto mb-4 mt-3 rounded shadow bg-white px-4 py-4">
-            <form action="{% url 'academic_qualification' %}"  method="POST" enctype="multipart/form-data">
+             <form action="{% url 'academic_qualification' %}"  method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
         
-                <div class="card p-3 border border-success rounded-3">
+                <div class="card px-1 px-sm-2 px-md-2 px-lg-3 py-3 border border-success rounded-3">
                     <!-- Outer Title -->
-                    <div class="position-absolute top-0 start-50 translate-middle px-5 py-1 bg-success text-white fw-bold rounded-5">
+                    <div class="position-absolute top-0 start-50 translate-middle px-2 px-sm-2 px-md-3  py-1 bg-success text-white fw-bold rounded-5">
                         Academic qualifications
                     </div>
         
-                    <div class="p-3 border border-primary rounded-3 mt-4 position-relative">
+                    <div class="p-2 p-sm-2 p-md-3 border border-primary rounded-3 mt-4 position-relative">
                         <!-- Inner Title -->
-                        <div class="position-absolute top-0 start-50 translate-middle px-4 py-1 bg-primary text-white rounded-3">
+                        <div class="position-absolute top-0 start-50 translate-middle px-2 px-sm-2 px-md-3 py-1 bg-primary text-white rounded-3">
                             Applicant Name: {{ applicant.applicant_name }}
                         </div>
         
@@ -312,34 +302,52 @@
                                 
 <div class="row">
 <!-- Left column with form fields -->
+<span>If needed, resize them <a href="{% url 'image_resize' %}" target="_blank" class="text-decoration-none text-danger fw-semibold">(Click here)</a></span>
+<!-- Left column with form fields -->
 <div class="col-md-6 mt-2">
-    <div class="mb-3">
-        <div class="form-floating">
-            <input class="form-control" type="file" id="graduation_certificate_input" name="graduation_certificate" accept="image/*" >
-            <label for="graduation_certificate_input">Graduation Certificate (300x300px)</label>
-        </div>
+  <!-- Graduation Certificate -->
+  <div class="mb-3">
+    <div class="form-floating">
+      <input
+        class="form-control"
+        type="file"
+        id="graduation_certificate_input"
+        name="graduation_certificate"
+        accept="image/*"
+        {% if not academic_info.graduation_certificate %}required{% endif %}
+      >
+      <label for="graduation_certificate_input">Graduation Certificate (300x300)</label>
     </div>
+  </div>
 
-    <div class="">
-        <div class="form-floating">
-            <input class="form-control" type="file" id="graduation_transcript_input" name="graduation_transcript" accept="image/*" >
-            <label for="graduation_transcript_input">Graduation Transcript (300x300px)</label>
-        </div>
+  <!-- Graduation Transcript -->
+  <div>
+    <div class="form-floating">
+      <input
+        class="form-control"
+        type="file"
+        id="graduation_transcript_input"
+        name="graduation_transcript"
+        accept="image/*"
+        {% if not academic_info.graduation_transcript %}required{% endif %}
+      >
+      <label for="graduation_transcript_input">Graduation Transcript (300x300)</label>
     </div>
+  </div>
 
-                                    <!-- Hidden default images from DB -->
-{% if academic_info.graduation_certificate %}
-<img id="default_certificate_image" src="{{ academic_info.graduation_certificate.url }}" hidden>
-{% endif %}
-{% if academic_info.graduation_transcript %}
-<img id="default_transcript_image" src="{{ academic_info.graduation_transcript.url }}" hidden>
-{% endif %}
-
+  <!-- Hidden default images from DB -->
+  {% if academic_info.graduation_certificate %}
+  <img id="default_certificate_image" src="{{ academic_info.graduation_certificate.url }}" hidden>
+  {% endif %}
+  {% if academic_info.graduation_transcript %}
+  <img id="default_transcript_image" src="{{ academic_info.graduation_transcript.url }}" hidden>
+  {% endif %}
 </div>
+
 
 <!-- Right column with canvas for images -->
 <div class="col-md-6">
-    <div class="border rounded shadow-sm p-3 bg-light">
+    <div class="border rounded shadow-sm px-3 py-4 bg-light">
         <div class="d-flex justify-content-center gap-2">
             <div class="text-center">
                 <canvas id="graduation_certificate_canvas" width="300" height="300" class="img-thumbnail"></canvas>
@@ -456,27 +464,23 @@
 
                 
                 <!-- Navigation Buttons -->
-                <div class="row d-flex justify-content-between mt-3">
-                    <div class="col-12 col-md-6 text-start">
+                <div class="row d-flex justify-content-between my-3">
+                    <div class="col-6 col-md-6 text-start">
                         <a href="{% url 'personal_info' %}" class="btn btn-light text-primary hover-btn">
                             <i class="fa fa-arrow-circle-left"></i> Previous
                         </a>
                     </div>
         
-                    <div class="col-12 col-md-6 text-end">
+                    <div class="col-6 col-md-6 text-end">
                         <button type="submit" class="btn btn-light hover-btn text-primary ">Submit <i class="fa fa-arrow-circle-right"></i></button>
                     </div>
                 </div> <!-- End of Navigation Buttons -->
         
             </form>
-        </div>
-        
-           
-                <!-- End Outer Section -->
-            </div>
-        </div>
     </div>
-    
+</div>
+
+
     
     </section>
 
@@ -575,8 +579,58 @@
     });
 </script>
 
-         
+     
 
+<script>
+["certificate", "transcript"].forEach(type => {
+  const input = document.getElementById(`graduation_${type}_input`);
+  const defImg = document.getElementById(`default_${type}_image`);
+
+  // Optional: create canvas dynamically
+  let canvas = document.getElementById(`graduation_${type}_canvas`);
+  if (!canvas) {
+    canvas = document.createElement("canvas");
+    canvas.id = `graduation_${type}_canvas`;
+    canvas.width = 300;
+    canvas.height = 300;
+    input.parentElement.appendChild(canvas);
+  }
+
+  const ctx = canvas.getContext("2d");
+
+  // Show existing image from DB if exists
+  if (defImg?.src) {
+    const img = new Image();
+    img.onload = () => ctx.drawImage(img, 0, 0, 300, 300);
+    img.src = defImg.src;
+  }
+
+  // On user input
+  input.onchange = e => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = ev => {
+      const img = new Image();
+      img.onload = () => {
+        if (img.width !== 300 || img.height !== 300) {
+          alert("Only 300x300px images allowed.");
+          input.value = "";
+          ctx.clearRect(0, 0, 300, 300);
+        } else {
+          ctx.clearRect(0, 0, 300, 300);
+          ctx.drawImage(img, 0, 0, 300, 300);
+        }
+      };
+      img.src = ev.target.result;
+    };
+    reader.readAsDataURL(file);
+  };
+});
+</script>
+
+
+<!-- 
 <script>
 ["certificate", "transcript"].forEach(type => {
   const input = document.getElementById(`graduation_${type}_input`);
@@ -601,7 +655,7 @@
     reader.readAsDataURL(file);
   };
 });
-</script>
+</script> -->
 
 
 <script>

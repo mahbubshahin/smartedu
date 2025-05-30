@@ -3,10 +3,13 @@
 {% block manager_dashboard %}
 
 
-<div class="container py-4 min-vh-100">
 
-  <!-- 🔍 Batch Filter -->
-  <form action="{% url 'applicant_status' %}" method="GET" class="mb-4 text-center">
+
+<section class="pt-2 pb-5 ">
+
+  <div class="row">
+    <div class="col-12">
+        <form action="{% url 'applicant_status' %}" method="GET" class="mb-4 text-center">
     <label for="batch_name" class="form-label fw-semibold fs-5">🎯 Select Batch:</label>
     <select name="batch_name" id="batch_name" class="form-select d-inline-block w-auto ms-2" onchange="this.form.submit()">
       <option value="">-- Select Batch --</option>
@@ -15,15 +18,16 @@
       {% endfor %}
     </select>
   </form>
+    </div>
+
+  </div>
 
   {% if selected_batch %}
-  <!-- 📊 Stats Cards -->
-  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-3 text-center">
-
-    <!-- Registration Summary -->
-    <div class="col">
+<div class="row gx-2 gx-sm-2 gx-md-3 gx-lg-2  ">
+     <!-- Registration Summary -->
+    <div class="col-6 col-sm-6 col-md-6 col-lg-3 col-xl-3 col-xxl-3 mb-3 mb-sm-3 mb-md-3 mb-lg-0">
       <div class="card border-0 shadow-sm">
-        <div class="card-header bg-secondary text-white py-2 fw-bold">📝 Registration</div>
+        <div class="card-header bg-secondary text-white py-2 fw-bold"> Registration</div>
         <div class="card-body bg-light p-2">
           <div class="row align-items-center text-center g-0 justify-content-center">
             <div class="col py-1">
@@ -40,9 +44,9 @@
     </div>
 
     <!-- Profile -->
-    <div class="col">
+    <div class="col-6 col-sm-6 col-md-6 col-lg-3 col-xl-3 col-xxl-3 mb-3 mb-sm-3 mb-md-3 mb-lg-0">
       <div class="card border-0 shadow-sm">
-        <div class="card-header bg-success text-white py-2 fw-bold">👤 Profile</div>
+        <div class="card-header bg-success text-white py-2 fw-bold">Profile</div>
         <div class="card-body bg-light p-2">
           <div class="row align-items-center text-center g-0">
             <!-- Completed -->
@@ -76,9 +80,9 @@
     </div>
 
     <!-- Payment Summary -->
-    <div class="col">
+    <div class="col-6 col-sm-6 col-md-6 col-lg-3 col-xl-3 col-xxl-3">
       <div class="card border-0 shadow-sm">
-        <div class="card-header bg-primary text-white py-2 fw-bold">💳 Payment</div>
+        <div class="card-header bg-primary text-white py-2 fw-bold">Payment</div>
         <div class="card-body bg-light p-2">
           <div class="row align-items-center text-center g-0">
             <!-- Paid -->
@@ -112,9 +116,9 @@
     </div>
 
     <!-- Payment Method -->
-    <div class="col">
+    <div class="col-6 col-sm-6 col-md-6 col-lg-3 col-xl-3 col-xxl-3">
       <div class="card border-0 shadow-sm">
-        <div class="card-header bg-warning text-white py-2 fw-bold">📂 Payment History</div>
+        <div class="card-header bg-warning text-white py-  fw-bold">Payment History</div>
         <div class="card-body bg-light p-2">
           <div class="row align-items-center text-center g-0">
             <!-- Bkash -->
@@ -160,13 +164,12 @@
       </div>
     </div>
 
-  </div>
+</div>
 
-  <!-- 📋 Payment Details -->
   {% if show_details %}
   <div id="payment-details" class="row mt-4 g-4">
     <!-- Bkash Payments -->
-    <div class="col-md-6">
+    <div class="col-6">
       <div class="card border-0 shadow-sm h-100">
         <div class="card-header bg-info text-white fw-bold d-flex justify-content-between align-items-center">
           <span>📲 Bkash Payments</span>
@@ -195,7 +198,7 @@
     </div>
 
     <!-- Nagad Payments -->
-    <div class="col-md-6">
+    <div class="col-6">
       <div class="card border-0 shadow-sm h-100">
         <div class="card-header bg-danger text-white fw-bold d-flex justify-content-between align-items-center">
           <span>📲 Nagad Payments</span>
@@ -223,9 +226,12 @@
       </div>
     </div>
   </div>
+
+   {% endif %}
   {% endif %}
-  {% endif %}
-</div>
+</section>
+
+
 
 <script>
   document.addEventListener("DOMContentLoaded", function () {

@@ -1,19 +1,122 @@
 
-<section class="noPrint main_gallery">
-  <div class="header d-flex align-items-center justify-content-center bg-white py-2">
-    <img src="/static/img/JU_logo.png" alt="logo" class="me-2 d-none d-md-block" style="width: 100px;">
-    <img src="/static/img/JU_logo.png" alt="logo" class="me-2 d-block d-md-none" style="width: 90px;">
+<style>
+  /* Default (xs < 576px) */
+  .header-logo {
+    width: 60px;
+  }
+  .header-title {
+    font-size: 0.6rem;
+  }
+  .header-subtitle {
+    font-size: 0.55rem;
+  }
 
-    <div class="header-text text-center">
-      <h5 class="fw-bold mb-0" style="font-family: 'Georgia', serif; color: #003c78;">
-        Weekend Masters in Environmental Sciences and Management
-      </h5>
-      <p class="fw-bold mb-0" style="font-family: 'Courier New', monospace; color: #011213;">
-        Department of Environmental Science, Jahangirnagar University
+  /* ≥576px */
+  @media (min-width: 576px) {
+    .header-logo {
+      width: 70px;
+    }
+    .header-title {
+      font-size: 0.75rem;
+    }
+    .header-subtitle {
+      font-size: 0.7rem;
+    }
+  }
+
+  /* ≥768px */
+  @media (min-width: 768px) {
+    .header-logo {
+      width: 80px;
+    }
+    .header-title {
+      font-size: 0.9rem;
+    }
+    .header-subtitle {
+      font-size: 0.85rem;
+    }
+  }
+
+  /* ≥992px */
+  @media (min-width: 992px) {
+    .header-logo {
+      width: 90px;
+    }
+    .header-title {
+      font-size: 1rem;
+    }
+    .header-subtitle {
+      font-size: 0.95rem;
+    }
+  }
+
+  /* ≥1200px */
+  @media (min-width: 1200px) {
+    .header-logo {
+      width: 100px;
+    }
+    .header-title {
+      font-size: 1.2rem;
+    }
+    .header-subtitle {
+      font-size: 1.1rem;
+    }
+  }
+
+  /* ≥1400px */
+  @media (min-width: 1400px) {
+    .header-logo {
+      width: 110px;
+    }
+    .header-title {
+      font-size: 1.4rem;
+    }
+    .header-subtitle {
+      font-size: 1.3rem;
+    }
+  }
+
+  /* ≥1629px */
+  @media (min-width: 1629px) {
+    .header-logo {
+      width: 120px;
+    }
+    .header-title {
+      font-size: 1.6rem;
+    }
+    .header-subtitle {
+      font-size: 1.5rem;
+    }
+  }
+</style>
+
+<section class="container-fluid noPrint main_gallery " style="background-color: lab(100% 0.01 -0.01); box-shadow: 0 0 40px rgba(255,255,255,0.7);">
+  <div class="d-flex align-items-center justify-content-center py-1">
+
+    <!-- Responsive Logo -->
+    <img src="/static/img/JU_logo.png" alt="logo" 
+         class="img-fluid header-logo me-2" 
+         style="margin: 0; padding: 0;">
+
+    <!-- Responsive Text -->
+    <div class="text-start" style="margin: 0; padding: 0;">
+      <h6 class="fw-bold mb-0 header-title"
+          style="font-family: 'Georgia', serif; color: #003c78;">
+        Masters in Environmental Sciences and Management
+      </h6>
+
+      <p class="fw-bold mb-0 header-subtitle"
+         style="font-family: 'Courier New', monospace; color: #011213;">
+         (Under the Weekend Program)<br>
+         Department of Environmental Science, Jahangirnagar University
       </p>
     </div>
+
   </div>
 </section>
+
+
+
 
 
 <section class="navbar_section container-fluid  sticky-top" style="background: darkcyan;">
@@ -57,32 +160,31 @@
 
       
 
-        <!-- Profile Dropdown -->
-        <li class="nav-item dropdown" >
-          {% if request.user.is_authenticated %}
-            <a class="nav-link dropdown-toggle fw-bold text-white" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              {{ request.user.username }}
-            </a>
-            <ul class="dropdown-menu dropdown-menu-end  border-0 rounded-0" aria-labelledby="profileDropdown" style="background: darkcyan;">
-              {% if request.user.role == 'applicant' %}
-                <li><a class="dropdown-item  py-1 px-2" href="{% url 'applicant_dashboard' %}">Dashboard</a></li>
-              {% elif request.user.role == 'teacher' %}
-                <li><a class="dropdown-item py-1 px-2" href="{% url 'teacher_dashboard' %}">Dashboard</a></li>
-              {% elif request.user.role == 'student' %}
-                <li><a class="dropdown-item py-1 px-2" href="{% url 'student_dashboard' %}">Dashboard</a></li>
-              {% elif request.user.role == 'manager' %}
-                <li><a class="dropdown-item py-1 px-2" href="{% url 'manager_dashboard' %}">Dashboard</a></li>
-              {% else %}
-                <li><a class="dropdown-item py-1 px-2" href="{% url 'home' %}">🏠 Home</a></li>
-              {% endif %}
-      
-              <li><a class="dropdown-item px-2 py-1" href="{% url 'applicant_logout' %}" onclick="confirmLogout(event)">Logout</a></li>
+       <!-- Profile Dropdown -->
+<li class="nav-item dropdown">
+  {% if request.user.is_authenticated %}
+    <a class="nav-link dropdown-toggle fw-bold text-white" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+      {{ request.user.username }}
+    </a>
+    <ul class="dropdown-menu dropdown-menu-start border-0 rounded-0" aria-labelledby="profileDropdown" style="background: darkcyan;">
+      {% if request.user.role == 'applicant' %}
+        <li><a class="dropdown-item py-1 px-2 " href="{% url 'applicant_dashboard' %}">Dashboard</a></li>
+      {% elif request.user.role == 'teacher' %}
+        <li><a class="dropdown-item py-1 px-2 " href="{% url 'teacher_dashboard' %}">Dashboard</a></li>
+      {% elif request.user.role == 'student' %}
+        <li><a class="dropdown-item py-1 px-2 " href="{% url 'student_dashboard' %}">Dashboard</a></li>
+      {% elif request.user.role == 'manager' %}
+        <li><a class="dropdown-item py-1 px-2 " href="{% url 'manager_dashboard' %}">Dashboard</a></li>
+      {% else %}
+        <li><a class="dropdown-item py-1 px-2 " href="{% url 'home' %}">🏠 Home</a></li>
+      {% endif %}
+      <li><a class="dropdown-item text-white px-2 py-1 " href="{% url 'applicant_logout' %}" onclick="confirmLogout(event)">Logout</a></li>
+    </ul>
+  {% else %}
+    <a class="nav-link fw-bold text-white " href="{% url 'login' %}">Login</a>
+  {% endif %}
+</li>
 
-            </ul>
-          {% else %}
-            <a class="nav-link fw-semibold text-white" href="{% url 'login' %}">Login</a>
-          {% endif %}
-        </li>
       </ul>
     </div>
   </div>

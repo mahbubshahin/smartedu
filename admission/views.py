@@ -282,37 +282,39 @@ def application_review(request):
         messages.error(request, "You need to complete applicant registration first!")
         return redirect("home")
 
-    # Fetch related data
     personal_info = PersonalInformation.objects.filter(applicant=applicant).first()
     academic_info = AcademicQualification.objects.filter(applicant=applicant).first()
-
-    # Try to get existing photo (don't create)
     applicant_photo = Photo.objects.filter(applicant=applicant).first()
 
     if request.method == "POST":
-        # If image or signature is submitted, process it
         image_uploaded = "applicant_image" in request.FILES
         sig_uploaded = "applicant_sig" in request.FILES
 
-        if image_uploaded or sig_uploaded:
-            if not applicant_photo:
-                applicant_photo = Photo(applicant=applicant)
+        # ফটো অবজেক্ট না থাকলে তৈরি করি
+        if not applicant_photo:
+            applicant_photo = Photo(applicant=applicant)
 
-            if image_uploaded:
-                if applicant_photo.applicant_image:
-                    applicant_photo.applicant_image.delete(save=False)
-                applicant_photo.applicant_image = request.FILES["applicant_image"]
+        # ফাইল এলে পুরাতন মুছে আপডেট করি
+        if image_uploaded:
+            if applicant_photo.applicant_image:
+                applicant_photo.applicant_image.delete(save=False)
+            applicant_photo.applicant_image = request.FILES["applicant_image"]
 
-            if sig_uploaded:
-                if applicant_photo.applicant_sig:
-                    applicant_photo.applicant_sig.delete(save=False)
-                applicant_photo.applicant_sig = request.FILES["applicant_sig"]
+        if sig_uploaded:
+            if applicant_photo.applicant_sig:
+                applicant_photo.applicant_sig.delete(save=False)
+            applicant_photo.applicant_sig = request.FILES["applicant_sig"]
 
+        # আপডেট করার পর এখন যাচাই করি: আছে কি না
+        has_photo = applicant_photo.applicant_image
+        has_signature = applicant_photo.applicant_sig
+
+        if has_photo and has_signature:
             applicant_photo.save()
             messages.success(request, "Your application has been submitted successfully. Kindly proceed to complete your payment.")
             return redirect("payment")
         else:
-            messages.error(request, "Please upload your photo and signature before submitting.")
+            messages.error(request, "Please upload both your photo and signature before submitting.")
             return redirect("application_review")
 
     context = {
@@ -323,7 +325,6 @@ def application_review(request):
         "active_step": "review",
     }
     return render(request, "admission/application_review.html", context)
-
 
 def payment(request):
 

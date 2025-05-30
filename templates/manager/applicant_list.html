@@ -1,20 +1,24 @@
 {% extends 'accounts/manager_dashboard.html' %}
 {% block manager_dashboard %}
 
+
+
 <section class="py-4">
   <div class="applicant_list">
 
+
+
     <!-- 🔍 Filter Form -->
     <div class="mb-4">
-      <div class="card-body">
+      <div class="card-body ">
         <form method="get" id="filterForm" class=" align-items-center">
           <div class="filter_area">
 
             <!-- 🎓 Batch & Search Row -->
-<div class="row justify-content-center gy-2  mb-3">
+<div class="row justify-content-center gy-2 g-2 g-md-3  mb-3">
 
   <!-- 🎓 Batch Select (3 cols on lg, full on small) -->
-  <div class="col-4 col-lg-3 d-flex align-items-center gap-2 justify-content-center">
+  <div class="col-4 col-md-3 col-lg-3 d-flex align-items-center gap-2 justify-content-center">
     <label for="batchSelect" class="form-label text-primary fw-semibold mb-0">Batch</label>
     <select name="batch_name" id="batchSelect" class="form-select form-select-sm border-primary shadow-sm" onchange="this.form.submit()">
       {% for batch in batches %}
@@ -24,7 +28,7 @@
   </div>
 
   <!-- 🔍 Search Input (7 cols on lg, full on small) -->
-  <div class="col-8 col-lg-5">
+  <div class="col-8 col-md-5 col-lg-6">
     <div class="input-group input-group-sm">
       <input type="text" name="applicant_list_query" value="{{ applicant_list_query }}" class="form-control border-primary shadow-sm" placeholder="Enter name, mobile or roll number">
       <button type="submit" class="btn btn-outline-primary">Search</button>
@@ -36,8 +40,8 @@
      
             <!-- 🔘 Filter Buttons Row -->
             <div class="row justify-content-center">
-              <div class="col-md-10 text-center">
-                <div class="d-flex gap-3 justify-content-center flex-wrap">
+              <div class="col-12  text-center">
+                <div class="d-flex gap-1 gap-md-2 gap-lg-3 justify-content-center flex-wrap">
                   <a href="?filter=paid&batch_name={{ selected_batch }}&applicant_list_query={{ applicant_list_query }}" class="btn btn-outline-success btn-sm {% if filter_type == 'paid' %}active{% endif %}">Paid ({{ total_paid }})</a>
 
                   <a href="?filter=pending&batch_name={{ selected_batch }}&applicant_list_query={{ applicant_list_query }}" class="btn btn-outline-warning btn-sm {% if filter_type == 'pending' %}active{% endif %}">Pending ({{ total_pending }})</a>
@@ -58,7 +62,7 @@
 
 
     <!-- 📋 Applicants Table -->
-<div class="table-responsive bg-light p-2 rounded">
+<div class="table-responsive bg-light px-0  rounded">
 
   <table class="table table-hover align-middle table-bordered border-light-subtle bg-white text-center">
 
@@ -133,9 +137,6 @@
 
   </table>
 </div>
-
-
-
 
 
 

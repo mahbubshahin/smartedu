@@ -8,44 +8,13 @@
 
 
 
-<div class="container mb-4 ">
+<section class="container-fluid mb-4 ">
+     {% include 'admission/admission_Process.html' %}
     <div class="row">
 
+<div class="col-12  col-sm-12 col-md-11 col-lg-10 col-xl-8 col-xxl-8 mx-auto rounded  shadow bg-white pt-4 my-2">
 
-        <div class="col-11 px-4 mx-auto mt-3 rounded  pt-2 ">
-
-            {% include 'admission/admission_Process.html' %}
-        </div>
-
-        
-
-        <div class="col-10 mx-auto">
-            
-       
-            {% if messages %}
-            <div class="position-fixed top-50 start-50 translate-middle z-3 col-5">
-              {% for message in messages %}
-                <div class="alert alert-primary text-center rounded-pill shadow fs-5 message" style="opacity: 0; transition: opacity 3s;">
-                  {{ message }}
-                </div>
-              {% endfor %}
-            </div>
-          
-            <script>
-              document.addEventListener("DOMContentLoaded", () => {
-                document.querySelectorAll('.message').forEach((msg, i) => {
-                  setTimeout(() => {
-                    msg.style.opacity = 1;
-                    setTimeout(() => msg.style.opacity = 0, 4000);
-                  }, i * 5000);
-                });
-              });
-            </script>
-          {% endif %}
-          
-
-          
-            <div class="p-4 shadow bg-white mt-3" >
+    
                 <!-- Personal Information Section -->
                 <div class=" ">
                     <h5 class=" text-center fw-bold ">Personal Information</h5>
@@ -58,7 +27,7 @@
                     <tr>
                         <td>Applicant's Name</td>
                         <td>:</td>
-                        <td colspan="4" class="fw-bold">{{ applicant.applicant_name }}</td>
+                        <td colspan="4" class="fw-bold">{{ applicant.full_name }}</td>
                     </tr>
                     <tr>
                         <td>Father's Name</td>
@@ -98,7 +67,7 @@
                         <td>{{ personal_info.national_id }}</td>
                         <td>Email</td>
                         <td>:</td>
-                        <td>{{ applicant.applicant_email }}</td>
+                        <td>{{ applicant.email }}</td>
                     </tr>
                     <tr>
                         <td>Present Address</td>
@@ -192,8 +161,6 @@
                         </table>
                     </div>
                 </div>
-
-
                
 
                 <div class="row">
@@ -245,49 +212,72 @@
                         <div class="alert alert-danger">
                             <h5 class="mb-0">Post Graduation Level</h5>
                         </div>
+                        
+
+
                         <table class="table table-hover">
-                            <tr>
-                                <td>Examination</td>
-                                <td>:</td>
-                                <td colspan="4">{{ academic_info.post_graduation_exam|default_if_none:"" }}</td>
-                            </tr>
-                            <tr>
-                                <td>Subject</td>
-                                <td>:</td>
-                                <td colspan="4">{{ academic_info.post_graduation_subject|default_if_none:"" }}</td>
-                            </tr>
-                            <tr>
-                                <td>University/Institute</td>
-                                <td>:</td>
-                                <td colspan="4">{{ academic_info.post_graduation_university|default_if_none:"" }}</td>
-                            </tr>
-                            <tr>
-                                <td>Result</td>
-                                <td>:</td>
-                                <td colspan="4">
-                                    <span class="fw-bold">{{ academic_info.post_graduation_result|default_if_none:"" }}</span>
-                                    {{ academic_info.post_graduation_result_type|default_if_none:"" }}
-                                    
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Passing Year</td>
-                                <td>:</td>
-                                <td colspan="4">{{ academic_info.post_graduation_passing_year|default_if_none:"" }}</td>
-                            </tr>
-                            <tr>
-                                <td >Course Duration</td>
-                                <td>:</td>
-                                <td colspan="4">{{ academic_info.post_graduation_course_duration|default_if_none:"" }}</td>
-                            </tr>
-                        </table>
+    <tr>
+        <td>Examination</td>
+        <td>
+            {% if academic_info.post_graduation_exam %}
+                : {{ academic_info.post_graduation_exam }}
+            {% endif %}
+        </td>
+    </tr>
+    <tr>
+        <td>Subject</td>
+        <td>
+            {% if academic_info.post_graduation_subject %}
+                : {{ academic_info.post_graduation_subject }}
+            {% endif %}
+        </td>
+    </tr>
+    <tr>
+        <td>University/Institute</td>
+        <td>
+            {% if academic_info.post_graduation_university %}
+                : {{ academic_info.post_graduation_university }}
+            {% endif %}
+        </td>
+    </tr>
+    <tr>
+        <td>Result</td>
+        <td>
+            {% if academic_info.post_graduation_result %}
+                : <span class="fw-bold">{{ academic_info.post_graduation_result }}</span>
+            {% endif %}
+            {{ academic_info.post_graduation_result_type|default_if_none:"" }}
+        </td>
+    </tr>
+    <tr>
+        <td>Passing Year</td>
+        <td>
+            {% if academic_info.post_graduation_passing_year %}
+                : {{ academic_info.post_graduation_passing_year }}
+            {% endif %}
+        </td>
+    </tr>
+    <tr>
+        <td>Course Duration</td>
+        <td>
+            {% if academic_info.post_graduation_course_duration %}
+                : {{ academic_info.post_graduation_course_duration }}
+            {% endif %}
+        </td>
+    </tr>
+</table>
+
                     </div>
+
+
+                    
                 </div>
                 
 
-<!-- Upload Section -->
-<div class="container my-3">
-  <div class="card border-1 shadow-sm rounded-2">
+
+                <!-- Upload photo Section -->
+
+  <div class="card mb-3 border-1 shadow-sm rounded-2">
     <div class="card-body">
       <h4 class="text-center text-primary fw-bold">Upload Your Photo & Signature</h4>
       <p class="text-center text-muted mb-1">
@@ -300,31 +290,32 @@
         {% csrf_token %}
         <div class="row g-4 mt-1 mb-3 justify-content-center">
 
-          <!-- Photo Upload -->
-          <div class="col-md-6 col-lg-5">
-            <div class="border rounded-4 p-3 text-center shadow-sm h-100 bg-light-subtle">
-              <img id="applicant_image"
-                   src="{% if application.applicant_image %}{{ application.applicant_image.url }}{% endif %}"
-                   alt="Photo Preview"
-                   class="mb-3 img-thumbnail {% if not application.applicant_image %}d-none{% endif %}"
-                   style="width: 300px; height: 250px; object-fit: cover;" />
+         <!-- Photo Upload -->
+<div class="col-md-6 col-lg-5">
+  <div class="border rounded-4 p-3 text-center shadow-sm h-75 bg-light-subtle">
+    <img id="applicant_image"
+         src="{% if application.applicant_image %}{{ application.applicant_image.url }}{% endif %}"
+         alt="Photo Preview"
+         class="mb-1 {% if not application.applicant_image %}d-none{% endif %}"
+         style="width: 180px; height: 130px;" />
 
-              <input type="file" class="form-control" name="applicant_image" id="psnl_photo"
-                     accept="image/*"
-                     onchange="previewImage(this, 'applicant_image', 300, 300)"
-                     {% if not application.applicant_image %}required{% endif %}>
+    <input type="file" class="form-control" name="applicant_image" id="psnl_photo"
+           accept="image/*"
+           onchange="previewImage(this, 'applicant_image', 300, 300)"
+           {% if not application.applicant_image %}required{% endif %}>
 
-              <h6 class="text-secondary mt-2">Applicant Photo</h6>
-            </div>
-          </div>
+    <h6 class="fw-bold mt-2">Applicant Photo</h6>
+  </div>
+</div>
+
 
           <!-- Signature Upload -->
           <div class="col-md-6 col-lg-5">
-            <div class="border rounded-4 p-3 text-center shadow-sm h-100 bg-light-subtle">
+            <div class="border rounded-4 p-3 text-center shadow-sm h-75 bg-light-subtle">
               <img id="applicant_sig"
                    src="{% if application.applicant_sig %}{{ application.applicant_sig.url }}{% endif %}"
                    alt="Signature Preview"
-                   class="rounded border mt-2 mb-5 img-thumbnail {% if not application.applicant_sig %}d-none{% endif %}"
+                   class="rounded border mb-5 {% if not application.applicant_sig %}d-none{% endif %}"
                    style="width: 300px; height: 80px; object-fit: contain;" />
 
               <input type="file" class="form-control mt-1" name="applicant_sig" id="psnl_sign"
@@ -332,18 +323,24 @@
                      onchange="previewImage(this, 'applicant_sig', 300, 80)"
                      {% if not application.applicant_sig %}required{% endif %}>
 
-              <h6 class="text-secondary mt-2">Signature</h6>
+              <h6 class="fw-bold mt-2">Signature</h6>
             </div>
           </div>
 
         </div>
-    
-    </div>
-  </div>
-</div>
 
                 
-                    <!-- Declaration -->
+                
+
+
+          
+
+</div>
+
+
+    </div>
+
+        <!-- Declaration -->
                     <div class="row mt-4">
                         <div class="col-md-12">
                             <label class="checkbox text-danger">
@@ -354,14 +351,14 @@
                     </div>
 
                     <!-- Navigation Buttons -->
-                <div class="row d-flex justify-content-between mt-3">
-                    <div class="col-12 col-md-6 text-start">
+                <div class="row d-flex justify-content-between py-3">
+                    <div class="col-6 col-md-6 text-start">
                         <a href="{% url 'academic_qualification' %}" class="btn btn-light text-primary hover-btn">
                             <i class="fa fa-arrow-circle-left"></i> Previous
                         </a>
                     </div>
         
-                    <div class="col-12 col-md-6 text-end">
+                    <div class="col-6 col-md-6 text-end">
                         <button type="submit" class="btn btn-light hover-btn text-primary ">Submit <i class="fa fa-arrow-circle-right"></i></button>
                     </div>
                 </div> <!-- End of Navigation Buttons -->
@@ -370,18 +367,12 @@
                 </form>
 
 
-
-            </div>
-            <!--  -->
-        </div>
-    </div>
-</div>
+</section>
 
 
 
 
 
-<!-- Compressed Image Preview Script -->
 <script>
   function previewImage(input, previewId, width, height) {
     const file = input.files[0];
@@ -400,14 +391,13 @@
       } else {
         preview.src = objectUrl;
         preview.classList.remove("d-none");
-        input.removeAttribute("required");
+        // Just preview, no need to remove required dynamically.
+        // Server-side handles whether it's required.
       }
     };
     img.src = objectUrl;
   }
 </script>
-
-
 
 
 

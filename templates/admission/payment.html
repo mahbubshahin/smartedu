@@ -6,45 +6,16 @@
  {% block content %}
  
 
-<!-- templates/payment_page.html -->
-<div class="container pb-5">
+<section class="container-fluid py-3">
+
+    {% include 'admission/admission_Process.html' %}
 
 
-    <div class="col-11 px-4 mx-auto mt-3 rounded  pt-2 ">
+    <div class="row">
 
-        {% include 'admission/admission_Process.html' %}
-    </div>
+        <div class="col-12  col-sm-12 col-md-11 col-lg-10 col-xl-8 col-xxl-8 mx-auto rounded  shadow bg-white pt-4 my-2">
 
-
-       
-    {% if messages %}
-    <div class="position-fixed top-50 start-50 translate-middle z-3 col-5">
-      {% for message in messages %}
-        <div class="alert alert-primary text-center rounded-pill shadow fs-5 message" style="opacity: 0; transition: opacity 3s;">
-          {{ message }}
-        </div>
-      {% endfor %}
-    </div>
-  
-    <script>
-      document.addEventListener("DOMContentLoaded", () => {
-        document.querySelectorAll('.message').forEach((msg, i) => {
-          setTimeout(() => {
-            msg.style.opacity = 1;
-            setTimeout(() => msg.style.opacity = 0, 4000);
-          }, i * 5000);
-        });
-      });
-    </script>
-  {% endif %}
-  
-  
-
-  <div class="row px-2 mt-3">
-    <div class="col-10 mx-auto ">
-
-        <div class="bg-white  shadow-sm  p-4">
-
+            
             <!-- Section Title -->
             <div class="text-center mb-5">
                 <h4 class="fw-bold text-primary">Payment Instructions</h4>
@@ -72,7 +43,7 @@
                             <form action="https://jupmscs.org/bkash/payment/create" method="GET">
                                 <input type="hidden" name="_token" value="oYHdnV5AiJQgV7hkXz47uayMKyEk0QHqlsDcROQl">
                                 <div class="d-grid">
-                                    <button type="submit" class="btn btn-danger col-6 mx-auto btn-lg mb-3 shadow-sm">
+                                    <button type="submit" class="btn btn-danger col-5 col-sm-7 col-md-9 col-lg-8 col-xl-7  mx-auto btn-lg mb-3 shadow-sm">
                                         Pay Now via bKash
                                     </button>
                                 </div>
@@ -156,7 +127,7 @@
     
 
              <!-- Navigation Buttons -->
-             <div class="row d-flex justify-content-between mt-4">
+             <div class="row d-flex justify-content-between my-4">
                 <div class="col-12 col-md-6 text-start">
                     <a href="{% url 'application_review' %}" class="btn btn-light text-primary hover-btn">
                         <i class="fa fa-arrow-circle-left"></i> Previous
@@ -166,12 +137,14 @@
                 
             </div> <!-- End of Navigation Buttons -->
     
+
+
         </div>
     </div>
-  </div>
+
 
     
-</div>
+</section>
 
 
 
