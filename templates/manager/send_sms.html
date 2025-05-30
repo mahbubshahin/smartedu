@@ -1,25 +1,14 @@
 {% extends 'accounts/manager_dashboard.html' %}
 
 {% block manager_dashboard %}
-<div class=" py-5">
-  <div class="row justify-content-center">
-    <div class="col-sm-12 col-md-10 ">
-      <div class="card shadow border-0 rounded-2 py-2 ">
-        <div class="card-body">
-          <div class="d-flex justify-content-between align-items-center p-3 bg-light border rounded">
-  <div>
-    🔋 <strong>Balance:</strong> {{ balance }} BDT
-  </div>
-  <div>
-    📩 <strong>Limit:</strong> {{ sms_limit }} SMS
-  </div>
-</div>
 
 
-          <h5 class="text-center text-primary mb-4 mt-2">
-            Send SMS to Applicants (Batch: {{ selected_batch }})
-          </h5>
+<section class="py-4 bg-light-subtle">
 
+
+<div class="row">
+  <div class="col-12  col-sm-11 col-md-10 col-lg-9 mx-auto">
+    
           {% if messages %}
             {% for message in messages %}
               <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
@@ -29,43 +18,63 @@
             {% endfor %}
           {% endif %}
 
-
-
-  
-          <!-- ✅ Batch filter (Fully Centered & Responsive Layout) -->
-<form method="get" class="mb-3">
-  <div class="d-flex flex-wrap justify-content-center align-items-center gap-2">
-    
-    <!-- Batch Select -->
-    <div class="d-flex align-items-center gap-2">
-      <label for="batchSelect" class="form-label fw-semibold mb-0 text-nowrap">🎓 Batch:</label>
-      <select name="batch_name" id="batchSelect" class="form-select" onchange="this.form.submit()">
-        {% for batch in batches %}
-          <option value="{{ batch }}" {% if batch == selected_batch %}selected{% endif %}>{{ batch }}</option>
-        {% endfor %}
-      </select>
-    </div>
-
-    <!-- Filter Buttons -->
-    <div class="d-flex flex-wrap gap-2">
-      <a href="?batch_name={{ selected_batch }}&filter=paid" class="btn btn-outline-success">✅ Paid</a>
-      <a href="?batch_name={{ selected_batch }}&filter=pending" class="btn btn-outline-warning">🕒 Pending</a>
-      <a href="?batch_name={{ selected_batch }}&filter=incomplete" class="btn btn-outline-danger">❌ Incomplete</a>
-      <a href="{% url 'send_message_to_applicants' %}?batch_name={{ selected_batch }}" class="btn btn-outline-secondary">❎ Clear</a>
-    </div>
-    
   </div>
-</form>
+</div>
+
+<div class="row">
+  <div class="col-12  col-sm-11 col-md-10 col-lg-9 mx-auto">
+    <!-- blance -->
+          <div class="d-flex justify-content-between align-items-center p-3 bg-light border rounded">
+  <div>
+    🔋 <strong>Balance:</strong> {{ balance }} BDT
+  </div>
+  <div>
+    📩 <strong>Limit:</strong> {{ sms_limit }} SMS
+  </div>
+</div>
+
+  </div>
+</div>
+
+<p class="text-center text-primary mb-2 my-2">
+            Send SMS to Applicants (Batch: {{ selected_batch }})  
+</p>
 
 
 
+<div class="row my-2 justify-content-center">
+  <div class="col-12 col-md-9 col-lg-9">
+
+    <form method="get" class="row justify-content-center align-items-center g-2">
+
+      <!-- 🎓 Batch Select -->
+      <div class="col-4 col-sm-4 col-md-3 d-flex align-items-center justify-content-center">
+        <select name="batch_name" id="batchSelect" class="form-select form-select-sm w-100" onchange="this.form.submit()">
+          {% for batch in batches %}
+            <option value="{{ batch }}" {% if batch == selected_batch %}selected{% endif %}>{{ batch }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <!-- 🔘 Filter Buttons -->
+      <div class="col-12 col-sm-12 col-md-9 ">
+        <div class="d-flex flex-wrap justify-content-center gap-2">
+          <a href="?batch_name={{ selected_batch }}&filter=paid" class="btn btn-outline-success btn-sm">✅ Paid</a>
+          <a href="?batch_name={{ selected_batch }}&filter=pending" class="btn btn-outline-warning btn-sm">🕒 Pending</a>
+          <a href="?batch_name={{ selected_batch }}&filter=incomplete" class="btn btn-outline-danger btn-sm">❌ Incomplete</a>
+          <a href="{% url 'send_message_to_applicants' %}?batch_name={{ selected_batch }}" class="btn btn-outline-secondary btn-sm">❎ Clear</a>
+        </div>
+      </div>
+
+    </form>
+
+  </div>
+</div>
 
 
-         
 
-      
-
-          <form method="POST" novalidate id="smsForm">
+<!--  -->
+ <form method="POST" novalidate id="smsForm">
             {% csrf_token %}
             <div class="mb-4">
               <div class="row">
@@ -78,6 +87,11 @@
               </div>
             </div>
 
+            <div class="mb-4">
+              <div class="row">
+                <div class="col-12 col-md-10 col-lg-9 mx-auto">
+
+                  
             {% if filter_type %}
               <div class="text-end mb-2">
                 <button type="button" class="btn btn-dark btn-sm" id="toggleCheckboxes">🔁 Select/Unselect All</button>
@@ -147,12 +161,15 @@
                 <button type="submit" class="btn btn-primary px-4 py-2 rounded-pill shadow-sm">📨 Send Message</button>
               </div>
             {% endif %}
+
+                </div>
+              </div>
+            </div>
+
+
           </form>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+</section>
+
 
 <!-- ✅ JavaScript: checkbox + validation + char count -->
 <script>

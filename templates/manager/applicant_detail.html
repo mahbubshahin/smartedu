@@ -4,109 +4,106 @@
 
 
 
-<section class="applicant_details container py-4">
-  <div class="row ">
-    <div class="col-12">
 
+<section class="container-fluid">
+    <div class="row">
 
-
-      <div class="personal_info">
-        <div class="row g-3 ">
-          {% if photo %}
-          <div class="col-2 mt-5 ">
-            <img src="{{ photo.applicant_image.url }}" class="img-thumbnail " style="width: 100%; max-width: 200px;">
-           
-        <img src="{{ photo.applicant_sig.url }}" class="img-thumbnail mt-2" style="width: 200px; height: 50px;">
-          </div>
-          {% endif %}
-
-          <div class="col-10 ">
-
-
-            <div class=" ">
+        <div class="col-12 mx-auto">
               <h5 class=" text-center fw-bold ">Personal Information</h5>
-          </div>
-   
+          
+<div class="table-responsive">
+  
+  <!-- ছোট ডিভাইসে ছবি উপরে দেখানোর জন্য -->
+  {% if photo %}
+  <div class="d-block d-md-none text-center mb-3">
+    <img src="{{ photo.applicant_image.url }}" class="img-thumbnail mb-2" style="max-width: 150px; width: 100%;">
+    <img src="{{ photo.applicant_sig.url }}" class="img-thumbnail" style="max-width: 150px; width: 100%; height: 50px;">
+  </div>
+  {% endif %}
 
-            <table class="table table-hover">
-              <tr>
-                  <td>Applicant's Name</td>
-                  <td>:</td>
-                  <td colspan="4" class="fw-bold">{{ applicant.full_name }}</td>
-              </tr>
-              <tr>
-                  <td>Father's Name</td>
-                  <td>:</td>
-                  <td>{{ personal_info.father_name }}</td>
-                  <td>Mother's Name</td>
-                  <td>:</td>
-                  <td>{{ personal_info.mother_name }}</td>
-              </tr>
-              <tr>
-                  <td>Date of Birth</td>
-                  <td>:</td>
-                  <td>{{ personal_info.date_of_birth }}</td>
-                  <td>Mobile Number</td>
-                  <td>:</td>
-                  <td>{{ applicant.mobile_number }}</td>
-              </tr>
-              <tr>
-                  <td>Gender</td>
-                  <td>:</td>
-                  <td>{{ personal_info.sex }}</td>
-                  <td>Religion</td>
-                  <td>:</td>
-                  <td>{{ personal_info.religion }}</td>
-              </tr>
-              <tr>
-                  <td>Blood Group</td>
-                  <td>:</td>
-                  <td>{{ personal_info.blood_group }}</td>
-                  <td>Nationality</td>
-                  <td>:</td>
-                  <td>{{ personal_info.nationality }}</td>
-              </tr>
-              <tr>
-                  <td>National ID</td>
-                  <td>:</td>
-                  <td>{{ personal_info.national_id }}</td>
-                  <td>Email</td>
-                  <td>:</td>
-                  <td>{{ applicant.email }}</td>
-              </tr>
-              <tr>
-                  <td>Present Address</td>
-                  <td>:</td>
-                  <td>{{ personal_info.present_address }}</td>
-                  <td>Permanent Address</td>
-                  <td>:</td>
-                  <td>{{ personal_info.permanent_address }}</td>
-              </tr>
+  <table class="table table-hover align-middle">
+    <tr>
+      <td>Applicant's Name</td>
+      <td>:</td>
+      <td colspan="4" class="fw-bold">{{ applicant.full_name }}</td>
 
+      {% if photo %}
+      <!-- বড় স্ক্রিনে টেবিলের ডান পাশে ছবি -->
+      <td rowspan="8" class="text-end align-top d-none d-sm-table-cell">
+        <img src="{{ photo.applicant_image.url }}" class="img-thumbnail mb-2" style="width: 100%; max-width: 150px;">
+        <img src="{{ photo.applicant_sig.url }}" class="img-thumbnail" style="width: 100%; max-width: 150px; height: 50px;">
+      </td>
+      {% endif %}
+    </tr>
+    <tr>
+      <td>Father's Name</td>
+      <td>:</td>
+      <td>{{ personal_info.father_name }}</td>
+      <td>Mother's Name</td>
+      <td>:</td>
+      <td>{{ personal_info.mother_name }}</td>
+    </tr>
+    <tr>
+      <td>Date of Birth</td>
+      <td>:</td>
+      <td>{{ personal_info.date_of_birth }}</td>
+      <td>Mobile Number</td>
+      <td>:</td>
+      <td>{{ applicant.mobile_number }}</td>
+    </tr>
+    <tr>
+      <td>Gender</td>
+      <td>:</td>
+      <td>{{ personal_info.sex }}</td>
+      <td>Religion</td>
+      <td>:</td>
+      <td>{{ personal_info.religion }}</td>
+    </tr>
+    <tr>
+      <td>Blood Group</td>
+      <td>:</td>
+      <td>{{ personal_info.blood_group }}</td>
+      <td>Nationality</td>
+      <td>:</td>
+      <td>{{ personal_info.nationality }}</td>
+    </tr>
+    <tr>
+      <td>National ID</td>
+      <td>:</td>
+      <td>{{ personal_info.national_id }}</td>
+      <td>Email</td>
+      <td>:</td>
+      <td>{{ applicant.email }}</td>
+    </tr>
+    <tr>
+      <td>Present Address</td>
+      <td>:</td>
+      <td>{{ personal_info.present_address }}</td>
+      <td>Permanent Address</td>
+      <td>:</td>
+      <td>{{ personal_info.permanent_address }}</td>
+    </tr>
+    <tr>
+      <td>Payment</td>
+      <td>:</td>
+      <td class="fw-semibold">{{ payment.status }} by {{ payment.payment_method }}</td>
+      <td>Transaction ID</td>
+      <td>:</td>
+      <td class="fw-semibold">{{ payment.transaction_id }}</td>
+    </tr>
+  </table>
+</div>
 
-
-              <tr>
-                <td>Payment</td>
-                <td>:</td>
-                <td class="fw-semibold">{{ payment.status }} by {{ payment.payment_method }}</td>
-                <td>Transaction ID</td>
-                <td>:</td>
-                <td class="fw-semibold">{{ payment.transaction_id }}</td>
-            </tr>
-
-
-          </table>
-
-
-
-                <!-- Academic Information Section -->
          
-              <div class=" ">
-                <h5 class=" text-center fw-bold ">Academic Information</h5>
-            </div>
-     
-              <div class="row">
-                  <div class="col-md-6">
+
+        </div>
+
+    </div>
+
+    <div class="row">
+             <h5 class=" text-center fw-bold ">Academic Information</h5>
+
+           <div class="col-md-6">
                       <div class="alert alert-success">
                           <h5 class="mb-0">SSC or Equivalent Level</h5>
                       </div>
@@ -180,13 +177,8 @@
                           </tr>
                       </table>
                   </div>
-              </div>
 
-
-             
-
-              <div class="row">
-                  <!-- Graduation Level -->
+                        <!-- Graduation Level -->
                   <div class="col-md-6">
                       <div class="alert alert-primary">
                           <h5 class="mb-0">Graduation Level</h5>
@@ -271,13 +263,14 @@
                           </tr>
                       </table>
                   </div>
-              </div>
-              
-
-        </div>
-        </div>
-      </div>
+        
     </div>
-  </div>
+
+
 </section>
+
+
+
+
+
 {% endblock %}

@@ -1,16 +1,11 @@
 {% extends 'accounts/manager_dashboard.html' %}
 
 {% block manager_dashboard %}
+<section class="py-4 bg-light-subtle">
 
-<div class="py-5">
-  <div class="row justify-content-center">
-    <div class="col-12 col-lg-10">
-      <div class="card shadow border-0 rounded-2 py-4">
-        <div class="card-body">
-          <h5 class="text-center text-primary mb-4 fs-5 fs-md-5">
-  Send Email to Applicants {{ latest_intake.intake_name }} ({{ latest_intake.batch_name }}) Batch.
-</h5>
 
+  <div class="row">
+  <div class="col-12  col-sm-11 col-md-10 col-lg-9 mx-auto">
 
           {% if messages %}
             {% for message in messages %}
@@ -21,141 +16,167 @@
             {% endfor %}
           {% endif %}
 
-
-
-          <!-- ✅ Batch filter form for email page (Fully Centered & Responsive Layout) -->
-<form method="get" class="mb-3">
-  <div class="d-flex flex-wrap justify-content-center align-items-center gap-2">
-    
-    <!-- Batch Select -->
-    <div class="d-flex align-items-center gap-2">
-      <label for="batchSelect" class="form-label fw-semibold mb-0 text-nowrap">🎓 Batch:</label>
-      <select name="batch_name" id="batchSelect" class="form-select" onchange="this.form.submit()">
-        {% for batch in batches %}
-          <option value="{{ batch }}" {% if batch == selected_batch %}selected{% endif %}>{{ batch }}</option>
-        {% endfor %}
-      </select>
-    </div>
-
-    <!-- Filter Buttons -->
-    <div class="d-flex flex-wrap gap-2">
-      <a href="?batch_name={{ selected_batch }}&filter=paid" class="btn btn-outline-success">✅ Paid</a>
-      <a href="?batch_name={{ selected_batch }}&filter=pending" class="btn btn-outline-warning">🕒 Pending</a>
-      <a href="?batch_name={{ selected_batch }}&filter=incomplete" class="btn btn-outline-danger">❌ Incomplete</a>
-      <a href="{% url 'send_email_to_applicants' %}?batch_name={{ selected_batch }}" class="btn btn-outline-secondary">❎ Clear</a>
-    </div>
-    
   </div>
-</form>
+</div>
+
+
+  <p class="text-center text-primary mb-2 mt-2">
+    Send Email to Applicants (Batch: {{ selected_batch }})
+  </p>
+
+  
+<!-- Batch Filter -->
+<div class="row justify-content-center">
+  <div class="col-12 col-md-9 col-lg-10 col-xl-9">
+    <form method="get">
+      <div class="d-flex justify-content-center align-items-center flex-wrap gap-2 text-center">
+
+        <!-- 🎓 Batch Select -->
+        <div class="col-4 col-md-3 col-lg-2">
+          <select name="batch_name" id="batchSelect" class="form-select form-select-sm w-100" onchange="this.form.submit()">
+            {% for batch in batches %}
+              <option value="{{ batch }}" {% if batch == selected_batch %}selected{% endif %}>{{ batch }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <!-- 🔘 Filter Buttons -->
+        <div class="col-12 col-md-9 col-lg-8 ">
+          <div class="d-flex flex-wrap justify-content-center align-items-center gap-2">
+            <a href="?batch_name={{ selected_batch }}&filter=paid" class="btn btn-outline-success btn-sm">✅ Paid</a>
+            <a href="?batch_name={{ selected_batch }}&filter=pending" class="btn btn-outline-warning btn-sm">🕒 Pending</a>
+            <a href="?batch_name={{ selected_batch }}&filter=incomplete" class="btn btn-outline-danger btn-sm">❌ Incomplete</a>
+            <a href="{% url 'send_email_to_applicants' %}?batch_name={{ selected_batch }}" class="btn btn-outline-secondary btn-sm">❎ Clear</a>
+          </div>
+        </div>
+
+      </div>
+    </form>
+  </div>
+</div>
 
 
 
+  <!-- Email Form -->
+  <form method="POST" class="mt-3" enctype="multipart/form-data" novalidate id="emailForm">
+    {% csrf_token %}
 
-          <form method="POST" enctype="multipart/form-data">
-            {% csrf_token %}
-            <div class="col-12 mb-3 col-md-10 col-lg-9 mx-auto">
-              <label for="subject" class="form-label fw-semibold">📌 Email Subject:</label>
-              <input type="text" name="subject" id="subject" class="form-control border-info-subtle" required>
-            </div>
-
-            <div class="mb-3 col-12 col-md-10 col-lg-9 mx-auto">
-              <label for="message" class="form-label fw-semibold">📩 Email Message:</label>
-              <textarea name="message" id="message" class="form-control border-info-subtle" rows="5" required></textarea>
-            </div>
-
-            <div class="mb-4 col-12 col-md-10 col-lg-9 mx-auto">
-              <label class="form-label fw-semibold">📎 Attach Files (Optional):</label>
-              <div id="fileInputs">
-                <div class="input-group mb-2">
-                  <input type="file" name="attachments" class="form-control border-info-subtle" />
-                </div>
-              </div>
-              <button type="button" class="btn btn-sm btn-outline-primary mt-2" id="addFileInput">➕ Add File</button>
-              <small class="text-muted d-block mt-1">You can upload up to 7 files (PDF, DOCX, etc.)</small>
-            </div>
-
-            {% if filter_type %}
-              <div class="text-end mb-1">
-                <button type="button" class="btn btn-dark btn-sm" id="toggleCheckboxes">🔁 Select/Unselect All</button>
-              </div>
-            {% endif %}
-
-            {% if filter_type == 'paid' %}
-              
-              <h5 class="text-success fw-bold mb-2">Paid Applicants <span id="selectedCount" class="ms-3 text-danger">Count: 0</span></h5>
-              <div class="alert alert-success fw-semibold">
-                ✅ These applicants have completed payment. Profile may be complete or incomplete.
-              </div>
-              <div class="row row-cols-1 row-cols-md-2 g-3">
-                {% for applicant in paid_applicants %}
-                  <div class="col">
-                    <div class="p-2 border rounded-2 bg-light d-flex align-items-center shadow-sm">
-                      <input class="form-check-input me-3 applicant-checkbox" type="checkbox" name="selected_applicants" value="{{ applicant.id }}" checked>
-                      <label class="form-check-label">
-                        <strong>{{ applicant.full_name }}</strong><br>
-                        <small class="text-muted">{{ applicant.email }}</small>
-                      </label>
-                    </div>
-                  </div>
-                {% endfor %}
-              </div>
-
-            {% elif filter_type == 'pending' %}
-             
-              <h5 class="text-warning fw-bold mb-2">Pending Applicants <span id="selectedCount" class="ms-3 text-danger">Count: 0</span></h5>
-               <div class="alert alert-warning fw-semibold">
-                🕒 These applicants have completed their profile, but payment is pending or missing.
-              </div>
-              <div class="row row-cols-1 row-cols-md-2 g-3">
-                {% for applicant in pending_applicants %}
-                  <div class="col">
-                    <div class="p-2 border rounded-2 bg-light d-flex align-items-center shadow-sm">
-                      <input class="form-check-input me-3 applicant-checkbox" type="checkbox" name="selected_applicants" value="{{ applicant.id }}" checked>
-                      <label class="form-check-label">
-                        <strong>{{ applicant.full_name }}</strong><br>
-                        <small class="text-muted">{{ applicant.email }}</small>
-                      </label>
-                    </div>
-                  </div>
-                {% endfor %}
-              </div>
-
-            {% elif filter_type == 'incomplete' %}
-            
-              <h5 class="text-danger fw-bold mb-2">Incomplete Applicants <span id="selectedCount" class="ms-3 text-danger">Count: 0</span></h5>
-                <div class="alert alert-danger fw-semibold">
-                ❌ These applicants have incomplete profiles and no payment or pending payment.
-              </div>
-              <div class="row row-cols-1 row-cols-md-2 g-3">
-                {% for applicant in incomplete_applicants %}
-                  <div class="col">
-                    <div class="p-2 border rounded-2 bg-light d-flex align-items-center shadow-sm">
-                      <input class="form-check-input me-3 applicant-checkbox" type="checkbox" name="selected_applicants" value="{{ applicant.id }}" checked>
-                      <label class="form-check-label">
-                        <strong>{{ applicant.full_name }}</strong><br>
-                        <small class="text-muted">{{ applicant.email }}</small>
-                      </label>
-                    </div>
-                  </div>
-                {% endfor %}
-              </div>
-
-            {% else %}
-              <p class="text-center text-muted mt-3">🧭 Please filter to view applicants.</p>
-            {% endif %}
-
-            {% if filter_type %}
-              <div class="text-center mt-4">
-                <button type="submit" class="btn btn-primary px-4 py-2 rounded-pill shadow-sm">📧 Send Email</button>
-              </div>
-            {% endif %}
-          </form>
+    <div class="mb-3">
+      <div class="row">
+        <div class="col-12 col-md-10 col-lg-8 mx-auto">
+          <label for="subject" class="form-label fw-semibold">📌 Subject:</label>
+          <input type="text" name="subject" id="subject" class="form-control border-info-subtle" required>
         </div>
       </div>
+    </div>
+
+    <div class="mb-3">
+      <div class="row">
+        <div class="col-12 col-md-10 col-lg-8 mx-auto">
+          <label for="message" class="form-label fw-semibold">📩 Message:</label>
+          <textarea name="message" id="message" class="form-control border-info-subtle" rows="5" required></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- Attachments -->
+    <div class="mb-4">
+      <div class="row">
+        <div class="col-12 col-md-10 col-lg-8 mx-auto">
+          <label class="form-label fw-semibold">📎 Attach Files (Optional):</label>
+          <div id="fileInputs">
+            <div class="input-group mb-2">
+              <input type="file" name="attachments" class="form-control border-info-subtle" />
+            </div>
+          </div>
+          <button type="button" class="btn btn-sm btn-outline-primary mt-2" id="addFileInput">➕ Add File</button>
+          <small class="text-muted d-block mt-1">You can upload up to 7 files.</small>
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+<div class="mb-4">
+  <div class="row">
+    <div class="col-12 col-md-10 col-lg-8 mx-auto">
+
+      
+
+    {% if filter_type %}
+      <div class="text-end mb-2">
+        <button type="button" class="btn btn-dark btn-sm" id="toggleCheckboxes">🔁 Select/Unselect All</button>
+      </div>
+    {% endif %}
+
+    {% if filter_type == 'paid' %}
+      <h5 class="text-success fw-bold mb-2">✅ Paid Applicants <span id="selectedCount" class="ms-3 text-danger">Selected: 0</span></h5>
+      <div class="row row-cols-1 row-cols-md-2 g-3">
+        {% for applicant in paid_applicants %}
+          <div class="col">
+            <div class="p-2 border rounded-2 bg-light d-flex align-items-center shadow-sm">
+              <input class="form-check-input me-3 applicant-checkbox" type="checkbox" name="selected_applicants" value="{{ applicant.id }}" checked>
+              <label class="form-check-label">
+                <strong>{{ applicant.full_name }}</strong><br>
+                <small class="text-muted">{{ applicant.email }}</small>
+              </label>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+
+    {% elif filter_type == 'pending' %}
+      <h5 class="text-warning fw-bold mb-2">🕒 Pending Applicants <span id="selectedCount" class="ms-3 text-danger">Selected: 0</span></h5>
+      <div class="row row-cols-1 row-cols-md-2 g-3">
+        {% for applicant in pending_applicants %}
+          <div class="col">
+            <div class="p-2 border rounded-2 bg-light d-flex align-items-center shadow-sm">
+              <input class="form-check-input me-3 applicant-checkbox" type="checkbox" name="selected_applicants" value="{{ applicant.id }}" checked>
+              <label class="form-check-label">
+                <strong>{{ applicant.full_name }}</strong><br>
+                <small class="text-muted">{{ applicant.email }}</small>
+              </label>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+
+    {% elif filter_type == 'incomplete' %}
+      <h5 class="text-danger fw-bold mb-2">❌ Incomplete Applicants <span id="selectedCount" class="ms-3 text-danger">Selected: 0</span></h5>
+      <div class="row row-cols-1 row-cols-md-2 g-3">
+        {% for applicant in incomplete_applicants %}
+          <div class="col">
+            <div class="p-2 border rounded-2 bg-light d-flex align-items-center shadow-sm">
+              <input class="form-check-input me-3 applicant-checkbox" type="checkbox" name="selected_applicants" value="{{ applicant.id }}" checked>
+              <label class="form-check-label">
+                <strong>{{ applicant.full_name }}</strong><br>
+                <small class="text-muted">{{ applicant.email }}</small>
+              </label>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+
+    {% else %}
+      <p class="text-center text-muted mt-3">🧭 Please filter to view applicants.</p>
+    {% endif %}
+
+    {% if filter_type %}
+      <div class="text-center mt-4">
+        <button type="submit" class="btn btn-primary px-4 py-2 rounded-pill shadow-sm">📧 Send Email</button>
+      </div>
+    {% endif %}
     </div>
   </div>
 </div>
 
+
+  </form>
+</section>
+
+<!-- ✅ JavaScript -->
 <script>
   const updateSelectedCount = () =>
     document.getElementById('selectedCount').textContent = `Selected: ${document.querySelectorAll('input[name="selected_applicants"]:checked').length}`;
@@ -199,5 +220,4 @@
     }
   });
 </script>
-
 {% endblock %}
