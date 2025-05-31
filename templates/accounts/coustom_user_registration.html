@@ -51,22 +51,29 @@
                     <label for="user_type">Select Role <span class="text-danger">*</span></label>
                 </div>
 
-                <div class="mb-2">
-                    <div class="row g-2 align-items-center">
-                        <div class="col-10">
-                            <div class="form-floating">
-                                <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
-                                <label for="password">Password <span class="text-danger">*</span></label>
-                            </div>
-                        </div>
-                        <div class="col-2">
-                            <button type="button" class="btn btn-outline-secondary w-100" onclick="togglePassword('password', 'toggle-icon-password')" style="height: 58px;">
-                                <i class="fas fa-lock" id="toggle-icon-password"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
+       
 
+
+                <div class="mb-2">
+  <div class="row g-2 align-items-start">
+    <div class="col-10">
+      <div class="form-floating">
+        <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password" required style="height: 58px;">
+        <label for="password">Password <span class="text-danger">*</span></label>
+      </div>
+      <!-- Input field এর ঠিক নিচে ছোট ফন্টে ইংরেজি লেখা -->
+      <small class="text-muted ms-1 d-block" style="font-size: 0.75rem; margin-top: 2px;">
+        Password must be at least 8 characters long.
+      </small>
+    </div>
+
+    <div class="col-2">
+      <button type="button" class="btn btn-outline-secondary w-100" onclick="togglePassword('password', 'toggle-icon-password')" style="height: 58px;">
+        <i class="fas fa-lock" id="toggle-icon-password"></i>
+      </button>
+    </div>
+  </div>
+</div>
                 <div class="mb-2">
                     <div class="row g-2 align-items-center">
                         <div class="col-10">

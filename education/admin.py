@@ -46,13 +46,13 @@ class EnrollmentAdmin(admin.ModelAdmin):
     
     def teachers_list(self, obj):
         return format_html(
-            '<br>'.join([teacher.applicant_name for teacher in obj.teachers.all()])
+            '<br>'.join([teacher.full_name for teacher in obj.teachers.all()])
         ) if obj.teachers.exists() else "No Teachers"
     teachers_list.short_description = 'Teachers'
 
     def students_list(self, obj):
         return format_html(
-            '<br>'.join([student.applicant_name for student in obj.students.all()])
+            '<br>'.join([student.full_name for student in obj.students.all()])
         ) if obj.students.exists() else "No Students"
     students_list.short_description = 'Students'
 

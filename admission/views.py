@@ -31,6 +31,12 @@ import openpyxl
 from openpyxl.utils import get_column_letter
 from openpyxl.drawing.image import Image as ExcelImage
 
+
+
+import openpyxl
+from django.http import HttpResponse
+
+
 # 🧰 Python Built-ins
 import os
 import io
@@ -57,6 +63,14 @@ load_dotenv()
 # সেশন ডাটা  ধরে রাখে
 from django.urls import reverse
 
+from io import BytesIO
+
+
+
+
+from django.shortcuts import redirect
+from django.http import HttpResponse
+import pdfkit
 
 
 def Admission_Notice(request):
@@ -334,85 +348,160 @@ def payment(request):
     return render(request, 'admission/payment.html', context)
 
 
-@login_required
+
+
 def admit_card_pdf(request):
-    if request.user.role != UserRegistration.APPLICANT:
+    if not request.user.is_authenticated:
+        messages.warning(request, "You need to log in first.")
+        return redirect('login')
+
+    if request.user.role != 'applicant':
         messages.warning(request, "You are not authorized to access this page.")
         return redirect('home')
 
     applicant = request.user
 
-    # ✅ Check if payment is paid
     try:
         if applicant.payment.status != 'Paid':
             messages.warning(request, "You must complete payment before downloading the admit card.")
             return redirect('home')
-    except ObjectDoesNotExist:
+    except Exception:
         messages.warning(request, "Payment record not found. Please complete payment first.")
         return redirect('home')
 
-    photo = getattr(applicant, 'applicant_photo', None)
-    personal_info = getattr(applicant, 'personal_info', None)
+    # Applicant's photo and signature
+    photo_uri = ''
+    sig_uri = ''
+    if hasattr(applicant, 'applicant_photo') and applicant.applicant_photo:
+        if applicant.applicant_photo.applicant_image:
+            photo_uri = request.build_absolute_uri(applicant.applicant_photo.applicant_image.url)
+        if applicant.applicant_photo.applicant_sig:
+            sig_uri = request.build_absolute_uri(applicant.applicant_photo.applicant_sig.url)
+
+    # Intake and coordinator's signature
     intake = applicant.intake
-
-    # Encode applicant photo
-    image_data_uri = ''
-    if photo and photo.applicant_image:
-        image_path = os.path.join(settings.MEDIA_ROOT, str(photo.applicant_image))
-        if os.path.exists(image_path):
-            with open(image_path, 'rb') as image_file:
-                encoded_string = base64.b64encode(image_file.read()).decode('utf-8')
-                image_data_uri = f"data:image/jpeg;base64,{encoded_string}"
-
-    # Encode applicant signature
-    sig_data_uri = ''
-    if photo and photo.applicant_sig:
-        sig_path = os.path.join(settings.MEDIA_ROOT, str(photo.applicant_sig))
-        if os.path.exists(sig_path):
-            with open(sig_path, 'rb') as sig_file:
-                encoded_sig = base64.b64encode(sig_file.read()).decode('utf-8')
-                sig_data_uri = f"data:image/png;base64,{encoded_sig}"
-
-    # Encode JU logo
-    ju_logo_uri = ''
-    logo_path = os.path.join(settings.STATIC_ROOT, 'img/ju_logo.png')
-    if os.path.exists(logo_path):
-        with open(logo_path, 'rb') as logo_file:
-            encoded_logo = base64.b64encode(logo_file.read()).decode('utf-8')
-            ju_logo_uri = f"data:image/png;base64,{encoded_logo}"
-
-    # Encode Coordinator Signature
     coordinator_signature_uri = ''
-    coordinator_path = os.path.join(settings.MEDIA_ROOT, 'img/coordinator_signature.png')
-    if os.path.exists(coordinator_path):
-        with open(coordinator_path, 'rb') as coordinator_file:
-            encoded_coordinator_sig = base64.b64encode(coordinator_file.read()).decode('utf-8')
-            coordinator_signature_uri = f"data:image/png;base64,{encoded_coordinator_sig}"
+    if intake and intake.coordinator_signature:
+        coordinator_signature_uri = request.build_absolute_uri(intake.coordinator_signature.url)
 
     context = {
-        'applicant': applicant,
-        'photo_uri': image_data_uri,
-        'sig_uri': sig_data_uri,
-        'ju_logo_uri': ju_logo_uri,
-        'coordinator_signature_uri': coordinator_signature_uri,
-        'personal_info': personal_info,
-        'intake': intake,
-        'now': now(),
+        "applicant": applicant,
+        "photo_uri": photo_uri,
+        "sig_uri": sig_uri,
+        "ju_logo_uri": request.build_absolute_uri(settings.STATIC_URL + 'img/ju_logo.png'),
+        "coordinator_signature_uri": coordinator_signature_uri,
+        "personal_info": getattr(applicant, 'personal_info', None),
+        "intake": intake,
+        "now": timezone.now(),
     }
 
-    # Check if we need to generate the PDF
-    if 'generate_pdf' in request.GET:
-        html_string = render_to_string('admission/admit_card_download.html', context)
-        pdf_buffer = BytesIO()
-        pisa_status = pisa.CreatePDF(html_string, dest=pdf_buffer)
+    html_string = render_to_string("admission/admit_card_download.html", context)
 
-        if pisa_status.err:
-            return HttpResponse('PDF generation error.')
+    options = {
+        'page-size': 'A4',
+        'encoding': "UTF-8",
+        'enable-local-file-access': None,
+        'margin-top': '5mm',
+        'margin-bottom': '5mm',
+    }
 
-        pdf_buffer.seek(0)
-        return FileResponse(pdf_buffer, as_attachment=True, filename='admit_card.pdf')
+    config = pdfkit.configuration(
+        wkhtmltopdf=r'C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe'
+    )
 
-    return render(request, 'admission/admit_card_download.html', context)
+    pdf = pdfkit.from_string(html_string, False, options=options, configuration=config)
+
+    response = HttpResponse(pdf, content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="admit_card.pdf"'
+
+    return response
+
+
+
+# views.py
+
+
+
+
+# @login_required
+# def admit_card_pdf(request):
+#     if request.user.role != UserRegistration.APPLICANT:
+#         messages.warning(request, "You are not authorized to access this page.")
+#         return redirect('home')
+
+#     applicant = request.user
+
+#     # ✅ Check if payment is paid
+#     try:
+#         if applicant.payment.status != 'Paid':
+#             messages.warning(request, "You must complete payment before downloading the admit card.")
+#             return redirect('home')
+#     except ObjectDoesNotExist:
+#         messages.warning(request, "Payment record not found. Please complete payment first.")
+#         return redirect('home')
+
+#     photo = getattr(applicant, 'applicant_photo', None)
+#     personal_info = getattr(applicant, 'personal_info', None)
+#     intake = applicant.intake
+
+#     # Encode applicant photo
+#     image_data_uri = ''
+#     if photo and photo.applicant_image:
+#         image_path = os.path.join(settings.MEDIA_ROOT, str(photo.applicant_image))
+#         if os.path.exists(image_path):
+#             with open(image_path, 'rb') as image_file:
+#                 encoded_string = base64.b64encode(image_file.read()).decode('utf-8')
+#                 image_data_uri = f"data:image/jpeg;base64,{encoded_string}"
+
+#     # Encode applicant signature
+#     sig_data_uri = ''
+#     if photo and photo.applicant_sig:
+#         sig_path = os.path.join(settings.MEDIA_ROOT, str(photo.applicant_sig))
+#         if os.path.exists(sig_path):
+#             with open(sig_path, 'rb') as sig_file:
+#                 encoded_sig = base64.b64encode(sig_file.read()).decode('utf-8')
+#                 sig_data_uri = f"data:image/png;base64,{encoded_sig}"
+
+#     # Encode JU logo
+#     ju_logo_uri = ''
+#     logo_path = os.path.join(settings.STATIC_ROOT, 'img/ju_logo.png')
+#     if os.path.exists(logo_path):
+#         with open(logo_path, 'rb') as logo_file:
+#             encoded_logo = base64.b64encode(logo_file.read()).decode('utf-8')
+#             ju_logo_uri = f"data:image/png;base64,{encoded_logo}"
+
+#     # Encode Coordinator Signature
+#     coordinator_signature_uri = ''
+#     coordinator_path = os.path.join(settings.MEDIA_ROOT, 'img/coordinator_signature.png')
+#     if os.path.exists(coordinator_path):
+#         with open(coordinator_path, 'rb') as coordinator_file:
+#             encoded_coordinator_sig = base64.b64encode(coordinator_file.read()).decode('utf-8')
+#             coordinator_signature_uri = f"data:image/png;base64,{encoded_coordinator_sig}"
+
+#     context = {
+#         'applicant': applicant,
+#         'photo_uri': image_data_uri,
+#         'sig_uri': sig_data_uri,
+#         'ju_logo_uri': ju_logo_uri,
+#         'coordinator_signature_uri': coordinator_signature_uri,
+#         'personal_info': personal_info,
+#         'intake': intake,
+#         'now': now(),
+#     }
+
+#     # Check if we need to generate the PDF
+#     if 'generate_pdf' in request.GET:
+#         html_string = render_to_string('admission/admit_card_download.html', context)
+#         pdf_buffer = BytesIO()
+#         pisa_status = pisa.CreatePDF(html_string, dest=pdf_buffer)
+
+#         if pisa_status.err:
+#             return HttpResponse('PDF generation error.')
+
+#         pdf_buffer.seek(0)
+#         return FileResponse(pdf_buffer, as_attachment=True, filename='admit_card.pdf')
+
+#     return render(request, 'admission/admit_card_download.html', context)
 
 
 
@@ -1149,8 +1238,6 @@ def result_prepare(request):
 
     # Download Excel if 'download_excel' in GET params
     if 'download_excel' in request.GET:
-        import openpyxl
-        from django.http import HttpResponse
 
         workbook = openpyxl.Workbook()
         sheet = workbook.active

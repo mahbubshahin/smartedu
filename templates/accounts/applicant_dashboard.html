@@ -93,7 +93,7 @@
                                 <tr>
                                   <td>1</td>
                                   <td class="text-start">
-                                    <i class="fas fa-user-check text-success"></i> Profile Completion
+                                    Profile
                                   </td>
                                   <td>
                                     {% if profile_complete %}
@@ -117,7 +117,7 @@
 <tr>
   <td>2</td>
   <td class="text-start">
-    <i class="fas fa-credit-card me-2 text-danger"></i> Payment
+    Payment
   </td>
   <td>
     {% if payment_complete %}
@@ -138,12 +138,12 @@
     {% elif profile_complete %}
       <!-- Profile complete → Payment allowed -->
       <a href="{% url 'payment' %}" class="btn btn-outline-danger btn-sm rounded-pill">
-        <i class="fas fa-credit-card me-1"></i> Pay with bKash
+        <i class="fas fa-credit-card me-1"></i> Pay
       </a>
     {% else %}
       <!-- Profile incomplete → Payment disabled -->
       <a href="#" class="btn btn-outline-secondary btn-sm rounded-pill disabled">
-        <i class="fas fa-ban me-1"></i> Complete Profile First
+        <i class="fas fa-ban "></i> Complete Profile First
       </a>
     {% endif %}
   </td>
@@ -153,8 +153,7 @@
                                 <!-- Admit Card -->
                                 <tr>
                                   <td>3</td>
-                                  <td class="text-start">
-                                    <i class="fas fa-id-card me-2 text-warning"></i> Admit Card
+                                  <td class="text-start">Admit
                                   </td>
                                   <td>
                                     {% if profile_complete and payment_complete %}

@@ -4,62 +4,59 @@
  
  <!-- block content -->
  {% block content %}
- 
 
 
- <section class="main_image_area">
-    <div id="customCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
-        <!-- Carousel Indicators -->
-        <div class="carousel-indicators">
-            {% for slide in main_gallery %}
-                <button type="button" data-bs-target="#customCarousel" data-bs-slide-to="{{ forloop.counter0 }}" 
-                        class="{% if forloop.first %}active{% endif %}" 
-                        aria-label="Slide {{ forloop.counter }}"></button>
-            {% endfor %}
-        </div>
+<section class="main_image_area">
+  <div id="customCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
 
-        <!-- Carousel Inner -->
-        <div class="carousel-inner">
-            {% for slide in main_gallery %}
-                <div class="carousel-item {% if forloop.first %}active{% endif %}" style="position: relative; padding-top: 56.25%; overflow: hidden;">
-                    <img src="{{ slide.background_img.url }}" 
-                         alt="Slide {{ forloop.counter }}" 
-                         class="position-absolute top-0 start-0 w-100 h-100"
-                         style="object-fit: cover;">
-                    
-                    <div class="carousel-caption d-flex flex-column justify-content-center align-items-start text-start"
-                         style="top: 50%; transform: translateY(-50%); left: 10%; right: auto;">
-                         
-                        <p class="fw-bold text-uppercase fs-5 text-light border-bottom" 
-                           style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-                                  text-shadow: 1px 1px 6px rgba(0,0,0,0.5);">
-                            {{ slide.heading }}
-                        </p>
-                        
-                        <h1 class="fw-bold col-8 text-light pb-2 mb-2"
-                            style="font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, serif; 
-                                   text-shadow: 1px 1px 6px rgba(0,0,0,0.5);">
-                            {{ slide.description }}
-                        </h1>
-                    </div>
-                </div>
-            {% endfor %}
-        </div>
-
-        <!-- Carousel Controls -->
-        <button class="carousel-control-prev" type="button" data-bs-target="#customCarousel" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon"></span>
-            <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#customCarousel" data-bs-slide="next">
-            <span class="carousel-control-next-icon"></span>
-            <span class="visually-hidden">Next</span>
-        </button>
+    <!-- Indicators -->
+    <div class="carousel-indicators">
+      {% for slide in main_gallery %}
+        <button type="button" data-bs-target="#customCarousel" data-bs-slide-to="{{ forloop.counter0 }}"
+          class="{% if forloop.first %}active{% endif %}"
+          aria-label="Slide {{ forloop.counter }}"></button>
+      {% endfor %}
     </div>
+
+    <!-- Slides -->
+    <div class="carousel-inner">
+      {% for slide in main_gallery %}
+        <div class="carousel-item {% if forloop.first %}active{% endif %}" style="position: relative; padding-top: 56.25%; overflow: hidden;">
+          <img src="{{ slide.background_img.url }}" alt="Slide {{ forloop.counter }}"
+            class="position-absolute top-0 start-0 w-100 h-100" style="object-fit: cover;">
+
+          <div class="carousel-caption d-flex flex-column justify-content-center align-items-start text-start"
+            style="top: 50%; transform: translateY(-50%); left: 10%; right: auto;">
+
+            <!-- Heading -->
+            <p class="heading text-light fw-bold text-uppercase border-bottom"
+              style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                     text-shadow: 1px 1px 5px rgba(0,0,0,0.5);">
+              {{ slide.heading }}
+            </p>
+
+            <!-- Description -->
+            <h1 class="description text-light fw-bold"
+              style="font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
+                     text-shadow: 1px 1px 6px rgba(0,0,0,0.5);">
+              {{ slide.description }}
+            </h1>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+
+    <!-- Controls -->
+    <button class="carousel-control-prev" type="button" data-bs-target="#customCarousel" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#customCarousel" data-bs-slide="next">
+      <span class="carousel-control-next-icon"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
 </section>
-
-
-
 
 
 <section class="department_area container-fluid py-5">
@@ -539,6 +536,65 @@ Whether you're a prospective student, a parent, or simply exploring options, we�
 </footer>
 
 
+
+
+
+<style>
+  /* Default (xs: <576px) */
+  .carousel-caption p.heading {
+    font-size: 0.7rem;
+    margin-bottom: 0.2rem;
+  }
+
+  .carousel-caption h1.description {
+    font-size: 1rem;
+    margin-bottom: 0;
+  }
+
+  /* sm: ≥576px */
+  @media (min-width: 576px) {
+    .carousel-caption p.heading {
+      font-size: 0.85rem;
+    }
+
+    .carousel-caption h1.description {
+      font-size: 1.2rem;
+    }
+  }
+
+  /* md: ≥768px */
+  @media (min-width: 768px) {
+    .carousel-caption p.heading {
+      font-size: 1rem;
+    }
+
+    .carousel-caption h1.description {
+      font-size: 1.4rem;
+    }
+  }
+
+  /* lg: ≥992px */
+  @media (min-width: 992px) {
+    .carousel-caption p.heading {
+      font-size: 1.15rem;
+    }
+
+    .carousel-caption h1.description {
+      font-size: 1.7rem;
+    }
+  }
+
+  /* xl: ≥1200px */
+  @media (min-width: 1200px) {
+    .carousel-caption p.heading {
+      font-size: 1.3rem;
+    }
+
+    .carousel-caption h1.description {
+      font-size: 2rem;
+    }
+  }
+</style>
 
 
 <script>

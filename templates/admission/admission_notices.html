@@ -11,34 +11,78 @@
       <div class="row">
 
   <div class="col-12 col-sm-12 col-md-10 col-lg-6 col-xl-6 mx-auto">
+
+
+    
         <!-- Admission Dates Section -->
         <div class="admission_date_details px-0 px-sm-1 px-md-3 px-lg-3  pt-2 pb-4 shadow rounded-2 ">
           <div class="table-responsive rounded-3    bg-light">
             <h6 class="fw-bold text-center fst-italic">Date to Remember</h6>
             {% if admission_details %}
-            <table class="table table-bordered align-middle shadow-sm rounded-3 overflow-hidden">
-              <thead class="text-center">
-                <tr>
-                  <th class="bg-success text-white">Event</th>
-                  <th class="bg-success"></th>
-                  <th class="bg-success text-white">Dates</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr><td >Intake</td><td class="text-center">:</td><td class="text-center ">{{ admission_details.intake_name|default_if_none:"" }}</td></tr>
-                <tr><td >Start Application</td><td class="text-center">:</td><td class="text-success text-center">{{ admission_details.start_date|default_if_none:"" }}</td></tr>
-                <tr><td >Availability of Application</td><td class="text-center">:</td><td class=" text-danger text-center">{{ admission_details.end_date|default_if_none:"" }}</td></tr>
-                <tr><td >Admit Download</td><td class="text-center">:</td><td class="text-center">{{ admission_details.admit_download|default_if_none:"" }}</td></tr>
-                <tr><td >Admission Test</td><td class="text-center">:</td><td class="fw-bold text-success text-center">{{ admission_details.admission_test|default_if_none:"" }}</td></tr>
-                <tr><td >Publication of Result</td><td class="text-center">:</td><td class="text-center">{{ admission_details.result_publish|default_if_none:"" }}</td></tr>
-                <tr><td >Admission from the Merit List</td><td class="text-center">:</td><td class="text-center">{{ admission_details.merit_list_admission|default_if_none:"" }}</td></tr>
-                <tr><td >Admission from the Waiting List</td><td class="text-center">:</td><td class="text-center">{{ admission_details.waiting_list_admission|default_if_none:"" }}</td></tr>
-                <tr><td >Orientation</td><td class="text-center">:</td><td class=" text-success text-center">{{ admission_details.orientation|default_if_none:"" }}</td></tr>
-              </tbody>
-            </table>
+
+            <div class="table-responsive">
+        <table class="table table-bordered align-middle table-sm mb-0">
+          <thead class="text-center text-white small" style="background-color: #0d6efd;">
+            <tr>
+              <th class="bg-success text-white rounded-2 " style="width: 40%;">Event</th>
+              <th style="width: 5%;">:</th>
+              <th class="bg-success text-white rounded-2" style="width: 55%;">Date</th>
+            </tr>
+          </thead>
+          <tbody class="small">
+            <tr>
+              <td class="ps-2">Intake</td>
+              <td class="text-center">:</td>
+              <td class="text-center">{{ admission_details.intake_name|default_if_none:"" }}</td>
+            </tr>
+            <tr>
+              <td class="ps-2">Start Application</td>
+              <td class="text-center">:</td>
+              <td class="text-success text-center">{{ admission_details.start_date|default_if_none:"" }}</td>
+            </tr>
+            <tr>
+              <td class="ps-2">Availability of Application</td>
+              <td class="text-center">:</td>
+              <td class="text-danger text-center">{{ admission_details.end_date|default_if_none:"" }}</td>
+            </tr>
+            <tr>
+              <td class="ps-2">Admit Download</td>
+              <td class="text-center">:</td>
+              <td class="text-center">{{ admission_details.admit_download|default_if_none:"" }}</td>
+            </tr>
+            <tr>
+              <td class="ps-2">Admission Test</td>
+              <td class="text-center">:</td>
+              <td class="fw-semibold text-success text-center">{{ admission_details.admission_test|default_if_none:"" }}</td>
+            </tr>
+            <tr>
+              <td class="ps-2">Publication of Result</td>
+              <td class="text-center">:</td>
+              <td class="text-center">{{ admission_details.result_publish|default_if_none:"" }}</td>
+            </tr>
+            <tr>
+              <td class="ps-2">Admission from Merit List</td>
+              <td class="text-center">:</td>
+              <td class="text-center">{{ admission_details.merit_list_admission|default_if_none:"" }}</td>
+            </tr>
+            <tr>
+              <td class="ps-2">Admission from Waiting List</td>
+              <td class="text-center">:</td>
+              <td class="text-center">{{ admission_details.waiting_list_admission|default_if_none:"" }}</td>
+            </tr>
+            <tr>
+              <td class="ps-2">Orientation</td>
+              <td class="text-center">:</td>
+              <td class="text-success text-center">{{ admission_details.orientation|default_if_none:"" }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+         
             {% else %}
             <div class="alert alert-info text-center mt-3">
-              <h5>Online Application for WMES Program is Closed.</h5>
+              <p>Online Application for WMES Program is Closed.</p>
             </div>
             {% endif %}
 

@@ -5,7 +5,7 @@
 {% block content %}
 <section class="login container-fluid">
     <div class="row justify-content-center">
-        <div class="col-9 col-sm-9 col-md-7 col-lg-6 col-xl-4 col-xxl-4 shadow my-4 p-0 rounded overflow-hidden">
+        <div class="col-11 col-sm-11 col-md-7 col-lg-6 col-xl-4 col-xxl-4 shadow mb-5 mt-3 p-0 rounded overflow-hidden mx-auto">
             
             <!-- Image as header -->
             <div class="w-100">
@@ -13,10 +13,10 @@
             </div>
 
             <!-- Login form body -->
-            <div class="px-3 py-4">
+            <div class="px-2 px-sm-2 px-md-2 px-lg3 py-4">
                 <form method="post" enctype="multipart/form-data" onsubmit="return validateForm()" class="needs-validation" novalidate>
                     {% csrf_token %}
-                    <h5 class="mb-3 text-center text-info">Login to your account</h5>
+                    <h5 class="mb-3 text-center text-success fw-bold">Login to your account</h5>
 
                     <!-- Username / Email -->
                     <div class="form-floating mb-3">
