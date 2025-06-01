@@ -350,6 +350,8 @@ def payment(request):
 
 
 
+
+# local host
 def admit_card_pdf(request):
     if not request.user.is_authenticated:
         messages.warning(request, "You need to log in first.")
@@ -416,92 +418,92 @@ def admit_card_pdf(request):
 
     return response
 
-
-
-# views.py
-
+# সার্ভারের জন্য নিচের কোড
 
 
 
-# @login_required
+# import os
+# from django.conf import settings
+# from django.http import HttpResponse
+# from django.template.loader import render_to_string
+# from django.utils import timezone
+# from django.contrib import messages
+# from django.shortcuts import redirect
+# import pdfkit
+
+
 # def admit_card_pdf(request):
-#     if request.user.role != UserRegistration.APPLICANT:
+#     if not request.user.is_authenticated:
+#         messages.warning(request, "You need to log in first.")
+#         return redirect('login')
+
+#     if request.user.role != 'applicant':
 #         messages.warning(request, "You are not authorized to access this page.")
 #         return redirect('home')
 
 #     applicant = request.user
 
-#     # ✅ Check if payment is paid
 #     try:
 #         if applicant.payment.status != 'Paid':
 #             messages.warning(request, "You must complete payment before downloading the admit card.")
 #             return redirect('home')
-#     except ObjectDoesNotExist:
+#     except Exception:
 #         messages.warning(request, "Payment record not found. Please complete payment first.")
 #         return redirect('home')
 
-#     photo = getattr(applicant, 'applicant_photo', None)
-#     personal_info = getattr(applicant, 'personal_info', None)
+#     # Paths for local image access using file://
+#     photo_uri = ''
+#     sig_uri = ''
+#     if hasattr(applicant, 'applicant_photo') and applicant.applicant_photo:
+#         if applicant.applicant_photo.applicant_image:
+#             photo_path = os.path.join(settings.MEDIA_ROOT, applicant.applicant_photo.applicant_image.name)
+#             photo_uri = f'file://{photo_path}'
+#         if applicant.applicant_photo.applicant_sig:
+#             sig_path = os.path.join(settings.MEDIA_ROOT, applicant.applicant_photo.applicant_sig.name)
+#             sig_uri = f'file://{sig_path}'
+
 #     intake = applicant.intake
-
-#     # Encode applicant photo
-#     image_data_uri = ''
-#     if photo and photo.applicant_image:
-#         image_path = os.path.join(settings.MEDIA_ROOT, str(photo.applicant_image))
-#         if os.path.exists(image_path):
-#             with open(image_path, 'rb') as image_file:
-#                 encoded_string = base64.b64encode(image_file.read()).decode('utf-8')
-#                 image_data_uri = f"data:image/jpeg;base64,{encoded_string}"
-
-#     # Encode applicant signature
-#     sig_data_uri = ''
-#     if photo and photo.applicant_sig:
-#         sig_path = os.path.join(settings.MEDIA_ROOT, str(photo.applicant_sig))
-#         if os.path.exists(sig_path):
-#             with open(sig_path, 'rb') as sig_file:
-#                 encoded_sig = base64.b64encode(sig_file.read()).decode('utf-8')
-#                 sig_data_uri = f"data:image/png;base64,{encoded_sig}"
-
-#     # Encode JU logo
-#     ju_logo_uri = ''
-#     logo_path = os.path.join(settings.STATIC_ROOT, 'img/ju_logo.png')
-#     if os.path.exists(logo_path):
-#         with open(logo_path, 'rb') as logo_file:
-#             encoded_logo = base64.b64encode(logo_file.read()).decode('utf-8')
-#             ju_logo_uri = f"data:image/png;base64,{encoded_logo}"
-
-#     # Encode Coordinator Signature
 #     coordinator_signature_uri = ''
-#     coordinator_path = os.path.join(settings.MEDIA_ROOT, 'img/coordinator_signature.png')
-#     if os.path.exists(coordinator_path):
-#         with open(coordinator_path, 'rb') as coordinator_file:
-#             encoded_coordinator_sig = base64.b64encode(coordinator_file.read()).decode('utf-8')
-#             coordinator_signature_uri = f"data:image/png;base64,{encoded_coordinator_sig}"
+#     if intake and intake.coordinator_signature:
+#         coord_sig_path = os.path.join(settings.MEDIA_ROOT, intake.coordinator_signature.name)
+#         coordinator_signature_uri = f'file://{coord_sig_path}'
+
+#     ju_logo_path = os.path.join(settings.BASE_DIR, 'static', 'img', 'JU_logo.png')
+#     ju_logo_uri = f'file://{ju_logo_path}'
+
 
 #     context = {
-#         'applicant': applicant,
-#         'photo_uri': image_data_uri,
-#         'sig_uri': sig_data_uri,
-#         'ju_logo_uri': ju_logo_uri,
-#         'coordinator_signature_uri': coordinator_signature_uri,
-#         'personal_info': personal_info,
-#         'intake': intake,
-#         'now': now(),
+#         "applicant": applicant,
+#         "photo_uri": photo_uri,
+#         "sig_uri": sig_uri,
+#         "ju_logo_uri": ju_logo_uri,
+#         "coordinator_signature_uri": coordinator_signature_uri,
+#         "personal_info": getattr(applicant, 'personal_info', None),
+#         "intake": intake,
+#         "now": timezone.now(),
 #     }
 
-#     # Check if we need to generate the PDF
-#     if 'generate_pdf' in request.GET:
-#         html_string = render_to_string('admission/admit_card_download.html', context)
-#         pdf_buffer = BytesIO()
-#         pisa_status = pisa.CreatePDF(html_string, dest=pdf_buffer)
+#     html_string = render_to_string("admission/admit_card_download.html", context)
 
-#         if pisa_status.err:
-#             return HttpResponse('PDF generation error.')
+#     options = {
+#         'page-size': 'A4',
+#         'encoding': "UTF-8",
+#         'enable-local-file-access': '',  # must be empty string, not None or True
+#         'margin-top': '5mm',
+#         'margin-bottom': '5mm',
+#     }
 
-#         pdf_buffer.seek(0)
-#         return FileResponse(pdf_buffer, as_attachment=True, filename='admit_card.pdf')
+#     config = pdfkit.configuration(wkhtmltopdf='/usr/bin/wkhtmltopdf')
 
-#     return render(request, 'admission/admit_card_download.html', context)
+#     try:
+#         pdf = pdfkit.from_string(html_string, False, options=options, configuration=config)
+#     except Exception as e:
+#         return HttpResponse(f"PDF generation failed: {e}", status=500)
+
+#     response = HttpResponse(pdf, content_type='application/pdf')
+#     response['Content-Disposition'] = 'attachment; filename="admit_card.pdf"'
+#     return response
+
 
 
 
@@ -1133,6 +1135,90 @@ def written_attendance_pdf(request):
 
     return render(request, 'manager/written_attendance_form.html', context)
 
+# for servar
+
+
+
+from django.contrib.staticfiles import finders
+
+# @login_required
+# def written_attendance_pdf(request):
+#     if request.user.role != UserRegistration.MANAGER:
+#         messages.warning(request, "You are not authorized to access this page.")
+#         return redirect('home')
+
+#     intakes = Intake.objects.all().order_by('-create_at')
+#     selected_intake_id = request.GET.get('intake_id')
+#     selected_intake = Intake.objects.filter(id=selected_intake_id).first() if selected_intake_id else intakes.first()
+
+#     start_roll = request.GET.get('start_roll')
+#     end_roll = request.GET.get('end_roll')
+
+#     applicants = UserRegistration.objects.filter(
+#         intake=selected_intake,
+#         payment__status='Paid',
+#         role=UserRegistration.APPLICANT
+#     ).order_by('roll_number')
+
+#     if start_roll and end_roll:
+#         applicants = applicants.filter(
+#             roll_number__gte=start_roll,
+#             roll_number__lte=end_roll
+#         )
+
+#     applicant_data = []
+#     for idx, app in enumerate(applicants, start=1):
+#         photo = getattr(app, 'applicant_photo', None)
+#         personal = getattr(app, 'personal_info', None)
+#         academic = getattr(app, 'academic_qualification', None)
+
+#         image_data_uri = ''
+#         if photo and photo.applicant_image:
+#             image_path = os.path.join(settings.MEDIA_ROOT, str(photo.applicant_image))
+#             if os.path.exists(image_path):
+#                 with open(image_path, 'rb') as image_file:
+#                     encoded_string = base64.b64encode(image_file.read()).decode('utf-8')
+#                     image_data_uri = f"data:image/jpeg;base64,{encoded_string}"
+
+#         applicant_data.append({
+#             'sl': idx,
+#             'roll_number': app.roll_number,
+#             'applicant': app,
+#             'personal': personal,
+#             'academic': academic,
+#             'image_data_uri': image_data_uri,
+#         })
+
+#     # ✅ Static থেকে JU Logo reliably লোড করা
+#     ju_logo_uri = ''
+#     logo_path = finders.find('img/JU_logo.png')
+
+#     if logo_path and os.path.exists(logo_path):
+#         with open(logo_path, 'rb') as logo_file:
+#             encoded_logo = base64.b64encode(logo_file.read()).decode('utf-8')
+#             ju_logo_uri = f"data:image/png;base64,{encoded_logo}"
+
+#     context = {
+#         'intakes': intakes,
+#         'selected_intake': selected_intake,
+#         'applicants': applicant_data,
+#         'start_roll': start_roll,
+#         'end_roll': end_roll,
+#         'ju_logo_uri': ju_logo_uri,
+#     }
+
+#     if 'generate_pdf' in request.GET:
+#         html_string = render_to_string('manager/written_attendance.html', context)
+#         pdf_buffer = io.BytesIO()
+#         pisa_status = pisa.CreatePDF(src=html_string, dest=pdf_buffer)
+
+#         if pisa_status.err:
+#             return HttpResponse('PDF generation error: ' + str(pisa_status.err))
+
+#         pdf_buffer.seek(0)
+#         return FileResponse(pdf_buffer, as_attachment=True, filename='applicants_with_images.pdf')
+
+#     return render(request, 'manager/written_attendance_form.html', context)
 
 @login_required
 def viva_attendance_pdf(request):
