@@ -5,7 +5,7 @@
 {% block content %}
 <section class="login container-fluid">
     <div class="row justify-content-center">
-        <div class="col-11 col-sm-11 col-md-7 col-lg-6 col-xl-4 col-xxl-4 shadow mb-5 mt-3 p-0 rounded overflow-hidden mx-auto">
+        <div class="col-11 col-sm-9 col-md-7 col-lg-6 col-xl-4 col-xxl-4 card shadow-lg    mb-5 mt-3 p-0  rounded overflow-hidden mx-auto">
             
             <!-- Image as header -->
             <div class="w-100">
@@ -19,13 +19,13 @@
                     <h5 class="mb-3 text-center text-success fw-bold">Login to your account</h5>
 
                     <!-- Username / Email -->
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" name="username_or_email" id="username_or_email" placeholder="Email or Username" required>
-                        <label for="username_or_email">Email / Username</label>
+                    <div class="form-floating mb-3 px-0 px-sm-2 px-lg-3">
+                        <input type="text" class="form-control " name="username_or_email" id="username_or_email" placeholder="Email or Username" required>
+                        <label class="mx-2 mx-lg-3" for="username_or_email">Email or Username</label>
                     </div>
 
                     <!-- Password + Toggle -->
-                    <div class="row g-2 mb-3 align-items-center">
+                    <div class="row g-2 mb-3 align-items-center px-0 px-sm-2 px-lg-3">
                         <div class="col-10">
                             <div class="form-floating">
                                 <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
@@ -40,19 +40,19 @@
                     </div>
 
                     <!-- Links -->
-                    <div class="d-flex justify-content-between mb-3">
+                    <div class="d-flex justify-content-between mb-3  px-0 px-sm-2 px-lg-3">
                         <a href="{% url 'applicant_register' %}" class="text-dark small fw-bold text-decoration-none">Don't have an account?</a>
                         <a href="{% url 'applicant_forgot_password' %}" class="text-dark small fw-bold text-decoration-none">Forgot password?</a>
                     </div>
 
                     <!-- Submit -->
-                    <button type="submit" class="btn btn-primary w-100">
+                    <button type="submit" class="btn btn-primary w-100 ">
                         <i class="fa fa-sign-in-alt"></i> Login
                     </button>
 
                     <!-- Footer -->
                     <p class="mb-0 text-muted mt-3 text-center">
-                        © <script>document.write(new Date().getFullYear())</script> WMES-JU.
+                        © <script>document.write(new Date().getFullYear())</script> QuBi Tnix Solutions.
                     </p>
                 </form>
             </div>

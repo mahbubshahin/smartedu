@@ -7,21 +7,21 @@
 <section class="notice_area container-fluid">
 
   <div class="row">
-    <div class="col-12 my-5 col-sm-12 col-md-12 col-lg-12 col-xl-10 col-xxl-10 mx-auto">
+    <div class="col-12 my-5 col-sm-11 col-md-12 col-lg-11 col-xl-9 col-xxl- mx-auto">
       <div class="row">
 
-  <div class="col-12 col-sm-12 col-md-10 col-lg-6 col-xl-6 mx-auto">
+  <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 mx-auto">
 
 
     
         <!-- Admission Dates Section -->
-        <div class="admission_date_details px-0 px-sm-1 px-md-3 px-lg-3  pt-2 pb-4 shadow rounded-2 ">
+        <div class="admission_date_details px-0 px-sm-3 px-md-2 px-lg-3  pt-2 pb-4 shadow-lg   rounded-2 ">
           <div class="table-responsive rounded-3    bg-light">
             <h6 class="fw-bold text-center fst-italic">Date to Remember</h6>
             {% if admission_details %}
 
-            <div class="table-responsive">
-        <table class="table table-bordered align-middle table-sm mb-0">
+            <div class="table-responsive ">
+        <table class="table table-bordered  align-middle table-sm mb-0">
           <thead class="text-center text-white small" style="background-color: #0d6efd;">
             <tr>
               <th class="bg-success text-white rounded-2 " style="width: 40%;">Event</th>
@@ -128,9 +128,9 @@
    
 
 
-        <div class="col-12 col-sm-12 col-md-10 col-lg-6 col-xl-6 mx-auto">
+        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 mx-auto">
   {% if selected_notice %}
-  <div class="embed-responsive show active  rounded-3 overflow-hidden" >
+  <div class="embed-responsive shadow active  rounded-3 overflow-hidden" >
     <iframe src="{{ selected_notice.pdf_file.url }}"  width="100%" height="800px" title="Selected PDF"></iframe > 
   </div>
   {% endif %}
